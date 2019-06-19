@@ -13,3 +13,5 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
+  flyway:
+    url: ${spring.datasource.url}
