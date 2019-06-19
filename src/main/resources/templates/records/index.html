@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: header"></head>
+    <body style="padding-top: 120px;">
+        <div th:replace="fragments/navbar :: navbar"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <h1 th:text="${#temporals.format(balance.balanceDates.periodStartDate, 'MMM yyyy')}"></h1>
+                    <p>
+                        <small>
+                            From&nbsp;<strong th:text="${#temporals.format(balance.balanceDates.periodStartDate,'dd/MM/yyyy')}"></strong>&nbsp;to&nbsp;
+                            <strong th:text="${#temporals.format(balance.balanceDates.periodEndDate,'dd/MM/yyyy')}"></strong><br/>
+                            <a th:href="@{'/records'(referenceDate=${balance.balanceDates.previousPeriodStartDate},accountId=${balance.account.id})}">Previous Period</a>
+                            &nbsp;|&nbsp;
+                            <a th:href="@{'/records'(referenceDate=${balance.balanceDates.nextPeriodStartDate},accountId=${balance.account.id})}">Next Period</a><br/>
+                        </small>
+                    </p>
+                </div>
+                <div class="col-md-6 col-sm-12 text-right align-self-end">
+                    <a th:href="@{/single_records/new}" class="btn btn-primary">New Single Record</a>
+                </div>
+            </div>
+
+            <div class="row mt-4 mb-3">
+                <div class="col">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item" th:each="account: ${availableAccounts}">
+                            <a class="nav-link"
+                               th:href="@{'/records'(accountId=${account.id},referenceDate=${balance.balanceDates.referenceDate})}"
+                               th:text="${account.name}"
+                               th:classappend="${account.id} == ${balance.account.id} ? active : ''"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 col-md-3">
+                    <div class="card text-white bg-primary mb-3">
+                        <div class="card-header">Current Balance</div>
+                        <div class="card-body text-right">
+                            <h4 class="card-title" th:text="${#numbers.formatDecimal(balance.summary.balanceUpToDate, 0, 'POINT', 2, 'COMMA')}"></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3">
+                    <div class="card text-white bg-primary mb-3">
+                        <div class="card-header">Final Balance</div>
+                        <div class="card-body text-right">
+                            <h4 class="card-title" th:text="${#numbers.formatDecimal(balance.summary.finalBalance, 0, 'POINT', 2, 'COMMA')}"></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3">
+                    <div class="card text-white bg-primary mb-3">
+                        <div class="card-header">Incomes</div>
+                        <div class="card-body text-right">
+                            <h4 class="card-title" th:text="${#numbers.formatDecimal(balance.summary.totalIncomes, 0, 'POINT', 2, 'COMMA')}"></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3">
+                    <div class="card text-white bg-primary mb-3">
+                        <div class="card-header">Expenses</div>
+                        <div class="card-body text-right">
+                            <h4 class="card-title" th:text="${#numbers.formatDecimal(balance.summary.totalExpenses, 0, 'POINT', 2, 'COMMA')}"></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th class="text-center">Date</th>
+                                    <th>Description</th>
+                                    <th class="text-center">Value</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="record: ${balance.records}">
+                                    <td class="text-center" th:text="${#temporals.format(record.recordDate,'dd')}"></td>
+                                    <td>
+                                        <span th:text="${record.description}"></span><br/>
+                                        <span class="badge badge-pill badge-dark" th:text="${record.category.name}"></span>
+                                    </td>
+                                    <td class="text-right"
+                                        th:text="${#numbers.formatDecimal(record.recordValue, 0, 'POINT', 2, 'COMMA')}"
+                                        th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></td>
+                                    <td class="text-center">
+                                        <a  th:href="@{'/records/delete/{id}'(id=${record.id},referenceDate=${balance.balanceDates.referenceDate},accountId=${balance.account.id})}"
+                                            title="Remove the record."
+                                            onclick="return confirm('Do you really want to remove the record?');"
+                                            th:if="${record.id >= 0}">
+                                            <span class="fa fa-trash-alt"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="text-right">
+                                        <strong>Final Balance:</strong>
+                                    </td>
+                                    <td th:text="${#numbers.formatDecimal(balance.summary.finalBalance, 0, 'POINT', 2, 'COMMA')}"
+                                        class="text-right"
+                                        th:classappend="${balance.summary.finalBalance} > 0 ? text-info : text-danger"></td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer :: footer"></div>
+    </body>
+</html>

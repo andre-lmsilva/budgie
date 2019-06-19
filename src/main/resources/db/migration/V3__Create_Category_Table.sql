@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS category (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT
+);
+
+ALTER TABLE category ADD CONSTRAINT UNQ_CATEGORY_NAME UNIQUE(name);

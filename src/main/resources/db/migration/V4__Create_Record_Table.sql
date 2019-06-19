@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS record (
+    id SERIAL PRIMARY KEY,
+    record_date DATE NOT NULL,
+    account_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+    description TEXT NOT NULL,
+    record_value NUMERIC(10,2) NOT NULL,
+    record_type TEXT NOT NULL
+);
+
+ALTER TABLE record ADD CONSTRAINT FK_ACCOUNT_RECORD
+FOREIGN KEY(account_id) REFERENCES account(id)
+ON DELETE CASCADE;
+
+ALTER TABLE record ADD CONSTRAINT FK_CATEGORY_RECORD
+FOREIGN KEY(category_id) REFERENCES category(id)
+ON DELETE CASCADE;

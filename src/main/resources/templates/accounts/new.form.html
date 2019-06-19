@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: header"></head>
+    <body style="padding-top:120px;">
+        <div th:replace="fragments/navbar :: navbar"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h1>New Account</h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <form action="#" th:object="${newAccount}" th:action="@{/accounts/create}" method="post">
+                        <fieldset>
+                            <legend>Accounts Details</legend>
+                            <div class="form-group">
+                                <label for="name">Name:</label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:appendclass="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
+                                       th:field="*{name}"
+                                       placeholder="Account name." required/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description:</label>
+                                <textarea class="form-control" th:field="*{description}" placeholder="Account's purpose brief description."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" th:field="*{showBalanceOnMainAccount}"/>
+                                    <label class="custom-control-label" for="showBalanceOnMainAccount">Show balance on main account.</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="monthStartingAt">Beginning of Month:</label>
+                                <input type="text" class="form-control"
+                                       th:appendclass="${#fields.hasErrors('monthStartingAt') ? 'is-invalid' : ''}"
+                                       th:field="*{monthStartingAt}"/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('monthStartingAt')}" th:errors="*{monthStartingAt}"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="monthBillingDayAt">Monthly Billing Day:</label><br/>
+                                <input type="text"
+                                       class="form-control"
+                                       th:appendclass="${#fields.hasErrors('monthBillingDayAt') ? 'is-invalid' : ''}"
+                                       th:field="*{monthBillingDayAt}"/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('monthBillingDayAt')}" th:errors="*{monthBillingDayAt}"></div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Create</button>&nbsp;
+                                <a th:href="@{/accounts}" title="Go back to available accounts page without save the changes." class="btn btn-default">Cancel</a>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer :: footer"></div>
+    </body>
+</html>

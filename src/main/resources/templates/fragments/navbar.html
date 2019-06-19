@@ -1,0 +1,17 @@
+<nav xmlns:th="http://www.thymeleaf.org" th:fragment="navbar" class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Budgie</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainMenu" aria-controls="mainMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainMenu">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a th:href="@{'/records'}">Balance</a>
+            </li>
+            <liv class="nav-item">
+                <a th:href="@{'/accounts'}">Accounts</a>
+            </liv>
+        </ul>
+    </div>
+</nav>
