@@ -1,7 +1,7 @@
 package io.geekmind.budgie.controller;
 
 import io.geekmind.budgie.repository.AccountService;
-import io.geekmind.budgie.repository.BalanceService;
+import io.geekmind.budgie.repository.StandardBalanceService;
 import io.geekmind.budgie.repository.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,12 +19,12 @@ import java.time.LocalDate;
 @RequestMapping("/records")
 public class RecordControllerImpl {
 
-    private final BalanceService balanceService;
+    private final StandardBalanceService balanceService;
     private final AccountService accountService;
     private final RecordService recordService;
 
     @Autowired
-    public RecordControllerImpl(BalanceService balanceService,
+    public RecordControllerImpl(StandardBalanceService balanceService,
                                 AccountService accountService,
                                 RecordService recordService) {
         this.balanceService = balanceService;

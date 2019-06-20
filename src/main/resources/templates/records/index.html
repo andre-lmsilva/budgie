@@ -11,6 +11,10 @@
                         <small>
                             From&nbsp;<strong th:text="${#temporals.format(balance.balanceDates.periodStartDate,'dd/MM/yyyy')}"></strong>&nbsp;to&nbsp;
                             <strong th:text="${#temporals.format(balance.balanceDates.periodEndDate,'dd/MM/yyyy')}"></strong><br/>
+                            <span th:if="${balance.account.showBalanceOnMainAccount}">
+                                Billing date <strong th:text="${#temporals.format(balance.balanceDates.periodEndDate,'dd/MM/yyyy')}"></strong><br/>
+                                <span class="badge badge-info">Show balance as a main account record.</span><br/>
+                            </span>
                             <a th:href="@{'/records'(referenceDate=${balance.balanceDates.previousPeriodStartDate},accountId=${balance.account.id})}">Previous Period</a>
                             &nbsp;|&nbsp;
                             <a th:href="@{'/records'(referenceDate=${balance.balanceDates.nextPeriodStartDate},accountId=${balance.account.id})}">Next Period</a><br/>
@@ -35,7 +39,22 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mb-3" th:if="${null != message}">
+                <div class="col">
+                    <div class="alert alert-success" th:text="${message}"></div>
+                </div>
+            </div>
+
+            <div class="row" th:if="${#lists.isEmpty(balance.records)}">
+                <div class="col">
+                    <div class="jumbotron">
+                        <h2>No records found.</h2>
+                        <p class="lead">There is no balance record for this account in this period yet.
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" th:if="${not #lists.isEmpty(balance.records)}">
                 <div class="col-sm-12 col-md-3">
                     <div class="card text-white bg-primary mb-3">
                         <div class="card-header">Current Balance</div>
@@ -70,7 +89,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" th:if="${not #lists.isEmpty(balance.records)}">
                 <div class="col">
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped">

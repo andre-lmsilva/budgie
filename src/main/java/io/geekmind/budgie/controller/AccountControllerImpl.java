@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -41,20 +42,25 @@ public class AccountControllerImpl {
     @PostMapping("/create")
     public ModelAndView createNewAccount(@Valid NewAccount newAccount,
                                          BindingResult bindingResult,
-                                         ModelAndView requestContext) {
+                                         ModelAndView requestContext,
+                                         RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             requestContext.addObject("newAccount", newAccount);
             requestContext.setViewName("accounts/new.form");
         } else {
             this.accountService.create(newAccount);
-            requestContext.setViewName("redirect:/accounts");
+            redirectAttributes.addFlashAttribute("message", "Account record successfully created.");
+            requestContext.setViewName("redirect:/accounts/new");
         }
         return requestContext;
     }
 
     @GetMapping("/delete/{id}")
-    public ModelAndView removeAccount(@PathVariable("id")Integer id, ModelAndView requestContext) {
+    public ModelAndView removeAccount(@PathVariable("id")Integer id,
+                                      ModelAndView requestContext,
+                                      RedirectAttributes redirectAttributes) {
         this.accountService.remove(id);
+        redirectAttributes.addFlashAttribute("message", "Account record successfully removed.");
         requestContext.setViewName("redirect:/accounts");
         return requestContext;
     }

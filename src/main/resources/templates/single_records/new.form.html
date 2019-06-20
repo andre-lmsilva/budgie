@@ -5,6 +5,15 @@
         <div th:replace="fragments/navbar :: navbar"></div>
 
         <div class="container">
+              <div class="row mb-3">
+                <div class="col">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
+                        <li class="breadcrumb-item active">New Single Record</li>
+                    </ol>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col">
                     <h1>New Single Record</h1>

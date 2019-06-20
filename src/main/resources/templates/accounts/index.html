@@ -4,6 +4,15 @@
     <body style="padding-top: 120px;">
         <div th:replace="fragments/navbar :: navbar"></div>
         <div class="container">
+             <div class="row mb-3">
+                <div class="col">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
+                        <li class="breadcrumb-item active">Accounts</li>
+                    </ol>
+                </div>
+            </div>
+
             <div class="row mb-4">
                 <div class="col-md-9 col-sm-12">
                     <h1>Available Accounts</h1>
@@ -12,6 +21,13 @@
                     <a th:href="@{/accounts/new}" class="btn btn-primary" title="Shows the form to create a new account.">New Account</a>
                 </div>
             </div>
+
+            <div class="row mt-3 mb-3" th:if="${null != message}">
+                <div class="col">
+                    <div class="alert alert-success" th:text="${message}"></div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col">
                     <div class="table-responsive">
@@ -26,7 +42,7 @@
                                 </tr>
                             </thead>
                             <tbody th:id="${not #lists.isEmpty(availableAccounts)}">
-                                <tr th:each="account: ${availableAccounts}">
+                                <tr th:each="account: ${availableAccounts}" th:classappend="${account.mainAccount} ? table-info : ''">
                                     <td>
                                         <strong th:text="${account.name}"></strong>&nbsp;
                                         <span class="badge badge-pill badge-danger" th:if="${account.mainAccount}">Main Account</span><br/>
@@ -53,6 +69,6 @@
                 </div>
             </div>
         </div>
-        <div th:replace="fragments/footer :: footer"
+        <div th:replace="fragments/footer :: footer"></div>
     </body>
 </html>

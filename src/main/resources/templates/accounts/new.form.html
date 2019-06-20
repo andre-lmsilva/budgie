@@ -4,9 +4,25 @@
     <body style="padding-top:120px;">
         <div th:replace="fragments/navbar :: navbar"></div>
         <div class="container">
+            <div class="row mb-3">
+                <div class="col">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
+                        <li class="breadcrumb-item"><a th:href="@{'/accounts'}">Accounts</a></li>
+                        <li class="breadcrumb-item active">New Account</li>
+                    </ol>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col">
                     <h1>New Account</h1>
+                </div>
+            </div>
+
+            <div class="row mb-3 mt-3" th:if="${null != message}">
+                <div class="col">
+                    <div class="alert alert-success" th:text="${message}"></div>
                 </div>
             </div>
 
@@ -29,9 +45,11 @@
                                 <textarea class="form-control" th:field="*{description}" placeholder="Account's purpose brief description."></textarea>
                             </div>
                             <div class="form-group">
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" th:field="*{showBalanceOnMainAccount}"/>
-                                    <label class="custom-control-label" for="showBalanceOnMainAccount">Show balance on main account.</label>
+                                <div class="form-check">
+                                    <label class="form-check">
+                                        <input type="checkbox" class="form-check-input" th:field="*{showBalanceOnMainAccount}"/>
+                                        Show account balance as a main account record.
+                                    </label>
                                 </div>
                             </div>
                             <div class="form-group">
