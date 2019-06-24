@@ -1,6 +1,8 @@
 package io.geekmind.budgie.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -10,6 +12,8 @@ import java.util.List;
  * @author Andre Silva
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Balance {
 
     private ExistingAccount account;

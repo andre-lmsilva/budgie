@@ -4,6 +4,11 @@ import io.geekmind.budgie.model.dto.NewAccount;
 import io.geekmind.budgie.model.entity.Account;
 import org.springframework.stereotype.Component;
 
+/**
+ * Maps attribute from {@link NewAccount} to the attributes of a new {@link Account} instance.
+ *
+ * @author Andre Silva
+ */
 @Component(NewAccountToAccountMapper.QUALIFIER)
 public class NewAccountToAccountMapper implements Mapper<NewAccount, Account> {
 
@@ -17,6 +22,7 @@ public class NewAccountToAccountMapper implements Mapper<NewAccount, Account> {
         account.setMonthStartingAt(source.getMonthStartingAt());
         account.setMonthBillingDayAt(source.getMonthBillingDayAt());
         account.setShowBalanceOnMainAccount(source.getShowBalanceOnMainAccount());
+        account.setMainAccount(Boolean.FALSE);
         return account;
     }
 

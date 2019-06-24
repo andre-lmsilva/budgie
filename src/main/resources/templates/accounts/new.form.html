@@ -26,11 +26,17 @@
                 </div>
             </div>
 
+            <div class="row mb-3 mt-3" th:if="${#fields.hasErrors('newAccount')}">
+                <div class="col">
+                    <div class="alert alert-danger" th:errors="*{newAccount}"></div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col">
                     <form action="#" th:object="${newAccount}" th:action="@{/accounts/create}" method="post">
                         <fieldset>
-                            <legend>Accounts Details</legend>
+                            <legend>Account Details</legend>
                             <div class="form-group">
                                 <label for="name">Name:</label>
                                 <input type="text"

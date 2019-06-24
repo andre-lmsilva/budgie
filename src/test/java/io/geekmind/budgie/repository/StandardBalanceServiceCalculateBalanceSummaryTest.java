@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
@@ -18,6 +19,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class StandardBalanceServiceCalculateBalanceSummaryTest {
 
     @InjectMocks
+    @Spy
     private StandardBalanceService balanceService;
 
     private BalanceSummary balanceSummary;
@@ -33,7 +35,9 @@ public class StandardBalanceServiceCalculateBalanceSummaryTest {
         tomorrow.setRecordValue(BigDecimal.valueOf(-10.5D));
 
         this.balanceSummary = this.balanceService.calculateBalanceSummary(
-            Arrays.asList(today, tomorrow)
+            Arrays.asList(today, tomorrow),
+            LocalDate.now(),
+            LocalDate.now().plusDays(1L)
         );
     }
 

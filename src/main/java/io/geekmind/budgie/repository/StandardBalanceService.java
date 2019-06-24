@@ -9,10 +9,11 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -28,6 +29,28 @@ public class StandardBalanceService {
     private final RecordService recordService;
     private final Mapper<Balance, DependantAccountRecord> dependantAccountRecordMapper;
 
+    /**
+     * Provides a predicate that will filter a list of {@link ExistingRecord} returning only the records with a positive
+     * record value.
+     */
+    public static final Predicate<ExistingRecord> INCOMES_RECORDS_FILTER = (existingRecord ->
+        null != existingRecord.getRecordValue() && existingRecord.getRecordValue().compareTo(BigDecimal.ZERO) > 0
+    );
+
+    /**
+     * Provides a predicate that will filter a list of {@link ExistingRecord} returning only the record with a negative
+     * record value.
+     */
+    public static final Predicate<ExistingRecord> EXPENSES_RECORDS_FILTER = (existingRecord ->
+        null != existingRecord.getRecordValue() && existingRecord.getRecordValue().compareTo(BigDecimal.ZERO) < 0
+    );
+
+    /**
+     * Provides a predicate that will filter a list of {@link ExistingRecord} returning any record which record value is
+     * not null.
+     */
+    public static final Predicate<ExistingRecord> ANY_RECORDS_FILTER = (existingRecord -> null != existingRecord.getRecordValue());
+
     @Autowired
     public StandardBalanceService(AccountService accountService,
                                   RecordService recordService,
@@ -42,24 +65,24 @@ public class StandardBalanceService {
      * the other class methods the real task to calculate the values.
      *
      * @param accountId         Id of the account which balance is being calculated.
-     * @param referenceDate
+     * @param referenceDate     Period reference date. It is optional. The current date will be assume when null.
      * @return
      */
     public Balance generateBalance(Integer accountId, LocalDate referenceDate) {
         Balance balance = new Balance();
         Optional<ExistingAccount> retrievedAccount = this.retrieveAccount(accountId);
+
         if (retrievedAccount.isPresent()) {
             ExistingAccount existingAccount = retrievedAccount.get();
-            balance.setAccount(existingAccount);
-            balance.setBalanceDates(
-                this.calculateBalanceDates(existingAccount, referenceDate)
+            BalanceDates balanceDates = this.calculateBalanceDates(existingAccount, referenceDate);
+            List<ExistingRecord> records = this.loadAccountRecords(existingAccount, balanceDates);
+            BalanceSummary balanceSummary = this.calculateBalanceSummary(
+                records,
+                balanceDates.getPeriodStartDate(),
+                balanceDates.getPeriodEndDate()
             );
-            balance.setRecords(this.loadAccountRecords(existingAccount, balance.getBalanceDates()));
-            balance.setSummary(
-                this.calculateBalanceSummary(
-                    balance.getRecords()
-                )
-            );
+
+            balance = new Balance(existingAccount, balanceDates, records, balanceSummary);
         }
         return balance;
     }
@@ -103,15 +126,17 @@ public class StandardBalanceService {
         LocalDate periodEndDate = this.calculatePeriodEndDate(account, refDate);
         LocalDate periodStartDate = this.calculatePeriodStartDate(periodEndDate);
         LocalDate periodBillingDate = this.calculatePeriodBillingDate(account, periodEndDate);
+        LocalDate previousPeriodStartDate = refDate.minusMonths(1L);
+        LocalDate nextPeriodStartDate = refDate.plusMonths(1L);
 
-        BalanceDates balanceDates = new BalanceDates();
-        balanceDates.setPeriodStartDate(periodStartDate);
-        balanceDates.setPeriodEndDate(periodEndDate);
-        balanceDates.setPeriodBillingDate(periodBillingDate);
-        balanceDates.setReferenceDate(refDate);
-        balanceDates.setPreviousPeriodStartDate(refDate.minusMonths(1L));
-        balanceDates.setNextPeriodStartDate(refDate.plusMonths(1L));
-        return balanceDates;
+        return  new BalanceDates(
+            refDate,
+            periodStartDate,
+            periodEndDate,
+            periodBillingDate,
+            previousPeriodStartDate,
+            nextPeriodStartDate
+        );
     }
 
     /**
@@ -183,54 +208,53 @@ public class StandardBalanceService {
      * @param records List of records within the period being calculated.
      * @return {@link BalanceSummary} instance with the aforementioned values calculated and filled in.
      */
-    protected BalanceSummary calculateBalanceSummary(final List<ExistingRecord> records) {
-        BigDecimal totalIncomes = BigDecimal.valueOf(
-            records.stream()
-                .filter(record -> record.getRecordValue().compareTo(BigDecimal.ZERO) > 0)
-                .map(ExistingRecord::getRecordValue)
-                .mapToDouble(BigDecimal::doubleValue)
-                .sum()
-        );
+    protected BalanceSummary calculateBalanceSummary(final List<ExistingRecord> records,
+                                                     final LocalDate periodStartDate,
+                                                     final LocalDate periodEndDate) {
 
-        BigDecimal totalExpenses = BigDecimal.valueOf(
-            records.stream()
-                .filter(record -> record.getRecordValue().compareTo(BigDecimal.ZERO) < 0)
-                .map(ExistingRecord::getRecordValue)
-                .mapToDouble(BigDecimal::doubleValue)
-                .sum()
-        );
+        Predicate<ExistingRecord> fullPeriodFilter = this.periodIntervalFilter(periodStartDate, periodEndDate);
+        Predicate<ExistingRecord> upToDateFilter = this.periodIntervalFilter(periodStartDate, LocalDate.now());
 
-        LocalDate now = LocalDate.now();
-        BigDecimal balanceUpToDate = BigDecimal.valueOf(
-            records.stream()
-                .filter(record -> record.getRecordDate().compareTo(now) <= 0)
-                .map(ExistingRecord::getRecordValue)
-                .mapToDouble(BigDecimal::doubleValue)
-                .sum()
-        );
+        BigDecimal totalIncomes = this.sumarizeRecords(records, INCOMES_RECORDS_FILTER, fullPeriodFilter);
+        BigDecimal totalExpenses = this.sumarizeRecords(records, EXPENSES_RECORDS_FILTER, fullPeriodFilter);
+        BigDecimal balanceUpToDate = this.sumarizeRecords(records, ANY_RECORDS_FILTER, upToDateFilter);
+        BigDecimal finalBalance = this.sumarizeRecords(records, ANY_RECORDS_FILTER, fullPeriodFilter);
 
-        BigDecimal finalBalance = totalIncomes.add(totalExpenses);
-        BalanceSummary summary = new BalanceSummary();
-        summary.setTotalIncomes(totalIncomes);
-        summary.setTotalExpenses(totalExpenses);
-        summary.setFinalBalance(finalBalance);
-        summary.setBalanceUpToDate(balanceUpToDate);
-        return summary;
+        return new BalanceSummary(finalBalance, totalIncomes, totalExpenses, balanceUpToDate);
     }
 
+    /**
+     * Calculates the total income value for the period.
+     * @param records   Record of the period.
+     * @return Total income for the period
+     */
+    protected BigDecimal sumarizeRecords(final List<ExistingRecord> records,
+                                         final Predicate<ExistingRecord> valueFilter,
+                                         final Predicate<ExistingRecord> periodFilter) {
+        return BigDecimal.valueOf(
+            records.stream()
+                .filter(periodFilter)
+                .filter(valueFilter)
+                .map(ExistingRecord::getRecordValue)
+                .mapToDouble(BigDecimal::doubleValue)
+                .sum()
+        );
+    }
+
+    /**
+     * Loads the records within a period for an {@link ExistingAccount}. If it is the main account, the dependant
+     * accounts balances will also be calculated and records with be added to the list in the proper billing date. The
+     * final list is sorted by record date in an ascending order.
+     *
+     * @param account       Account to have its records retrieved.
+     * @param balanceDates  {@link BalanceDates} with the period dates already calculated.
+     * @return  List containing all the account records within the received period and the balances of the dependant
+     *          accounts if the account is the main account.
+     */
     protected List<ExistingRecord> loadAccountRecords(ExistingAccount account, BalanceDates balanceDates) {
         List<ExistingRecord> records = this.recordService.loadAll(account.getId(), balanceDates.getPeriodStartDate(), balanceDates.getPeriodEndDate());
         if (account.getMainAccount()) {
-            List<ExistingAccount> dependants = this.accountService.loadDependantAccounts();
-            LocalDate refDate = balanceDates.getReferenceDate().minusMonths(1L);
-
-            for(ExistingAccount dependantAccount: dependants) {
-                Balance dependantAccountBalance = this.generateBalance(dependantAccount.getId(), refDate);
-                if (dependantAccountBalance.getSummary().getFinalBalance().compareTo(BigDecimal.ZERO) != 0) {
-                    records.add(this.dependantAccountRecordMapper.mapTo(dependantAccountBalance));
-                }
-            }
-
+            records.addAll(this.calculateDependantAccountBalances(balanceDates));
             records = records.stream()
                 .sorted(Comparator.comparing(ExistingRecord::getRecordDate))
                 .collect(Collectors.toList());
@@ -238,4 +262,37 @@ public class StandardBalanceService {
         return records;
     }
 
+    /**
+     * Calculates the balance of the main account dependant accounts and returns in a list of
+     * unsorted records.
+     *
+     * @param mainAccountBalanceDates   Main account calculated period dates.
+     * @return List containing unsorted record with the dependant account balances.
+     */
+    protected List<ExistingRecord> calculateDependantAccountBalances(BalanceDates mainAccountBalanceDates) {
+        List<ExistingRecord> dependantAccountBalances = new ArrayList<>();
+        List<ExistingAccount> dependantAccounts = this.accountService.loadDependantAccounts();
+        LocalDate referenceDate = mainAccountBalanceDates.getReferenceDate().minusMonths(1L);
+
+        for(ExistingAccount dependantAccount: dependantAccounts) {
+            Balance dependantAccountBalance = this.generateBalance(dependantAccount.getId(), referenceDate);
+            ExistingRecord dependantAccountBalanceRecord = this.dependantAccountRecordMapper.mapTo(dependantAccountBalance);
+            dependantAccountBalances.add(dependantAccountBalanceRecord);
+        }
+
+        return dependantAccountBalances;
+    }
+
+    /**
+     * Returns the {@link Predicate} capable to filter {@link ExistingRecord} instances which record date is within
+     * a period of time expressed by the received start and end date.
+     * @param startDate Period start date.
+     * @param endDate   Period end date.
+     * @return A predicate that can be used to filter {@link ExistingRecord} within a period of time.
+     */
+    protected Predicate<ExistingRecord> periodIntervalFilter(LocalDate startDate, LocalDate endDate) {
+        return existingRecord ->
+            existingRecord.getRecordDate().compareTo(startDate) >= 0 &&
+            existingRecord.getRecordDate().compareTo(endDate) <= 0;
+    }
 }

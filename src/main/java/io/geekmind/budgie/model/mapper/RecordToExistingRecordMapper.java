@@ -8,9 +8,13 @@ import io.geekmind.budgie.model.entity.Category;
 import io.geekmind.budgie.model.entity.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+/**
+ * Maps the attributes of {@link Record} to the attributes of a new {@link ExistingRecord} instance.
+ *
+ * @author Andre Silva
+ */
 @Component(RecordToExistingRecordMapper.QUALIFIER)
 public class RecordToExistingRecordMapper implements Mapper<Record, ExistingRecord> {
 

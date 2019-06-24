@@ -15,4 +15,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     @Query("FROM Account account WHERE account.showBalanceOnMainAccount = true")
     List<Account> findDependantAccounts();
 
+    Optional<Account> findByName(String name);
+
 }

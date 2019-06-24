@@ -4,6 +4,11 @@ import io.geekmind.budgie.model.dto.ExistingAccount;
 import io.geekmind.budgie.model.entity.Account;
 import org.springframework.stereotype.Component;
 
+/**
+ * Maps the attributes from {@link Account} entity into a new {@link ExistingAccount} instance.
+ *
+ * @author Andre Silva
+ */
 @Component(AccountToExistingAccountMapper.QUALIFIER)
 public class AccountToExistingAccountMapper implements Mapper<Account, ExistingAccount> {
 

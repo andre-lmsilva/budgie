@@ -7,6 +7,11 @@ import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Map the calculated values from a {@link Balance} instance into a new {@link DependantAccountRecord} instance.
+ *
+ * @author Andre Silva
+ */
 @Component(BalanceToDependantAccountRecordMapper.QUALIFIER)
 public class BalanceToDependantAccountRecordMapper implements Mapper<Balance, DependantAccountRecord> {
 
@@ -26,6 +31,7 @@ public class BalanceToDependantAccountRecordMapper implements Mapper<Balance, De
         record.setRecordDate(source.getBalanceDates().getPeriodBillingDate());
         record.setRecordValue(source.getSummary().getFinalBalance());
         record.setCategory(this.accountBalanceCategory);
+        record.setAccount(source.getAccount());
 
         String formattedStartDate = source.getBalanceDates().getPeriodStartDate()
             .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));

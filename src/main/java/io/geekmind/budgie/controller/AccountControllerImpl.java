@@ -1,6 +1,7 @@
 package io.geekmind.budgie.controller;
 
 import io.geekmind.budgie.model.dto.NewAccount;
+import io.geekmind.budgie.model.dto.NewCategory;
 import io.geekmind.budgie.repository.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -18,7 +18,7 @@ public class Category {
     private Integer id;
 
     @NotNull
-    @Size(min = 5)
+    @Size(min = 5, max = 140)
     private String name;
 
     private String description;

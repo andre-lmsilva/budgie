@@ -6,6 +6,11 @@ import io.geekmind.budgie.model.entity.Category;
 import io.geekmind.budgie.model.entity.SingleRecord;
 import org.springframework.stereotype.Component;
 
+/**
+ * Maps attributes from {@link NewSingleRecord} to attributes of a new {@link SingleRecord} instance.
+ *
+ * @author Andre Silva
+ */
 @Component(NewSingleRecordToSingleRecordMapper.QUALIFIER)
 public class NewSingleRecordToSingleRecordMapper implements Mapper<NewSingleRecord, SingleRecord> {
 

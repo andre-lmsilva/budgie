@@ -6,6 +6,7 @@ import io.geekmind.budgie.model.entity.Account;
 import io.geekmind.budgie.model.mapper.AccountToExistingAccountMapper;
 import io.geekmind.budgie.model.mapper.Mapper;
 import io.geekmind.budgie.model.mapper.NewAccountToAccountMapper;
+import io.geekmind.budgie.validation.UniquenessValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Sort;
@@ -16,7 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class AccountService {
+public class AccountService implements UniquenessValidationService {
 
     private final AccountRepository accountRepository;
     private final Mapper<NewAccount, Account> newAccountMapper;
@@ -73,5 +74,16 @@ public class AccountService {
             .stream()
             .map(this.existingAccountMapper::mapTo)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public Boolean canValidate(Class<?> type) {
+        return type.equals(NewAccount.class);
+    }
+
+    @Override
+    public Boolean isValid(Object entity) {
+        NewAccount account = (NewAccount) entity;
+        return !this.accountRepository.findByName(account.getName()).isPresent();
     }
 }
