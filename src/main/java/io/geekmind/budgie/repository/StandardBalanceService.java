@@ -280,7 +280,9 @@ public class StandardBalanceService {
             dependantAccountBalances.add(dependantAccountBalanceRecord);
         }
 
-        return dependantAccountBalances;
+        return dependantAccountBalances.stream()
+            .filter(record -> record.getRecordValue().compareTo(BigDecimal.ZERO) != 0)
+            .collect(Collectors.toList());
     }
 
     /**

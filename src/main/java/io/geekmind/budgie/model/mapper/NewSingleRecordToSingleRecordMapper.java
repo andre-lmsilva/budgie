@@ -34,8 +34,4 @@ public class NewSingleRecordToSingleRecordMapper implements Mapper<NewSingleReco
         return singleRecord;
     }
 
-    @Override
-    public NewSingleRecord mapFrom(SingleRecord target) {
-        throw new UnsupportedOperationException("There is no mapping in that direction.");
-    }
 }

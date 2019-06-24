@@ -23,8 +23,4 @@ public class CategoryToExistingCategoryMapper implements Mapper<Category, Existi
         return existingCategory;
     }
 
-    @Override
-    public Category mapFrom(ExistingCategory target) {
-        throw new UnsupportedOperationException("There is no mapping operation in that direction.");
-    }
 }

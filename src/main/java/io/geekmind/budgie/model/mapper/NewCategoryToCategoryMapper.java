@@ -22,8 +22,4 @@ public class NewCategoryToCategoryMapper implements Mapper<NewCategory, Category
         return category;
     }
 
-    @Override
-    public NewCategory mapFrom(Category target) {
-        throw new UnsupportedOperationException("There is no mapping in this direction.");
-    }
 }

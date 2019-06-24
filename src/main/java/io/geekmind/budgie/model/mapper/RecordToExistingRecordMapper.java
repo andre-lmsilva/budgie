@@ -47,9 +47,4 @@ public class RecordToExistingRecordMapper implements Mapper<Record, ExistingReco
 
         return record;
     }
-
-    @Override
-    public Record mapFrom(ExistingRecord target) {
-        throw new UnsupportedOperationException("There is no mapping in that direction.");
-    }
 }

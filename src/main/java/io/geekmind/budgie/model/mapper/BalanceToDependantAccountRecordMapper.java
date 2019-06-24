@@ -44,8 +44,4 @@ public class BalanceToDependantAccountRecordMapper implements Mapper<Balance, De
         return record;
     }
 
-    @Override
-    public Balance mapFrom(DependantAccountRecord target) {
-        throw new UnsupportedOperationException("There is not mapping in that direction.");
-    }
 }

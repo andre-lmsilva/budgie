@@ -27,8 +27,4 @@ public class AccountToExistingAccountMapper implements Mapper<Account, ExistingA
         return existingAccount;
     }
 
-    @Override
-    public Account mapFrom(ExistingAccount target) {
-        throw new UnsupportedOperationException("There is not mapping operation in that direction.");
-    }
 }
