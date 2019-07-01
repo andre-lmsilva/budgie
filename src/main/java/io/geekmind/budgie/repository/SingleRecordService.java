@@ -2,38 +2,29 @@ package io.geekmind.budgie.repository;
 
 import io.geekmind.budgie.model.dto.ExistingRecord;
 import io.geekmind.budgie.model.dto.NewSingleRecord;
-import io.geekmind.budgie.model.entity.Record;
 import io.geekmind.budgie.model.entity.SingleRecord;
-import io.geekmind.budgie.model.mapper.Mapper;
-import io.geekmind.budgie.model.mapper.NewSingleRecordToSingleRecordMapper;
-import io.geekmind.budgie.model.mapper.RecordToExistingRecordMapper;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SingleRecordService {
 
-    private final Mapper<NewSingleRecord, SingleRecord> newSingleRecordMapper;
-    private final Mapper<Record, ExistingRecord> recordMapper;
     private final SingleRecordRepository singleRecordRepository;
+    private final MapperFacade mapper;
 
     @Autowired
-    public SingleRecordService(@Qualifier(NewSingleRecordToSingleRecordMapper.QUALIFIER)Mapper<NewSingleRecord, SingleRecord> newSingleRecordMapper,
-                               @Qualifier(RecordToExistingRecordMapper.QUALIFIER)Mapper<Record, ExistingRecord> recordMapper,
-                               SingleRecordRepository singleRecordRepository) {
-        this.newSingleRecordMapper = newSingleRecordMapper;
-        this.recordMapper = recordMapper;
+    public SingleRecordService(SingleRecordRepository singleRecordRepository,
+                               MapperFacade mapper) {
         this.singleRecordRepository = singleRecordRepository;
+        this.mapper = mapper;
     }
 
     public ExistingRecord create(NewSingleRecord newSingleRecord) {
-        SingleRecord record = this.newSingleRecordMapper.mapTo(newSingleRecord);
-        return this.recordMapper.mapTo(
-            this.singleRecordRepository.save(record)
+        SingleRecord record = this.mapper.map(newSingleRecord, SingleRecord.class);
+        return this.mapper.map(
+            this.singleRecordRepository.save(record),
+            ExistingRecord.class
         );
     }
-
-
-
 }

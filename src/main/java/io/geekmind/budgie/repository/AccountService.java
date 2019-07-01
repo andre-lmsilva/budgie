@@ -3,12 +3,9 @@ package io.geekmind.budgie.repository;
 import io.geekmind.budgie.model.dto.ExistingAccount;
 import io.geekmind.budgie.model.dto.NewAccount;
 import io.geekmind.budgie.model.entity.Account;
-import io.geekmind.budgie.model.mapper.AccountToExistingAccountMapper;
-import io.geekmind.budgie.model.mapper.Mapper;
-import io.geekmind.budgie.model.mapper.NewAccountToAccountMapper;
 import io.geekmind.budgie.validation.UniquenessValidationService;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -20,23 +17,20 @@ import java.util.stream.Collectors;
 public class AccountService implements UniquenessValidationService {
 
     private final AccountRepository accountRepository;
-    private final Mapper<NewAccount, Account> newAccountMapper;
-    private final Mapper<Account, ExistingAccount> existingAccountMapper;
+    private final MapperFacade mapper;
 
     @Autowired
     public AccountService(AccountRepository accountRepository,
-                          @Qualifier(NewAccountToAccountMapper.QUALIFIER)Mapper<NewAccount, Account> newAccountMapper,
-                          @Qualifier(AccountToExistingAccountMapper.QUALIFIER)Mapper<Account, ExistingAccount> existingAccountMapper) {
+                          MapperFacade mapper) {
         this.accountRepository = accountRepository;
-        this.newAccountMapper = newAccountMapper;
-        this.existingAccountMapper = existingAccountMapper;
+        this.mapper = mapper;
     }
 
     public ExistingAccount create(NewAccount account) {
-        Account newAccount = this.newAccountMapper.mapTo(account);
+        Account newAccount = this.mapper.map(account, Account.class);
         newAccount.setMainAccount(Boolean.FALSE);
         Account persistedAccount = this.accountRepository.save(newAccount);
-        return this.existingAccountMapper.mapTo(persistedAccount);
+        return this.mapper.map(persistedAccount, ExistingAccount.class);
     }
 
     public List<ExistingAccount> loadAll() {
@@ -46,7 +40,7 @@ public class AccountService implements UniquenessValidationService {
                     Sort.Order.asc("name")
                 )
             ).stream()
-            .map(this.existingAccountMapper::mapTo)
+            .map(account -> this.mapper.map(account, ExistingAccount.class))
             .collect(Collectors.toList());
     }
 
@@ -54,25 +48,25 @@ public class AccountService implements UniquenessValidationService {
         return this.accountRepository.findById(id)
             .map(account -> {
                 this.accountRepository.delete(account);
-                return this.existingAccountMapper.mapTo(account);
+                return this.mapper.map(account, ExistingAccount.class);
             });
     }
 
     public Optional<ExistingAccount> getMainAccount() {
         return this.accountRepository
             .findMainAccount()
-            .map(this.existingAccountMapper::mapTo);
+            .map(account -> this.mapper.map(account, ExistingAccount.class));
     }
 
     public Optional<ExistingAccount> loadById(Integer accountId) {
         return this.accountRepository.findById(accountId)
-            .map(this.existingAccountMapper::mapTo);
+            .map(account -> this.mapper.map(account, ExistingAccount.class));
     }
 
     public List<ExistingAccount> loadDependantAccounts() {
         return this.accountRepository.findDependantAccounts()
             .stream()
-            .map(this.existingAccountMapper::mapTo)
+            .map(account -> this.mapper.map(account, ExistingAccount.class))
             .collect(Collectors.toList());
     }
 
@@ -86,4 +80,12 @@ public class AccountService implements UniquenessValidationService {
         NewAccount account = (NewAccount) entity;
         return !this.accountRepository.findByName(account.getName()).isPresent();
     }
+
+    public List<ExistingAccount> loadNonDependantAccounts() {
+        return this.accountRepository.findNonDependantAccounts()
+            .stream()
+            .map(account -> this.mapper.map(account, ExistingAccount.class))
+            .collect(Collectors.toList());
+    }
+
 }

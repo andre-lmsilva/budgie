@@ -1,10 +1,13 @@
 package io.geekmind.budgie.repository;
 
-import io.geekmind.budgie.model.dto.*;
-import io.geekmind.budgie.model.mapper.BalanceToDependantAccountRecordMapper;
-import io.geekmind.budgie.model.mapper.Mapper;
+import io.geekmind.budgie.model.dto.Balance;
+import io.geekmind.budgie.model.dto.BalanceDates;
+import io.geekmind.budgie.model.dto.BalanceSummary;
+import io.geekmind.budgie.model.dto.DependantAccountRecord;
+import io.geekmind.budgie.model.dto.ExistingAccount;
+import io.geekmind.budgie.model.dto.ExistingRecord;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -27,7 +30,6 @@ public class StandardBalanceService {
 
     private final AccountService accountService;
     private final RecordService recordService;
-    private final Mapper<Balance, DependantAccountRecord> dependantAccountRecordMapper;
 
     /**
      * Provides a predicate that will filter a list of {@link ExistingRecord} returning only the records with a positive
@@ -51,13 +53,15 @@ public class StandardBalanceService {
      */
     public static final Predicate<ExistingRecord> ANY_RECORDS_FILTER = (existingRecord -> null != existingRecord.getRecordValue());
 
+    private final MapperFacade mapper;
+
     @Autowired
     public StandardBalanceService(AccountService accountService,
                                   RecordService recordService,
-                                  @Qualifier(BalanceToDependantAccountRecordMapper.QUALIFIER)Mapper<Balance, DependantAccountRecord> dependantAccountRecordMapper) {
+                                  MapperFacade mapper) {
         this.accountService = accountService;
         this.recordService = recordService;
-        this.dependantAccountRecordMapper = dependantAccountRecordMapper;
+        this.mapper = mapper;
     }
 
     /**
@@ -276,7 +280,7 @@ public class StandardBalanceService {
 
         for(ExistingAccount dependantAccount: dependantAccounts) {
             Balance dependantAccountBalance = this.generateBalance(dependantAccount.getId(), referenceDate);
-            ExistingRecord dependantAccountBalanceRecord = this.dependantAccountRecordMapper.mapTo(dependantAccountBalance);
+            ExistingRecord dependantAccountBalanceRecord = this.mapper.map(dependantAccountBalance, DependantAccountRecord.class);
             dependantAccountBalances.add(dependantAccountBalanceRecord);
         }
 
