@@ -13,7 +13,7 @@
                             <strong th:text="${#temporals.format(balance.balanceDates.periodEndDate,'dd/MM/yyyy')}"></strong><br/>
                             <span th:if="${balance.account.showBalanceOnMainAccount}">
                                 Billing date <strong th:text="${#temporals.format(balance.balanceDates.periodEndDate,'dd/MM/yyyy')}"></strong><br/>
-                                <span class="badge badge-info">Show balance as a main account record.</span><br/>
+                                <span class="badge badge-warning">Show balance as a main account record.</span><br/>
                             </span>
                             <a th:href="@{'/records'(referenceDate=${balance.balanceDates.previousPeriodStartDate},accountId=${balance.account.id})}">Previous Period</a>
                             &nbsp;|&nbsp;
@@ -22,7 +22,14 @@
                     </p>
                 </div>
                 <div class="col-md-6 col-sm-12 text-right align-self-end">
-                    <a th:href="@{/single_records/new}" class="btn btn-primary">New Single Record</a>
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="btnNewRecord" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">New Record</button>
+                        <div class="dropdown-menu" aria-labelledby="btnNewRecord">
+                            <a th:href="@{/single_records/new}" class="dropdown-item">New Single Record</a>
+                            <a th:href="@{/instalments/new}" class="dropdown-item">New Instalments</a>
+                            <a th:href="@{/transfers/new}" class="dropdown-item">New Transfer</a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -112,12 +119,15 @@
                                         th:text="${#numbers.formatDecimal(record.recordValue, 0, 'POINT', 2, 'COMMA')}"
                                         th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></td>
                                     <td class="text-center">
-                                        <a  th:href="@{'/records/delete/{id}'(id=${record.id},referenceDate=${balance.balanceDates.referenceDate},accountId=${balance.account.id})}"
-                                            title="Remove the record."
-                                            onclick="return confirm('Do you really want to remove the record?');"
-                                            th:if="${record.id >= 0}">
-                                            <span class="fa fa-trash-alt"></span>
-                                        </a>
+                                        <div th:if="${record.recordType == 'SingleRecord'}">
+                                             <div th:replace="fragments/record_delete_button :: SingleRecord(${record.id}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
+                                        </div>
+                                        <div th:if="${record.recordType == 'TransferRecord'}">
+                                             <div th:replace="fragments/record_delete_button :: TransferRecord(${record.containerId}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
+                                        </div>
+                                        <div th:if="${record.recordType == 'InstalmentRecord'}">
+                                            <div th:replace="fragments/record_delete_button :: InstalmentRecord(${record.id}, ${record.containerId}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>

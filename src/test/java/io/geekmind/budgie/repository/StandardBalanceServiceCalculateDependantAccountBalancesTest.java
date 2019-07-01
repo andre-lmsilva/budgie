@@ -5,7 +5,7 @@ import io.geekmind.budgie.fixture.BalanceFixture;
 import io.geekmind.budgie.fixture.ExistingAccountFixture;
 import io.geekmind.budgie.fixture.ExistingRecordFixture;
 import io.geekmind.budgie.model.dto.*;
-import io.geekmind.budgie.model.mapper.Mapper;
+import ma.glasnost.orika.MapperFacade;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,11 +27,11 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class StandardBalanceServiceCalculateDependantAccountBalancesTest {
 
-    @Mock(name = "accountService")
+    @Mock
     private AccountService accountService;
 
-    @Mock(name = "dependantAccountRecordMapper")
-    private Mapper<Balance, DependantAccountRecord> dependantAccountRecordMapper;
+    @Mock
+    private MapperFacade mapper;
 
     @Spy
     @InjectMocks
@@ -59,7 +59,7 @@ public class StandardBalanceServiceCalculateDependantAccountBalancesTest {
 
         this.fakeDependantAccountRecord = ExistingRecordFixture.getWithValue(BigDecimal.TEN);
         doReturn(fakeDependantAccountRecord)
-            .when(this.dependantAccountRecordMapper).mapTo(eq(this.fakeDependantAccountBalance));
+            .when(this.mapper).map(eq(this.fakeDependantAccountBalance), eq(DependantAccountRecord.class));
 
         this.result = this.balanceService.calculateDependantAccountBalances(this.fakeBalanceDates);
     }
@@ -77,8 +77,8 @@ public class StandardBalanceServiceCalculateDependantAccountBalancesTest {
 
     @Test
     public void mapTheBalanceToAnExistingRecordInstance() {
-        verify(this.dependantAccountRecordMapper)
-            .mapTo(eq(this.fakeDependantAccountBalance));
+        verify(this.mapper)
+            .map(eq(this.fakeDependantAccountBalance), eq(DependantAccountRecord.class));
     }
 
     @Test

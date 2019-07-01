@@ -3,12 +3,9 @@ package io.geekmind.budgie.repository;
 import io.geekmind.budgie.model.dto.ExistingCategory;
 import io.geekmind.budgie.model.dto.NewCategory;
 import io.geekmind.budgie.model.entity.Category;
-import io.geekmind.budgie.model.mapper.CategoryToExistingCategoryMapper;
-import io.geekmind.budgie.model.mapper.Mapper;
-import io.geekmind.budgie.model.mapper.NewCategoryToCategoryMapper;
 import io.geekmind.budgie.validation.UniquenessValidationService;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -19,23 +16,20 @@ import java.util.stream.Collectors;
 @Service
 public class CategoryService implements UniquenessValidationService {
 
-    private final Mapper<Category, ExistingCategory> categoryToExistingCategoryMapper;
     private final CategoryRepository categoryRepository;
-    private final Mapper<NewCategory, Category> newCategoryMapper;
+    private final MapperFacade mapper;
 
     @Autowired
-    public CategoryService(@Qualifier(CategoryToExistingCategoryMapper.QUALIFIER)Mapper<Category, ExistingCategory> categoryToExistingCategoryMapper,
-                           @Qualifier(NewCategoryToCategoryMapper.QUALIFIER)Mapper<NewCategory, Category> newCategoryMapper,
-                           CategoryRepository categoryRepository) {
-        this.categoryToExistingCategoryMapper = categoryToExistingCategoryMapper;
-        this.newCategoryMapper = newCategoryMapper;
+    public CategoryService(CategoryRepository categoryRepository,
+                           MapperFacade mapper) {
         this.categoryRepository = categoryRepository;
+        this.mapper = mapper;
     }
 
     public List<ExistingCategory> loadAll() {
         return this.categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "name"))
             .stream()
-            .map(this.categoryToExistingCategoryMapper::mapTo)
+            .map(category -> this.mapper.map(category, ExistingCategory.class))
             .collect(Collectors.toList());
     }
 
@@ -43,14 +37,15 @@ public class CategoryService implements UniquenessValidationService {
         return this.categoryRepository.findById(id)
             .map(category -> {
                 this.categoryRepository.delete(category);
-                return this.categoryToExistingCategoryMapper.mapTo(category);
+                return this.mapper.map(category, ExistingCategory.class);
             });
     }
 
     public ExistingCategory create(NewCategory newCategory) {
-        Category category = this.newCategoryMapper.mapTo(newCategory);
-        return this.categoryToExistingCategoryMapper.mapTo(
-            this.categoryRepository.save(category)
+        Category category = this.mapper.map(newCategory, Category.class);
+        return this.mapper.map(
+            this.categoryRepository.save(category),
+            ExistingCategory.class
         );
     }
 

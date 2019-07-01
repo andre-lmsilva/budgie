@@ -1,0 +1,39 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="SingleRecord(id, referenceDate, accountId)">
+    <a  th:href="@{'/records/delete/{id}'(id=${id},referenceDate=${referenceDate},accountId=${accountId})}"
+        title="Remove the record."
+        onclick="return confirm('Do you really want to remove the record?');"
+        class="btn btn-danger btn-sm">
+        <span class="fa fa-trash-alt"></span>
+    </a>
+</div>
+
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="TransferRecord(containerId, referenceDate, accountId)">
+    <a  th:href="@{'/transfers/delete/{id}'(id=${containerId},referenceDate=${referenceDate},accountId=${accountId})}"
+        title="Remove the transfer between accounts."
+        onclick="return confirm('Do you really want to remove the transfer between accounts?');"
+        class="btn btn-danger btn-sm">
+        <span class="fa fa-trash-alt"></span>
+    </a>
+</div>
+
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="InstalmentRecord(recordId, containerId, referenceDate, accountId)">
+    <div class="dropdown">
+        <button class="btn btn-danger btn-sm dropdown-toggle" type="button" th:id="'btnDelete'+${recordId}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="fa fa-trash-alt"></spaddn>
+        </button>
+        <div class="dropdown-menu" th:aria-labelledby="'btnDelete'+${recordId}">
+            <a  th:href="@{'/records/delete/{id}'(id=${recordId},referenceDate=${referenceDate},accountId=${accountId})}"
+                title="Remove only this installment record."
+                onclick="return confirm('Do you really want to remove only this instalment record?\nThe other instalments will remain untouched.');"
+                class="dropdown-item">
+                Remove just this installment record
+            </a>
+            <a  th:href="@{'/instalments/delete/{id}'(id=${containerId},referenceDate=${referenceDate},accountId=${accountId})}"
+                title="Remove all instalment records."
+                onclick="return confirm('Do you really want to remove all instalment record?');"
+                class="dropdown-item">
+                Remove all instalment records
+            </a>
+        </div>
+    </div>
+</div>

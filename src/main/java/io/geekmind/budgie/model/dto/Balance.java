@@ -22,6 +22,6 @@ public class Balance {
 
     private List<ExistingRecord> records;
 
-    private BalanceSummary summary;
+    private BalanceSummary summary = new BalanceSummary();
 
 }

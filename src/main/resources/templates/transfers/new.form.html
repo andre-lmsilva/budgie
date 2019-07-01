@@ -1,49 +1,55 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="fragments/header :: header"></head>
-    <body style="padding-top: 120px;">
+    <body style="padding-top:120px;">
         <div th:replace="fragments/navbar :: navbar"></div>
-
         <div class="container">
-              <div class="row mb-3">
+            <div class="row mb-3">
                 <div class="col">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
-                        <li class="breadcrumb-item active">New Single Record</li>
+                        <li class="breadcrumb-item active">New Transfer</li>
                     </ol>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col">
-                    <h1>New Single Record</h1>
+                    <h1>New Transfer</h1>
                 </div>
             </div>
 
-            <div class="row" th:if="${null != message}">
+            <div class="row mb-3 mt-3" th:if="${null != message}">
                 <div class="col">
-                    <div class="alert alert-success" role="alert">
-                        <span th:text="${message}"></span>
-                        <button type="button" class="close" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+                    <div class="alert alert-success" th:text="${message}"></div>
+                </div>
+            </div>
+
+            <div class="row mb-3 mt-3" th:if="${#fields.hasErrors('newTransfer')}">
+                <div class="col">
+                    <div class="alert alert-danger" th:errors="*{newTransfer}"></div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col">
-                    <form action="#" th:object="${newSingleRecord}" th:action="@{/single_records/create}" method="post">
+                    <form action="#" th:object="${newTransfer}" th:action="@{/transfers/create}" method="post">
                         <fieldset>
-                            <legend>Record Details</legend>
-                            <div class="form-group">
-                                <label for="recordDate">Date:</label>
-                                <input type="date" class="form-control" th:field="*{recordDate}" th:appendclass="${#fields.hasErrors('recordDate')} ? is-invalid : ''" required/>
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('recordDate')}" th:errors="*{recordDate}"/>
+                             <legend>Transfer Details</legend>
+                             <div class="form-group">
+                                <label for="transferDate">Transfer Date:</label>
+                                <input type="date" class="form-control" th:field="*{transferDate}" th:appendclass="${#fields.hasErrors('transferDate')} ? is-invalid : ''" required/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('transferDate')}" th:errors="*{transferDate}"/>
                             </div>
                             <div class="form-group">
-                                <label for="accountId">Account:</label>
-                                <select th:field="*{accountId}" class="form-control" required>
+                                <label for="sourceAccountId">Source Account:</label>
+                                <select th:field="*{sourceAccountId}" class="form-control" required>
+                                    <option th:each="account: ${availableAccounts}" th:value="${account.id}" th:text="${account.name}"></option>
+                                </select>
+                            </div>
+                             <div class="form-group">
+                                <label for="destinationAccountId">Destination Account:</label>
+                                <select th:field="*{destinationAccountId}" class="form-control" required>
                                     <option th:each="account: ${availableAccounts}" th:value="${account.id}" th:text="${account.name}"></option>
                                 </select>
                             </div>
@@ -59,9 +65,9 @@
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
                             </div>
                             <div class="form-group">
-                                <label for="recordValue">Value (€):</label>
-                                <input type="text" class="form-control" th:field="*{recordValue}" placeholder="0.000,00" th:appendclass="${#fields.hasErrors('recordValue')} ? is-invalid : ''" required/>
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('recordValue')}" th:errors="*{recordValue}"></div>
+                                <label for="transferValue">Transfer Value (€):</label>
+                                <input type="text" class="form-control" th:field="*{transferValue}" placeholder="0.000,00" th:appendclass="${#fields.hasErrors('transferValue')} ? is-invalid : ''" required/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('transferValue')}" th:errors="*{transferValue}"></div>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Create</button>&nbsp;

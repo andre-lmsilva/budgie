@@ -6,7 +6,7 @@
 
     <groupId>io.geekmind</groupId>
     <artifactId>budgie</artifactId>
-    <version>0.3.0</version>
+    <version>0.4.0</version>
     <name>Budgie</name>
     <description>Simple and minimalist personal budget manager.</description>
 
@@ -83,6 +83,12 @@
             <artifactId>lombok</artifactId>
             <version>1.18.6</version>
         </dependency>
+        <dependency>
+            <groupId>net.rakugakibox.spring.boot</groupId>
+            <artifactId>orika-spring-boot-starter</artifactId>
+            <version>1.8.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

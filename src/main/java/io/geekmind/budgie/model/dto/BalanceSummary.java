@@ -11,12 +11,12 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class BalanceSummary {
 
-    private BigDecimal finalBalance;
+    private BigDecimal finalBalance = BigDecimal.ZERO;
 
-    private BigDecimal totalIncomes;
+    private BigDecimal totalIncomes = BigDecimal.ZERO;
 
-    private BigDecimal totalExpenses;
+    private BigDecimal totalExpenses = BigDecimal.ZERO;
 
-    private BigDecimal balanceUpToDate;
+    private BigDecimal balanceUpToDate = BigDecimal.ZERO;
 
 }
