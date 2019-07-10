@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: header"></head>
+    <body style="padding-top: 120px;">
+        <div th:replace="fragments/navbar :: navbar"></div>
+
+        <div class="container">
+            <div class="row mb-3">
+                <div class="col">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
+                        <li class="breadcrumb-item"><a th:href="@{'/importFiles'}">Imported Files</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{'/importFiles/new'}">Import New File</a></li>
+                        <li class="breadcrumb-item active" th:text="${importedFile.fileName}"></li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h1 th:text="${importedFile.fileName}"></h1>
+                    <p>
+                        <small>
+                            Imported at&nbsp;<strong th:text="${#temporals.format(importedFile.importedAt, 'dd/MM/yyyy hh:mm:ss')}"></strong>
+                        </small><br/>
+                        <small>
+                            Records from&nbsp;<strong th:text="${#temporals.format(importedFile.startDate,'dd/MM/yyyy')}"></strong>&nbsp;to&nbsp;
+                            <strong th:text="${#temporals.format(importedFile.endDate,'dd/MM/yyyy')}"></strong>
+                        </small><br/>
+                        <small>
+                            MD5 Hash:&nbsp;<strong th:text="${importedFile.md5FileHash}"></strong>
+                        </small>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <form action="#" th:action="@{/importFiles/importRecords}" th:object="${importedFile}" method="post" id="importedRecords">
+                        <input type="hidden" th:field="*{id}"/>
+                        <input type="hidden" th:field="*{importedAt}"/>
+                        <input type="hidden" th:field="*{fileName}"/>
+                        <input type="hidden" th:field="*{md5FileHash}"/>
+                        <input type="hidden" th:field="*{startDate}"/>
+                        <input type="hidden" th:field="*{endDate}"/>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="text-center">Date</th>
+                                        <th>Category</th>
+                                        <th>Description</th>
+                                        <th class="text-center">Value</th>
+                                        <th class="text-center">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="record, itemStat: ${importedFile.newImportedRecords}">
+                                        <td class="text-center align-middle">
+                                            <span th:text="${#temporals.format(record.recordDate,'dd/MM/yyyy')}"></span>
+                                            <input type="hidden" th:field="*{newImportedRecords[__${itemStat.index}__].importedFileId}" th:name="newImportedRecords[].importedFileId"/>
+                                            <input type="hidden" th:field="*{newImportedRecords[__${itemStat.index}__].md5RecordHash}" th:name="newImportedRecords[].md5RecordHash"/>
+                                            <input type="hidden" th:field="*{newImportedRecords[__${itemStat.index}__].recordDate}" th:name="newImportedRecords[].recordDate"/>
+                                        </td>
+                                        <td>
+                                            <select th:field="*{newImportedRecords[__${itemStat.index}__].categoryId}" th:name="newImportedRecords[].categoryId" class="form-control form-control-sm">
+                                                <option th:each="category: ${availableCategories}" th:value="${category.id}" th:text="${category.name}"></option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" th:field="*{newImportedRecords[__${itemStat.index}__].description}" th:name="newImportedRecords[].description" class="form-control form-control-sm"/>
+                                        </td>
+                                        <td class="text-right align-middle">
+                                            <span   th:text="${#numbers.formatDecimal(record.recordValue, 0, 'POINT', 2, 'COMMA')}"
+                                                    th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></span>
+                                            <input type="hidden" th:field="*{newImportedRecords[__${itemStat.index}__].recordValue}" th:name="newImportedRecords[].recordValue"/>
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            <a href="javascript:void(0)"
+                                               title="Remove this entry."
+                                               class="btn btn-danger btn-sm"
+                                               onclick="removeEntry(event);">
+                                                <span class="fa fa-trash-alt"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group text-right">
+                            <button type="submit" class="btn btn-primary">Import</button>&nbsp;
+                            <a th:href="@{'/records'}" title="Go back to balance page without import any record." class="btn btn-default">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer :: footer"></div>
+        <script type="text/javascript">
+            $("#importedRecords").submit(function() {
+                var rows = $("table > tbody > tr");
+                for(var index = 0; index < rows.length; index++) {
+                    var row = rows[index];
+                    $(row).find("input,select").each(function(inputOffset, value) {
+                        var nameValue = value.name.replace(/\[[0-9]*\]/,"["+index+"]");
+                        value.name = nameValue;
+                    });
+                }
+                return true;
+            });
+
+            function removeEntry(event) {
+                var answer = confirm('Do you really want to remove this entry?\nThis action can\'t be undone.');
+                if (answer) {
+                    var row = $(event.target)[0].closest('tr');
+                    row.remove();
+                }
+            }
+        </script>
+    </body>
+</html>

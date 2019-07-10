@@ -24,4 +24,6 @@ public class Balance {
 
     private BalanceSummary summary = new BalanceSummary();
 
+    private List<CategoryBalanceSummary> categoryBalanceSummaries;
+
 }

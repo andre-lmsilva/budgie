@@ -1,21 +1,14 @@
 package io.geekmind.budgie.repository;
 
-import io.geekmind.budgie.model.dto.Balance;
-import io.geekmind.budgie.model.dto.BalanceDates;
-import io.geekmind.budgie.model.dto.BalanceSummary;
-import io.geekmind.budgie.model.dto.DependantAccountRecord;
-import io.geekmind.budgie.model.dto.ExistingAccount;
-import io.geekmind.budgie.model.dto.ExistingRecord;
+import io.geekmind.budgie.model.dto.*;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -85,8 +78,12 @@ public class StandardBalanceService {
                 balanceDates.getPeriodStartDate(),
                 balanceDates.getPeriodEndDate()
             );
+            List<CategoryBalanceSummary> categoryBalanceSummaries = this.calculateCategoryBalanceSummary(
+                records,
+                balanceSummary
+            );
 
-            balance = new Balance(existingAccount, balanceDates, records, balanceSummary);
+            balance = new Balance(existingAccount, balanceDates, records, balanceSummary, categoryBalanceSummaries);
         }
         return balance;
     }
@@ -300,5 +297,38 @@ public class StandardBalanceService {
         return existingRecord ->
             existingRecord.getRecordDate().compareTo(startDate) >= 0 &&
             existingRecord.getRecordDate().compareTo(endDate) <= 0;
+    }
+
+    /**
+     * Summarizes the balance per category, considering only debit records.
+     * @param records           Records within the period.
+     * @param balanceSummary    Balance calculated summary.
+     * @return List of {@link CategoryBalanceSummary} containing the summarized balance per category and sorted by
+     *         {@link CategoryBalanceSummary#getExpensesConsumptionPercentage} value.
+     */
+    protected List<CategoryBalanceSummary> calculateCategoryBalanceSummary(final List<ExistingRecord> records,
+                                                                           final BalanceSummary balanceSummary) {
+        Map<Integer, CategoryBalanceSummary> categorySummaries = new HashMap<>();
+        for(ExistingRecord record: records) {
+            if (record.getRecordValue().compareTo(BigDecimal.ZERO) < 0) {
+                CategoryBalanceSummary categoryBalanceSummary = categorySummaries.computeIfAbsent(
+                        record.getCategory().getId(),
+                        categoryId -> new CategoryBalanceSummary(record.getCategory(), BigDecimal.ZERO, BigDecimal.ZERO)
+                );
+
+                BigDecimal newBalance = categoryBalanceSummary.getBalance().add(record.getRecordValue());
+                BigDecimal newExpensesConsumptionPercentage = newBalance.divide(
+                        balanceSummary.getTotalExpenses(),
+                        RoundingMode.HALF_UP
+                ).multiply(BigDecimal.valueOf(100D));
+
+                categoryBalanceSummary.setBalance(newBalance);
+                categoryBalanceSummary.setExpensesConsumptionPercentage(newExpensesConsumptionPercentage);
+            }
+        }
+
+        return categorySummaries.values().stream()
+            .sorted((entryA, entryB) -> entryB.getExpensesConsumptionPercentage().compareTo(entryA.getExpensesConsumptionPercentage()))
+            .collect(Collectors.toList());
     }
 }

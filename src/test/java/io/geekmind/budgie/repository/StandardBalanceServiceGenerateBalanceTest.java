@@ -39,6 +39,7 @@ public class StandardBalanceServiceGenerateBalanceTest {
         verify(this.balanceService, times(0)).calculateBalanceDates(any(), any());
         verify(this.balanceService, times(0)).loadAccountRecords(any(), any());
         verify(this.balanceService, times(0)).calculateBalanceSummary(any(), any(), any());
+        verify(this.balanceService, times(0)).calculateCategoryBalanceSummary(any(), any());
     }
 
     @Test
@@ -48,6 +49,7 @@ public class StandardBalanceServiceGenerateBalanceTest {
         List<ExistingRecord> fakeRecords = Collections.singletonList(ExistingRecordFixture.getWithValue(BigDecimal.TEN));
         BalanceSummary fakeSummary = BalanceSummaryFixture.get();
         LocalDate fakeReferenceDate = LocalDate.now();
+        List<CategoryBalanceSummary> fakeCategoryBalanceSummary = Collections.emptyList();
 
         doReturn(Optional.of(fakeAccount))
             .when(this.balanceService).retrieveAccount(eq(-1));
@@ -62,6 +64,8 @@ public class StandardBalanceServiceGenerateBalanceTest {
                 eq(fakeBalanceDates.getPeriodEndDate()
             )
         );
+        doReturn(fakeCategoryBalanceSummary)
+            .when(this.balanceService).calculateCategoryBalanceSummary(eq(fakeRecords), eq(fakeSummary));
 
         Balance result = this.balanceService.generateBalance(-1, LocalDate.now());
 
@@ -69,6 +73,7 @@ public class StandardBalanceServiceGenerateBalanceTest {
             .hasFieldOrPropertyWithValue("account", fakeAccount)
             .hasFieldOrPropertyWithValue("balanceDates", fakeBalanceDates)
             .hasFieldOrPropertyWithValue("records", fakeRecords)
-            .hasFieldOrPropertyWithValue("summary", fakeSummary);
+            .hasFieldOrPropertyWithValue("summary", fakeSummary)
+            .hasFieldOrPropertyWithValue("categoryBalanceSummaries", fakeCategoryBalanceSummary);
     }
 }

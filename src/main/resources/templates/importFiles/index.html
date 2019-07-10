@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+    <body style="padding-top: 120px;">
+        <div th:replace="fragments/navbar :: navbar"></div>
+        <div class="container">
+             <div class="row mb-3">
+                <div class="col">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
+                        <li class="breadcrumb-item active">Imported Files</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-9 col-sm-12">
+                    <h1>Available Imported Files</h1>
+                </div>
+                <div class="col-md-3 col-sm-12 text-right align-self-end">
+                    <a th:href="@{/importFiles/new}" class="btn btn-primary" title="Shows the form to import a new file.">Import New File</a>
+                </div>
+            </div>
+
+            <div class="row mt-3 mb-3" th:if="${null != message}">
+                <div class="col">
+                    <div class="alert alert-success" th:text="${message}"></div>
+                </div>
+            </div>
+
+            <div class="row" th:if="${#lists.isEmpty(availableImportedFiles)}">
+                <div class="col">
+                    <div class="jumbotron">
+                        <h2>No imported file found.</h2>
+                        <p class="lead">There is no imported file yet.
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" th:if="${not #lists.isEmpty(availableImportedFiles)}">
+                <div class="col">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Imported File</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody th:id="${not #lists.isEmpty(availableImportedFiles)}">
+                                <tr th:each="file: ${availableImportedFiles}">
+                                    <td>
+                                        <strong th:text="${file.fileName}"></strong><br/>
+                                        <small class="text-muted">Imported at <strong th:text="${#temporals.format(file.importedAt, 'dd/MM/yyyy')}"></strong></small><br/>
+                                        <small class="text-muted">Records between <strong th:text="${#temporals.format(file.startDate, 'dd/MM/yyyy')}"></strong> and <strong th:text="${#temporals.format(file.endDate, 'dd/MM/yyyy')}"></strong></small><br/>
+                                        <small class="text-muted">MD5 hash: <strong th:text="${file.md5FileHash}"></strong></small>
+                                    </td>
+                                    <td class="text-center">
+                                        <a  th:href="@{/importFiles/delete/{fileId}(fileId=${file.id})}"
+                                            title="Remove the file entry and all the imported records."
+                                            onclick="return confirm('Do you really want to remove this file and all of its records?');">
+                                            <span class="fa fa-trash-alt"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer :: footer"></div>
+    </body>
+</html>

@@ -28,6 +28,7 @@
                             <a th:href="@{/single_records/new}" class="dropdown-item">New Single Record</a>
                             <a th:href="@{/instalments/new}" class="dropdown-item">New Instalments</a>
                             <a th:href="@{/transfers/new}" class="dropdown-item">New Transfer</a>
+                            <a th:href="@{/importFiles/new}" class="dropdown-item">Import from file</a>
                         </div>
                     </div>
                 </div>
@@ -97,7 +98,24 @@
             </div>
 
             <div class="row" th:if="${not #lists.isEmpty(balance.records)}">
-                <div class="col">
+                <div class="col-sm-12 col-md-3">
+                    <div class="list-group">
+                        <a th:each="categorySummary: ${balance.categoryBalanceSummaries}"
+                           href="javascript:void(0)"
+                           class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1" th:text="${categorySummary.category.name}"></h5>
+                            </div>
+                            <p class="mb-1">$&nbsp;<span th:text="${#numbers.formatDecimal(categorySummary.balance, 0, 'POINT', 2, 'COMMA')}"></span></p>
+                            <small class="text-muted">
+                                <strong th:text="${#numbers.formatDecimal(categorySummary.expensesConsumptionPercentage, 0, 'POINT', 0, 'COMMA')}"></strong>% of the
+                                total expenses.
+                            </small>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-9">
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped">
                             <thead class="thead-dark">
@@ -119,7 +137,7 @@
                                         th:text="${#numbers.formatDecimal(record.recordValue, 0, 'POINT', 2, 'COMMA')}"
                                         th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></td>
                                     <td class="text-center">
-                                        <div th:if="${record.recordType == 'SingleRecord'}">
+                                        <div th:if="${record.recordType == 'SingleRecord' OR record.recordType == 'ImportedRecord'}">
                                              <div th:replace="fragments/record_delete_button :: SingleRecord(${record.id}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
                                         </div>
                                         <div th:if="${record.recordType == 'TransferRecord'}">

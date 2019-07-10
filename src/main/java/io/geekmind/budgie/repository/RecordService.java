@@ -1,6 +1,7 @@
 package io.geekmind.budgie.repository;
 
 import io.geekmind.budgie.model.dto.ExistingRecord;
+import io.geekmind.budgie.model.entity.Record;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ public class RecordService {
             });
     }
 
-
-
+    public void save(Record entity) {
+        this.recordRepository.save(entity);
+    }
 }

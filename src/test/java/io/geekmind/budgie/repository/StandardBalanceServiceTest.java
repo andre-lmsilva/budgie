@@ -15,7 +15,8 @@ import org.junit.runners.Suite;
     StandardBalanceServiceFiltersTest.class,
     StandardBalanceServiceCalculateDependantAccountBalancesTest.class,
     StandardBalanceServiceLoadAccountRecordsTest.class,
-    StandardBalanceServiceGenerateBalanceTest.class
+    StandardBalanceServiceGenerateBalanceTest.class,
+    StandardBalanceServiceCalculateCategoryBalanceSummaryTest.class
 })
 public class StandardBalanceServiceTest {
 
