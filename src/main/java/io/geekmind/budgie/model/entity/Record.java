@@ -1,6 +1,7 @@
 package io.geekmind.budgie.model.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -31,9 +32,11 @@ public abstract class Record {
 
     @NotNull
     @Size(min = 5, max = 140)
+    @Type(type = "encryptedTextField")
     private String description;
 
     @NotNull
+    @Type(type = "encryptedDecimalField")
     private BigDecimal recordValue;
 
 }

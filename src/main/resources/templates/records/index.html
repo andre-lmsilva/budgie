@@ -11,6 +11,11 @@
                         <small>
                             From&nbsp;<strong th:text="${#temporals.format(balance.balanceDates.periodStartDate,'dd/MM/yyyy')}"></strong>&nbsp;to&nbsp;
                             <strong th:text="${#temporals.format(balance.balanceDates.periodEndDate,'dd/MM/yyyy')}"></strong><br/>
+                            <span th:if="${balance.balanceDates.periodRemainingDays >=0 AND balance.balanceDates.periodRemainingDays <= 31}">
+                                <strong>
+                                    <span th:text="${balance.balanceDates.periodRemainingDays}"></span>&nbsp;day(s)
+                                </strong>until the end of this period.<br/>
+                            </span>
                             <span th:if="${balance.account.showBalanceOnMainAccount}">
                                 Billing date <strong th:text="${#temporals.format(balance.balanceDates.periodEndDate,'dd/MM/yyyy')}"></strong><br/>
                                 <span class="badge badge-warning">Show balance as a main account record.</span><br/>

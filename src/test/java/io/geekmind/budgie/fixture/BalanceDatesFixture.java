@@ -13,7 +13,8 @@ public class BalanceDatesFixture {
             LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()),
             LocalDate.now().plusMonths(1L).plusDays(5L),
             LocalDate.now().minusMonths(1L),
-            LocalDate.now().plusMonths(1L)
+            LocalDate.now().plusMonths(1L),
+            30
         );
     }
 

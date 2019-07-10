@@ -22,4 +22,6 @@ public class BalanceDates {
     private LocalDate previousPeriodStartDate;
 
     private LocalDate nextPeriodStartDate;
+
+    private Integer periodRemainingDays;
 }

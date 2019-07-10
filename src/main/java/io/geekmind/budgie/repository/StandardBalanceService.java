@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -129,6 +131,8 @@ public class StandardBalanceService {
         LocalDate periodBillingDate = this.calculatePeriodBillingDate(account, periodEndDate);
         LocalDate previousPeriodStartDate = refDate.minusMonths(1L);
         LocalDate nextPeriodStartDate = refDate.plusMonths(1L);
+        Integer periodRemainingDays = this.calculatePeriodRemainingDays(periodEndDate);
+
 
         return  new BalanceDates(
             refDate,
@@ -136,7 +140,8 @@ public class StandardBalanceService {
             periodEndDate,
             periodBillingDate,
             previousPeriodStartDate,
-            nextPeriodStartDate
+            nextPeriodStartDate,
+            periodRemainingDays
         );
     }
 
@@ -175,6 +180,17 @@ public class StandardBalanceService {
             return periodEndDate.withDayOfMonth(1);
         }
         return periodEndDate.minusMonths(1L).plusDays(1L);
+    }
+
+    /**
+     * Calculates the remaining days from the current date until the period end date.
+     * If the end of the period is in the past, it returns a negative number.
+     *
+     * @param periodEndDate Periods end date.
+     * @return Number of the days from today until the end of the period.
+     */
+    protected Integer calculatePeriodRemainingDays(LocalDate periodEndDate) {
+        return ((Long)ChronoUnit.DAYS.between(LocalDate.now(), periodEndDate)).intValue();
     }
 
     /**

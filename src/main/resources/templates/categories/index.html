@@ -28,7 +28,16 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" th:if="${#lists.isEmpty(availableCategories)}">
+                <div class="col">
+                    <div class="jumbotron">
+                        <h2>No category found.</h2>
+                        <p class="lead">There is no category created yet.
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" th:if="${not #lists.isEmpty(availableCategories)}">
                 <div class="col">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover">
@@ -47,7 +56,8 @@
                                     <td class="text-center">
                                         <a  th:href="@{/categories/delete/{categoryId}(categoryId=${category.id})}"
                                             title="Remove category and all of its records."
-                                            onclick="return confirm('Do you really want to remove this category and all of its records?');">
+                                            onclick="return confirm('Do you really want to remove this category and all of its records?');"
+                                            class="btn btn-danger btn-sm">
                                             <span class="fa fa-trash-alt"></span>
                                         </a>
                                     </td>

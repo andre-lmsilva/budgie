@@ -27,8 +27,6 @@ public class WebAppSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .requiresChannel().anyRequest().requiresSecure()
                 .and()
-                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .and()
                 .authorizeRequests()
                 .antMatchers("/", "/images/**", "/webjars/**").permitAll()
                 .anyRequest().authenticated()
@@ -48,7 +46,7 @@ public class WebAppSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder authManagerBuilder) throws Exception {
+    protected void configure(AuthenticationManagerBuilder authManagerBuilder) {
         authManagerBuilder.authenticationProvider(this.authenticationProvider);
     }
 

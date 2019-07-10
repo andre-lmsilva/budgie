@@ -57,6 +57,8 @@ public class CategoryService implements UniquenessValidationService {
     @Override
     public Boolean isValid(Object entity) {
         NewCategory category = (NewCategory)entity;
-        return !this.categoryRepository.findByName(category.getName()).isPresent();
+        return this.categoryRepository.findAll()
+            .stream()
+            .noneMatch(nCategory -> nCategory.getName().equals(category.getName()));
     }
 }

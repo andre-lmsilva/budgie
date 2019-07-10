@@ -10,3 +10,8 @@ spring:
   security:
     enabled: false
 
+budgie:
+  encrypt:
+    textFieldSecretPhrase: textFieldSecretPhrase
+    decimalFieldSecretPhrase: decimalFieldSecretPhrase
+

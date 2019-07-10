@@ -1,6 +1,7 @@
 package io.geekmind.budgie.model.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,6 +20,7 @@ public abstract class RecordContainer {
 
     @NotNull
     @Size(min = 5, max = 140)
+    @Type(type = "encryptedTextField")
     private String name;
 
     @OneToMany(mappedBy = "recordContainer", orphanRemoval = true, cascade = {CascadeType.ALL})

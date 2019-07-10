@@ -78,7 +78,10 @@ public class AccountService implements UniquenessValidationService {
     @Override
     public Boolean isValid(Object entity) {
         NewAccount account = (NewAccount) entity;
-        return !this.accountRepository.findByName(account.getName()).isPresent();
+        return this.accountRepository
+            .findAll()
+            .stream()
+            .noneMatch(nAccount -> nAccount.getName().equals(account.getName()));
     }
 
     public List<ExistingAccount> loadNonDependantAccounts() {

@@ -28,7 +28,16 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" th:if="${#lists.isEmpty(availableAccounts)}">
+                <div class="col">
+                    <div class="jumbotron">
+                        <h2>No account found.</h2>
+                        <p class="lead">There is no account created yet.
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" th:if="${not #lists.isEmpty(availableAccounts)}">
                 <div class="col">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover">
@@ -58,7 +67,8 @@
                                         <a  th:href="@{/accounts/delete/{accountId}(accountId=${account.id})}"
                                             title="Remove account and all of its records."
                                             onclick="return confirm('Do you really want to remove this account and all of its records?');"
-                                            th:if="${not account.mainAccount}">
+                                            th:if="${not account.mainAccount}"
+                                            class="btn btn-danger btn-sm">
                                             <span class="fa fa-trash-alt"></span>
                                         </a>
                                     </td>

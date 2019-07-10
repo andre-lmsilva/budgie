@@ -1,6 +1,7 @@
 package io.geekmind.budgie.model.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,8 +22,10 @@ public class Account {
 
     @NotNull
     @Size(min = 5, max = 255)
+    @Type(type = "encryptedTextField")
     private String name;
 
+    @Type(type = "encryptedTextField")
     private String description;
 
     @NotNull

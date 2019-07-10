@@ -29,6 +29,9 @@ public class ImportedRecordService {
     }
 
     public Optional<ImportedRecord> findBySourceMd5Hash(String hash) {
-        return this.importedRecordRepository.findBySourceMd5Hash(hash);
+        return this.importedRecordRepository.findAll()
+            .stream()
+            .filter(importedRecord -> importedRecord.getSourceMd5Hash().equals(hash))
+            .findFirst();
     }
 }

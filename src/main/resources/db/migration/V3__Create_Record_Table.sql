@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS record (
     account_id INTEGER NOT NULL,
     category_id INTEGER NOT NULL,
     description TEXT NOT NULL,
-    record_value NUMERIC(10,2) NOT NULL,
+    record_value NUMERIC(62,2) NOT NULL,
     record_type TEXT NOT NULL
 );
 
