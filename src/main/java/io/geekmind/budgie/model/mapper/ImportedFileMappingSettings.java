@@ -1,6 +1,7 @@
 package io.geekmind.budgie.model.mapper;
 
 import io.geekmind.budgie.digest.MessageDigestService;
+import io.geekmind.budgie.exception.ImportedFileContentAccessException;
 import io.geekmind.budgie.model.entity.ImportedFile;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;
@@ -11,9 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.Base64;
 
 @Component
 public class ImportedFileMappingSettings implements OrikaMapperFactoryConfigurer {
@@ -41,8 +40,9 @@ public class ImportedFileMappingSettings implements OrikaMapperFactoryConfigurer
                     try {
                         content = multipartFile.getBytes();
                     } catch (IOException ex) {
-                        throw new RuntimeException(
-                            String.format("It was not possible to calculate the imported file hash due the following exception :%s", ex.getMessage())
+                        throw new ImportedFileContentAccessException(
+                            String.format("It was not possible to calculate the imported file hash due the following exception :%s", ex.getMessage()),
+                            ex
                         );
                     }
 

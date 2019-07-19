@@ -39,7 +39,7 @@ public class Account {
     private Integer monthBillingDayAt;
 
     @NotNull
-    private Boolean mainAccount;
+    private Boolean mainAccount = Boolean.FALSE;
 
     @NotNull
     private Boolean showBalanceOnMainAccount;

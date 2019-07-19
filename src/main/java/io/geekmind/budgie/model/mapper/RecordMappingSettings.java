@@ -15,7 +15,8 @@ public class RecordMappingSettings implements OrikaMapperFactoryConfigurer {
     @Override
     public void configure(MapperFactory orikaMapperFactory) {
         orikaMapperFactory.classMap(Record.class, ExistingRecord.class)
-            .byDefault()
+            .mapNulls(false)
+            .mapNullsInReverse(false)
             .customize(new CustomMapper<Record, ExistingRecord>() {
                 @Override
                 public void mapAtoB(Record record, ExistingRecord existingRecord, MappingContext context) {
@@ -29,7 +30,7 @@ public class RecordMappingSettings implements OrikaMapperFactoryConfigurer {
                         }
                     }
                 }
-            }).register();
+            }).byDefault().register();
 
     }
 }

@@ -20,7 +20,7 @@ public class DependantAccountRecordMappingSettings implements OrikaMapperFactory
         this.accountBalanceCategory = new ExistingCategory(
             -1,
             "Account Balance",
-            "Account balance result."
+            "Dependant account balance result."
         );
     }
 

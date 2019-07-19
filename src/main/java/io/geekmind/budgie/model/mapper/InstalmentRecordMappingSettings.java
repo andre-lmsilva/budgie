@@ -13,7 +13,6 @@ public class InstalmentRecordMappingSettings implements OrikaMapperFactoryConfig
     @Override
     public void configure(MapperFactory orikaMapperFactory) {
         orikaMapperFactory.classMap(NewInstalment.class, InstalmentRecord.class)
-            .byDefault()
             .field("accountId", "account.id")
             .field("categoryId", "category.id")
             .field("instalmentValue", "recordValue")
@@ -25,7 +24,7 @@ public class InstalmentRecordMappingSettings implements OrikaMapperFactoryConfig
                         String.format("%s (%%s of %s)", newInstalment.getDescription(), newInstalment.getNumberOfInstalments())
                     );
                 }
-            }).register();
+            }).byDefault().register();
 
     }
 }

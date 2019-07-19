@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: header"></head>
+    <body style="padding-top: 120px;">
+        <div th:replace="fragments/navbar :: navbar"></div>
+
+        <div class="container">
+              <div class="row mb-3">
+                <div class="col">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
+                        <li class="breadcrumb-item active">
+                            <span th:text="${#temporals.format(existingRecord.recordDate,'dd/MM/yyyy')}"></span>&nbsp;-&nbsp;
+                            <span th:text="${existingRecord.description}"></span>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <h1>Edit Record</h1>
+                </div>
+            </div>
+
+            <div class="row" th:if="${null != message}">
+                <div class="col">
+                    <div class="alert alert-success" role="alert">
+                        <span th:text="${message}"></span>
+                        <button type="button" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" th:if="${#strings.equals(existingRecord.recordType, 'InstalmentRecord')}">
+                <div class="col">
+                    <div class="alert alert-info" role="alert">
+                        <strong>Attention:</strong>&nbsp;This record is a instalment and only this instalment will be updated.
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <form action="#" th:object="${existingRecord}" th:action="@{/records/update}" method="post">
+                        <fieldset>
+                            <legend>Record Details</legend>
+                            <div class="form-group">
+                                <label for="recordDate">Date:</label>
+                                <input type="hidden" th:field="*{id}"/>
+                                <input type="hidden" th:field="*{recordType}"/>
+                                <input type="date" class="form-control" th:field="*{recordDate}" th:appendclass="${#fields.hasErrors('recordDate')} ? is-invalid : ''" required/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('recordDate')}" th:errors="*{recordDate}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="accountId">Account:</label>
+                                <select th:field="*{account.id}" class="form-control" required>
+                                    <option th:each="account: ${availableAccounts}" th:value="${account.id}" th:text="${account.name}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoryId">Category:</label>
+                                <select th:field="*{category.id}" class="form-control">
+                                    <option th:each="category: ${availableCategories}" th:value="${category.id}" th:text="${category.name}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description:</label>
+                                <input type="text" class="form-control" th:field="*{description}" placeholder="Brief description of the record." th:appendclass="${#fields.hasErrors('description')} ? is-invalid : ''" required/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="recordValue">Value (€):</label>
+                                <input type="text" class="form-control" th:field="*{recordValue}" placeholder="0.000,00" th:appendclass="${#fields.hasErrors('recordValue')} ? is-invalid : ''" required/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('recordValue')}" th:errors="*{recordValue}"></div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Update</button>&nbsp;
+                                <a class="btn btn-default" th:href="@{/records}" title="Go back to balance without save the changes.">Cancel</a>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer :: footer"></div>
+    </body>
+</html>

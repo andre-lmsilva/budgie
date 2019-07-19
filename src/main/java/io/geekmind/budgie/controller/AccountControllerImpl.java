@@ -1,7 +1,7 @@
 package io.geekmind.budgie.controller;
 
+import io.geekmind.budgie.model.dto.ExistingAccount;
 import io.geekmind.budgie.model.dto.NewAccount;
-import io.geekmind.budgie.model.dto.NewCategory;
 import io.geekmind.budgie.repository.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/accounts")
@@ -63,6 +64,37 @@ public class AccountControllerImpl {
         this.accountService.remove(id);
         redirectAttributes.addFlashAttribute("message", "Account record successfully removed.");
         requestContext.setViewName("redirect:/accounts");
+        return requestContext;
+    }
+
+    @GetMapping("/edit/{id}")
+    public ModelAndView showEditForm(@PathVariable("id") Integer id,
+                                     ModelAndView requestContext,
+                                     RedirectAttributes redirectAttributes) {
+        Optional<ExistingAccount> existingAccount = this.accountService.loadById(id);
+        if (existingAccount.isPresent()) {
+            requestContext.addObject("existingAccount", existingAccount.get());
+            requestContext.setViewName("accounts/edit.form");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Account not found.");
+            requestContext.setViewName("redirect:/accounts");
+        }
+        return requestContext;
+    }
+
+    @PostMapping("/update")
+    public ModelAndView updateAccount(@Valid ExistingAccount existingAccount,
+                               BindingResult bindingResult,
+                               ModelAndView requestContext,
+                               RedirectAttributes redirectAttributes) {
+        if (!bindingResult.hasErrors()) {
+            this.accountService.update(existingAccount);
+            redirectAttributes.addFlashAttribute("message", "Account successfully updated.");
+            requestContext.setViewName("redirect:/accounts");
+        } else {
+            requestContext.addObject("existingAccount", existingAccount);
+            requestContext.setViewName("accounts/edit.form");
+        }
         return requestContext;
     }
 

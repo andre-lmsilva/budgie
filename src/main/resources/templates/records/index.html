@@ -58,6 +58,12 @@
                 </div>
             </div>
 
+            <div class="row mt-3 mb-3" th:if="${null != error}">
+                <div class="col">
+                    <div class="alert alert-danger" th:text="${error}"></div>
+                </div>
+            </div>
+
             <div class="row" th:if="${#lists.isEmpty(balance.records)}">
                 <div class="col">
                     <div class="jumbotron">
@@ -102,7 +108,7 @@
                 </div>
             </div>
 
-            <div class="row" th:if="${not #lists.isEmpty(balance.records)}">
+            <div class="row mb-3" th:if="${not #lists.isEmpty(balance.records)}">
                 <div class="col-sm-12 col-md-3">
                     <div class="list-group">
                         <a th:each="categorySummary: ${balance.categoryBalanceSummaries}"
@@ -135,7 +141,11 @@
                                 <tr th:each="record: ${balance.records}">
                                     <td class="text-center" th:text="${#temporals.format(record.recordDate,'dd')}"></td>
                                     <td>
-                                        <span th:text="${record.description}"></span><br/>
+                                        <a  th:if="${!#strings.equals(record.recordType, 'TransferRecord')}"
+                                            th:href="@{/records/edit/{id}(id=${record.id})}"
+                                            th:text="${record.description}"
+                                            title="Edit record."></a>
+                                        <span th:if="${#strings.equals(record.recordType, 'TransferRecord')}" th:text="${record.description}"></span>
                                         <span class="badge badge-pill badge-dark" th:text="${record.category.name}"></span>
                                     </td>
                                     <td class="text-right"

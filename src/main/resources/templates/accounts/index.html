@@ -28,6 +28,12 @@
                 </div>
             </div>
 
+            <div class="row mt-3 mb-3" th:if="${null != error}">
+                <div class="col">
+                    <div class="alert alert-danger" th:text="${error}"></div>
+                </div>
+            </div>
+
             <div class="row" th:if="${#lists.isEmpty(availableAccounts)}">
                 <div class="col">
                     <div class="jumbotron">
@@ -53,7 +59,10 @@
                             <tbody th:id="${not #lists.isEmpty(availableAccounts)}">
                                 <tr th:each="account: ${availableAccounts}" th:classappend="${account.mainAccount} ? table-info : ''">
                                     <td>
-                                        <strong th:text="${account.name}"></strong>&nbsp;
+                                        <a th:href="@{/accounts/edit/{id}(id=${account.id})}"
+                                           title="Edit account.">
+                                            <strong th:text="${account.name}"></strong>&nbsp;
+                                        </a>
                                         <span class="badge badge-pill badge-danger" th:if="${account.mainAccount}">Main Account</span><br/>
                                         <small class="text-muted" th:text="${account.description}"></small>
                                     </td>

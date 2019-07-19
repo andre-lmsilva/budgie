@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar target/budgie-0.5.5.jar
+web: java -Dserver.port=$PORT -jar target/budgie-0.6.0.jar

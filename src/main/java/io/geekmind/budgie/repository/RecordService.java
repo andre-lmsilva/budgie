@@ -1,6 +1,8 @@
 package io.geekmind.budgie.repository;
 
 import io.geekmind.budgie.model.dto.ExistingRecord;
+import io.geekmind.budgie.model.entity.Account;
+import io.geekmind.budgie.model.entity.Category;
 import io.geekmind.budgie.model.entity.Record;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +17,18 @@ import java.util.stream.Collectors;
 public class RecordService {
 
     private final RecordRepository recordRepository;
+    private final AccountRepository accountRepository;
+    private final CategoryRepository categoryRepository;
     private final MapperFacade mapper;
 
     @Autowired
     public RecordService(RecordRepository recordRepository,
+                         AccountRepository accountRepository,
+                         CategoryRepository categoryRepository,
                          MapperFacade mapper) {
         this.recordRepository = recordRepository;
+        this.accountRepository = accountRepository;
+        this.categoryRepository = categoryRepository;
         this.mapper = mapper;
     }
 
@@ -41,5 +49,29 @@ public class RecordService {
 
     public void save(Record entity) {
         this.recordRepository.save(entity);
+    }
+
+    public Optional<ExistingRecord> loadById(Integer id) {
+        return this.recordRepository.findById(id)
+            .map(record -> this.mapper.map(record, ExistingRecord.class));
+    }
+
+    public ExistingRecord update(ExistingRecord existingRecord) {
+        Optional<Record> recordToUpdate = this.recordRepository.findById(existingRecord.getId());
+        if (recordToUpdate.isPresent()) {
+            Record record = recordToUpdate.get();
+            record.setRecordDate(existingRecord.getRecordDate());
+            record.setDescription(existingRecord.getDescription());
+            record.setRecordValue(existingRecord.getRecordValue());
+
+            this.accountRepository.findById(existingRecord.getAccount().getId())
+                .ifPresent(record::setAccount);
+
+            this.categoryRepository.findById(existingRecord.getCategory().getId())
+                .ifPresent(record::setCategory);
+
+            this.recordRepository.save(record);
+        }
+        return existingRecord;
     }
 }

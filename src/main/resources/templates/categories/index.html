@@ -28,6 +28,12 @@
                 </div>
             </div>
 
+            <div class="row mt-3 mb-3" th:if="${null != error}">
+                <div class="col">
+                    <div class="alert alert-danger" th:text="${error}"></div>
+                </div>
+            </div>
+
             <div class="row" th:if="${#lists.isEmpty(availableCategories)}">
                 <div class="col">
                     <div class="jumbotron">
@@ -50,7 +56,10 @@
                             <tbody th:id="${not #lists.isEmpty(availableCategories)}">
                                 <tr th:each="category: ${availableCategories}">
                                     <td>
-                                        <strong th:text="${category.name}"></strong><br/>
+                                        <a th:href="@{/categories/edit/{categoryId}(categoryId=${category.id})}"
+                                           title="Edit category">
+                                            <strong th:text="${category.name}"></strong>
+                                        </a><br/>
                                         <small class="text-muted" th:text="${category.description}"></small>
                                     </td>
                                     <td class="text-center">

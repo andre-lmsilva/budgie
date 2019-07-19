@@ -56,10 +56,12 @@
                                 <tbody>
                                     <tr th:each="record, itemStat: ${importedFile.newImportedRecords}">
                                         <td class="text-center align-middle">
-                                            <span th:text="${#temporals.format(record.recordDate,'dd/MM/yyyy')}"></span>
+                                            <input  type="date"
+                                                    th:field="*{newImportedRecords[__${itemStat.index}__].recordDate}"
+                                                    th:name="newImportedRecords[].recordDate"
+                                                    class="form-control"/>
                                             <input type="hidden" th:field="*{newImportedRecords[__${itemStat.index}__].importedFileId}" th:name="newImportedRecords[].importedFileId"/>
                                             <input type="hidden" th:field="*{newImportedRecords[__${itemStat.index}__].md5RecordHash}" th:name="newImportedRecords[].md5RecordHash"/>
-                                            <input type="hidden" th:field="*{newImportedRecords[__${itemStat.index}__].recordDate}" th:name="newImportedRecords[].recordDate"/>
                                         </td>
                                         <td>
                                             <select th:field="*{newImportedRecords[__${itemStat.index}__].categoryId}" th:name="newImportedRecords[].categoryId" class="form-control form-control-sm">

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,13 +35,10 @@ public class AccountService implements UniquenessValidationService {
     }
 
     public List<ExistingAccount> loadAll() {
-        return this.accountRepository.findAll(
-                Sort.by(
-                    Sort.Order.desc("mainAccount"),
-                    Sort.Order.asc("name")
-                )
-            ).stream()
+        return this.accountRepository.findAll()
+            .stream()
             .map(account -> this.mapper.map(account, ExistingAccount.class))
+            .sorted(Comparator.comparing(ExistingAccount::getName))
             .collect(Collectors.toList());
     }
 
@@ -67,28 +65,56 @@ public class AccountService implements UniquenessValidationService {
         return this.accountRepository.findDependantAccounts()
             .stream()
             .map(account -> this.mapper.map(account, ExistingAccount.class))
+            .sorted(Comparator.comparing(ExistingAccount::getName))
             .collect(Collectors.toList());
     }
 
     @Override
     public Boolean canValidate(Class<?> type) {
-        return type.equals(NewAccount.class);
+        return type.equals(NewAccount.class) || type.equals(ExistingAccount.class);
     }
 
     @Override
     public Boolean isValid(Object entity) {
-        NewAccount account = (NewAccount) entity;
-        return this.accountRepository
+        if (entity instanceof NewAccount) {
+            return this.isValidToCreate((NewAccount) entity);
+        } else if (entity instanceof ExistingAccount) {
+            return this.isValidToUpdate((ExistingAccount) entity);
+        } else {
+            return false;
+        }
+    }
+
+    protected Boolean isValidToCreate(NewAccount entity) {
+         return this.accountRepository
             .findAll()
             .stream()
-            .noneMatch(nAccount -> nAccount.getName().equals(account.getName()));
+            .noneMatch(nAccount -> nAccount.getName().equals(entity.getName()));
+    }
+
+    protected Boolean isValidToUpdate(ExistingAccount entity) {
+          return this.accountRepository
+              .findAll()
+              .stream()
+              .filter(account -> !account.getId().equals(entity.getId()))
+              .noneMatch(nAccount -> nAccount.getName().equals(entity.getName()));
     }
 
     public List<ExistingAccount> loadNonDependantAccounts() {
         return this.accountRepository.findNonDependantAccounts()
             .stream()
             .map(account -> this.mapper.map(account, ExistingAccount.class))
+            .sorted(Comparator.comparing(ExistingAccount::getName))
             .collect(Collectors.toList());
     }
 
+    public ExistingAccount update(ExistingAccount existingAccount) {
+        Optional<Account> accountToUpdate = this.accountRepository.findById(existingAccount.getId());
+        if (accountToUpdate.isPresent()) {
+            Account account = accountToUpdate.get();
+            this.mapper.map(existingAccount, account);
+            this.accountRepository.save(account);
+        }
+        return existingAccount;
+    }
 }
