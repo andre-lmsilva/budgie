@@ -40,7 +40,9 @@ public class SingleRecordControllerImpl {
 
     @GetMapping("/new")
     public ModelAndView showNewSingleRecordForm(ModelAndView requestContext) {
-        requestContext.addObject("newSingleRecord", new NewSingleRecord());
+        NewSingleRecord newSingleRecord = new NewSingleRecord();
+        newSingleRecord.setRecordDate(LocalDate.now());
+        requestContext.addObject("newSingleRecord", newSingleRecord);
         requestContext.addObject("availableAccounts", this.accountService.loadAll());
         requestContext.addObject("availableCategories", this.categoryService.loadAll());
         requestContext.setViewName("single_records/new.form");

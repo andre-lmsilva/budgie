@@ -3,7 +3,7 @@
     <head th:replace="fragments/header :: header"></head>
     <body style="padding-top:120px;">
         <div th:replace="fragments/navbar :: navbar"></div>
-        <div class="container">
+        <div class="container-fluid">
             <div class="row mb-3">
                 <div class="col">
                     <ol class="breadcrumb">
@@ -38,7 +38,7 @@
                              <legend>Transfer Details</legend>
                              <div class="form-group">
                                 <label for="transferDate">Transfer Date:</label>
-                                <input type="date" class="form-control" th:field="*{transferDate}" th:appendclass="${#fields.hasErrors('transferDate')} ? is-invalid : ''" required/>
+                                <input type="date" class="form-control" th:field="*{transferDate}" th:appendclass="${#fields.hasErrors('transferDate')} ? is-invalid : ''" autofocus required/>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('transferDate')}" th:errors="*{transferDate}"/>
                             </div>
                             <div class="form-group">

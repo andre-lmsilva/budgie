@@ -344,7 +344,7 @@ public class StandardBalanceService {
         }
 
         return categorySummaries.values().stream()
-            .sorted((entryA, entryB) -> entryB.getExpensesConsumptionPercentage().compareTo(entryA.getExpensesConsumptionPercentage()))
+            .sorted(Comparator.comparing(CategoryBalanceSummary::getBalance))
             .collect(Collectors.toList());
     }
 }

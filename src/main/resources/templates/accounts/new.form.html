@@ -3,7 +3,7 @@
     <head th:replace="fragments/header :: header"></head>
     <body style="padding-top:120px;">
         <div th:replace="fragments/navbar :: navbar"></div>
-        <div class="container">
+        <div class="container-fluid">
             <div class="row mb-3">
                 <div class="col">
                     <ol class="breadcrumb">
@@ -43,7 +43,9 @@
                                        class="form-control"
                                        th:appendclass="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
                                        th:field="*{name}"
-                                       placeholder="Account name." required/>
+                                       placeholder="Account name."
+                                       autofocus
+                                       required/>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                             </div>
                             <div class="form-group">
