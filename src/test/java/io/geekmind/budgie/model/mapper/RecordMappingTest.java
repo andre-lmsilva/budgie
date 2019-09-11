@@ -1,6 +1,5 @@
 package io.geekmind.budgie.model.mapper;
 
-import io.geekmind.budgie.fixture.ExistingCategoryFixture;
 import io.geekmind.budgie.fixture.ExistingRecordFixture;
 import io.geekmind.budgie.fixture.SingleRecordFixture;
 import io.geekmind.budgie.fixture.TransferRecordFixture;
@@ -12,7 +11,6 @@ import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.junit.Before;
 import org.junit.Test;
-import sun.management.jmxremote.SingleEntryRegistry;
 
 import java.math.BigDecimal;
 
