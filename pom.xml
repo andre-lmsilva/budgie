@@ -15,7 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <budgie.build.version>${project.version}</budgie.build.version>
-        <budgie.build.signature>${git.commit.time}.${git.commit.id.abbrev}</budgie.build.signature>
+        <budgie.build.signature>${env.HEROKU_RELEASE_CREATED_AT} ${env.HEROKU_SLUG_DESCRIPTION}</budgie.build.signature>
     </properties>
 
     <dependencyManagement>
@@ -141,23 +141,6 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <plugin>
-                        <groupId>pl.project13.maven</groupId>
-                        <artifactId>git-commit-id-plugin</artifactId>
-                        <version>2.2.5</version>
-                        <executions>
-                            <execution>
-                                <phase>validate</phase>
-                                <goals>
-                                    <goal>revision</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <dateFormat>yyyy-MM-dd '@' HH:mm:ss</dateFormat>
-                            <generateGitPropertiesFile>false</generateGitPropertiesFile>
-                        </configuration>
-                    </plugin>
                 </plugins>
             </build>
         </profile>
@@ -172,7 +155,6 @@
         </resources>
 
         <plugins>
-
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
