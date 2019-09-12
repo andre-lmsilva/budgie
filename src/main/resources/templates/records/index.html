@@ -111,17 +111,25 @@
             <div class="row mb-3" th:if="${not #lists.isEmpty(balance.records)}">
                 <div class="col-sm-12 col-md-3">
                     <div class="list-group">
-                        <a th:each="categorySummary: ${balance.categoryBalanceSummaries}"
-                           href="javascript:void(0)"
-                           class="list-group-item list-group-item-action flex-column align-items-start">
+                        <a  th:each="categorySummary: ${balance.categoryBalanceSummaries}"
+                            href="javascript:void(0)"
+                            class="list-group-item list-group-item-action flex-column align-items-start"
+                            th:classappend="${categorySummary.maxExpensesConsumption >= 75} ? list-group-item-danger : (${categorySummary.maxExpensesConsumption >= 50} ? list-group-item-warning : '')">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1" th:text="${categorySummary.category.name}"></h5>
                             </div>
                             <p class="mb-1">$&nbsp;<span th:text="${#numbers.formatDecimal(categorySummary.balance, 0, 'POINT', 2, 'COMMA')}"></span></p>
                             <small class="text-muted">
-                                <strong th:text="${#numbers.formatDecimal(categorySummary.expensesConsumptionPercentage, 0, 'POINT', 0, 'COMMA')}"></strong>% of the
+                                <strong th:text="${#numbers.formatDecimal(categorySummary.expensesConsumptionPercentage, 0, 'POINT', 2, 'COMMA')}"></strong>% of the
                                 total expenses.
                             </small>
+                            <span th:if="${categorySummary.maxExpensesConsumption != 0}">
+                                <br>
+                                <small class="text-muted">
+                                    <strong th:text="${#numbers.formatDecimal(categorySummary.maxExpensesConsumption, 0, 'POINT', 2, 'COMMA')}"></strong>% of $
+                                    <strong th:text="${#numbers.formatDecimal(categorySummary.maxExpenses, 0, 'POINT', 2, 'COMMA')}"></strong> monthly limit.
+                                </small>
+                            </span>
                         </a>
                     </div>
                 </div>
@@ -131,10 +139,10 @@
                         <table class="table table-bordered table-hover table-striped">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th class="text-center">Date</th>
+                                    <th class="text-center" style="width:70px;max-width:70px;">Date</th>
                                     <th>Description</th>
-                                    <th class="text-center">Value</th>
-                                    <th></th>
+                                    <th class="text-center" style="width:150px;max-width:150px;">Value</th>
+                                    <th style="width:70px;max-width:70px;"></th>
                                 </tr>
                             </thead>
                             <tbody>

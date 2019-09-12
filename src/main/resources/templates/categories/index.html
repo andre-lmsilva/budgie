@@ -50,7 +50,7 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th>Category</th>
-                                    <th>&nbsp;</th>
+                                    <th style="width:70px;max-width:70px;"></th>
                                 </tr>
                             </thead>
                             <tbody th:id="${not #lists.isEmpty(availableCategories)}">
@@ -61,6 +61,12 @@
                                             <strong th:text="${category.name}"></strong>
                                         </a><br/>
                                         <small class="text-muted" th:text="${category.description}"></small>
+                                        <span th:if="${category.maxExpenses != null and category.maxExpenses < 0}">
+                                            <br/>
+                                            <small class="text-mutted">
+                                                Expenses monthly limited to <span class="text-danger">$<span th:text="${#numbers.formatDecimal(category.maxExpenses * -1, 0, 'POINT', 2, 'COMMA')}"></span></span>.
+                                            </small>
+                                        </span>
                                     </td>
                                     <td class="text-center">
                                         <a  th:href="@{/categories/delete/{categoryId}(categoryId=${category.id})}"

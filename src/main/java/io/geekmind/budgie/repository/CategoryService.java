@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +51,12 @@ public class CategoryService implements UniquenessValidationService {
 
     public ExistingCategory create(NewCategory newCategory) {
         Category category = this.mapper.map(newCategory, Category.class);
+        if (null != category.getMaxExpenses() &&
+            BigDecimal.ZERO.compareTo(category.getMaxExpenses()) < 0) {
+            category.setMaxExpenses(
+                category.getMaxExpenses().negate()
+            );
+        }
         return this.mapper.map(
             this.categoryRepository.save(category),
             ExistingCategory.class

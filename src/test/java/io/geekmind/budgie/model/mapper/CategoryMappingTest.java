@@ -39,7 +39,8 @@ public class CategoryMappingTest {
         assertThat(result)
             .hasFieldOrPropertyWithValue("id", null)
             .hasFieldOrPropertyWithValue("name", fakeNewCategory.getName())
-            .hasFieldOrPropertyWithValue("description", fakeNewCategory.getDescription());
+            .hasFieldOrPropertyWithValue("description", fakeNewCategory.getDescription())
+            .hasFieldOrPropertyWithValue("maxExpenses", fakeNewCategory.getMaxExpenses());
     }
 
     @Test
@@ -53,8 +54,8 @@ public class CategoryMappingTest {
         assertThat(fakeCategory)
             .hasFieldOrPropertyWithValue("id", fakeExistingCategory.getId())
             .hasFieldOrPropertyWithValue("name", fakeExistingCategory.getName())
-            .hasFieldOrProperty("description");
-
+            .hasFieldOrProperty("description")
+            .hasFieldOrPropertyWithValue("maxExpenses", fakeExistingCategory.getMaxExpenses());
     }
 
 }

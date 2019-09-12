@@ -14,9 +14,7 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
-        <budgie.build.timestamp>${maven.build.timestamp}</budgie.build.timestamp>
-        <budgie.build.version>${project.version}</budgie.build.version>
+        <budgie.build.signature>${git.commit.time}.${git.commit.id.abbrev}</budgie.build.signature>
     </properties>
 
     <dependencyManagement>
@@ -154,7 +152,25 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+
         <plugins>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.2.5</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dateFormat>yyyy-MM-dd HH:mm:ss</dateFormat>
+                    <generateGitPropertiesFiles>false</generateGitPropertiesFiles>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>

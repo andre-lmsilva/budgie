@@ -17,4 +17,8 @@ public class CategoryBalanceSummary {
 
     private BigDecimal expensesConsumptionPercentage;
 
+    private BigDecimal maxExpensesConsumption;
+
+    private BigDecimal maxExpenses;
+
 }

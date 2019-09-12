@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -25,4 +26,8 @@ public class Category {
 
     @Type(type = "encryptedTextField")
     private String description;
+
+    @Type(type = "encryptedDecimalField")
+    private BigDecimal maxExpenses;
+
 }

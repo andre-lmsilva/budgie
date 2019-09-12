@@ -9,6 +9,7 @@ import ma.glasnost.orika.MappingContext;
 import net.rakugakibox.spring.boot.orika.OrikaMapperFactoryConfigurer;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 
 @Component
@@ -20,7 +21,8 @@ public class DependantAccountRecordMappingSettings implements OrikaMapperFactory
         this.accountBalanceCategory = new ExistingCategory(
             -1,
             "Account Balance",
-            "Dependant account balance result."
+            "Dependant account balance result.",
+            BigDecimal.ZERO
         );
     }
 

@@ -26,13 +26,13 @@ public class StandardBalanceServiceCalculateCategoryBalanceSummaryTest {
 
     @Before
     public void setUp() {
-        this.fakeDwelling = new ExistingCategory(99, "Dwelling", "");
+        this.fakeDwelling = new ExistingCategory(99, "Dwelling", "", BigDecimal.ZERO);
         ExistingRecord fakeDwellingRecord = new ExistingRecord(99, fakeDwelling, null, LocalDate.now(), "Monthly Rent", BigDecimal.valueOf(-150D), null, null);
 
-        this.fakeInsurance = new ExistingCategory(100, "Insurance", "");
+        this.fakeInsurance = new ExistingCategory(100, "Insurance", "", BigDecimal.ZERO);
         ExistingRecord fakeCarInsurance = new ExistingRecord(100, fakeInsurance, null, LocalDate.now(), "Car Insurance", BigDecimal.valueOf(-300D), null, null);
 
-        this.fakeSalary = new ExistingCategory(199, "Salary", "");
+        this.fakeSalary = new ExistingCategory(199, "Salary", "", BigDecimal.ZERO);
         ExistingRecord fakeMonthlySalary = new ExistingRecord(199, fakeSalary, null, LocalDate.now(), "Monthly Salary", BigDecimal.valueOf(1200D), null, null);
 
         this.fakeBalanceSummary = new BalanceSummary(

@@ -1,0 +1,1 @@
+ALTER TABLE category ADD COLUMN max_expenses NUMERIC(62,2);

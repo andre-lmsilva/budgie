@@ -329,7 +329,7 @@ public class StandardBalanceService {
             if (record.getRecordValue().compareTo(BigDecimal.ZERO) < 0) {
                 CategoryBalanceSummary categoryBalanceSummary = categorySummaries.computeIfAbsent(
                         record.getCategory().getId(),
-                        categoryId -> new CategoryBalanceSummary(record.getCategory(), BigDecimal.ZERO, BigDecimal.ZERO)
+                        categoryId -> new CategoryBalanceSummary(record.getCategory(), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO)
                 );
 
                 BigDecimal newBalance = categoryBalanceSummary.getBalance().add(record.getRecordValue());
@@ -338,12 +338,30 @@ public class StandardBalanceService {
                         RoundingMode.HALF_UP
                 ).multiply(BigDecimal.valueOf(100D));
 
+                BigDecimal maxExpenses = BigDecimal.ZERO;
+                if (null != record.getCategory().getMaxExpenses()) {
+                    maxExpenses = record.getCategory().getMaxExpenses().negate();
+                }
+
+                BigDecimal maxExpensesConsumption = BigDecimal.ZERO;
+                if (null != record.getCategory().getMaxExpenses() &&
+                    record.getCategory().getMaxExpenses().compareTo(BigDecimal.ZERO) != 0) {
+                    maxExpensesConsumption = newBalance
+                        .divide(
+                            record.getCategory().getMaxExpenses(),
+                            RoundingMode.HALF_UP
+                        ).multiply(BigDecimal.valueOf(100D));
+                }
+
                 categoryBalanceSummary.setBalance(newBalance);
                 categoryBalanceSummary.setExpensesConsumptionPercentage(newExpensesConsumptionPercentage);
+                categoryBalanceSummary.setMaxExpensesConsumption(maxExpensesConsumption);
+                categoryBalanceSummary.setMaxExpenses(maxExpenses);
             }
         }
 
-        return categorySummaries.values().stream()
+        return categorySummaries.values()
+            .stream()
             .sorted(Comparator.comparing(CategoryBalanceSummary::getBalance))
             .collect(Collectors.toList());
     }
