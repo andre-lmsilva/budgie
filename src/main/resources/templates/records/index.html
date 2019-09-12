@@ -17,7 +17,7 @@
                                 </strong>until the end of this period.<br/>
                             </span>
                             <span th:if="${balance.account.showBalanceOnMainAccount}">
-                                Billing date <strong th:text="${#temporals.format(balance.balanceDates.periodEndDate,'dd/MM/yyyy')}"></strong><br/>
+                                Billing date <strong th:text="${#temporals.format(balance.balanceDates.periodBillingDate,'dd/MM/yyyy')}"></strong><br/>
                                 <span class="badge badge-warning">Show balance as a main account record.</span><br/>
                             </span>
                             <a th:href="@{'/records'(referenceDate=${balance.balanceDates.previousPeriodStartDate},accountId=${balance.account.id})}">Previous Period</a>

@@ -54,6 +54,11 @@
                                 <textarea class="form-control" th:field="*{description}" placeholder="Category's purpose brief description."></textarea>
                             </div>
                             <div class="form-group">
+                                <label for="maxExpenses">Max Planned Expenses:</label>
+                                <input type="text" class="form-control" th:appendclass="${#fields.hasErrors('maxExpenses')} ? 'is-invalid' : ''" th:field="*{maxExpenses}"/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('maxExpenses')}" th:errors="*{maxExpenses}"></div>
+                            </div>
+                            <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Update</button>&nbsp;
                                 <a th:href="@{/accounts}" title="Go back to available categories page without save the changes." class="btn btn-default">Cancel</a>
                             </div>

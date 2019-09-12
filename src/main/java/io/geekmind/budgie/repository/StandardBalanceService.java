@@ -289,10 +289,17 @@ public class StandardBalanceService {
     protected List<ExistingRecord> calculateDependantAccountBalances(BalanceDates mainAccountBalanceDates) {
         List<ExistingRecord> dependantAccountBalances = new ArrayList<>();
         List<ExistingAccount> dependantAccounts = this.accountService.loadDependantAccounts();
-        LocalDate referenceDate = mainAccountBalanceDates.getReferenceDate().minusMonths(1L);
 
         for(ExistingAccount dependantAccount: dependantAccounts) {
-            Balance dependantAccountBalance = this.generateBalance(dependantAccount.getId(), referenceDate);
+            LocalDate billingDate = mainAccountBalanceDates.getPeriodEndDate()
+                .withDayOfMonth(dependantAccount.getMonthBillingDayAt());
+
+            LocalDate dependantAccountPeriodEndDate = this.calculatePeriodEndDateBasedOnBillingDate(
+                billingDate,
+                dependantAccount.getMonthStartingAt()
+            );
+
+            Balance dependantAccountBalance = this.generateBalance(dependantAccount.getId(), dependantAccountPeriodEndDate);
             ExistingRecord dependantAccountBalanceRecord = this.mapper.map(dependantAccountBalance, DependantAccountRecord.class);
             dependantAccountBalances.add(dependantAccountBalanceRecord);
         }
@@ -364,5 +371,11 @@ public class StandardBalanceService {
             .stream()
             .sorted(Comparator.comparing(CategoryBalanceSummary::getBalance))
             .collect(Collectors.toList());
+    }
+
+    protected LocalDate calculatePeriodEndDateBasedOnBillingDate(LocalDate refDate, Integer monthStartingAt) {
+        return refDate.minusMonths(1L)
+            .withDayOfMonth(monthStartingAt)
+            .minusDays(1L);
     }
 }

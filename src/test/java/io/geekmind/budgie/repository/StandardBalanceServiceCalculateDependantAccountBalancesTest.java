@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
@@ -54,6 +55,8 @@ public class StandardBalanceServiceCalculateDependantAccountBalancesTest {
             .when(this.accountService).loadDependantAccounts();
 
         this.fakeDependantAccountBalance = BalanceFixture.getCurrentPeriodBalance();
+        doReturn(this.expectedReferenceDate)
+            .when(this.balanceService).calculatePeriodEndDateBasedOnBillingDate(any(), any());
         doReturn(this.fakeDependantAccountBalance)
             .when(this.balanceService).generateBalance(eq(this.fakeSavingsAccount.getId()), eq(this.expectedReferenceDate));
 

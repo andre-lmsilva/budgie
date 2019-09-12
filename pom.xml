@@ -6,7 +6,7 @@
 
     <groupId>io.geekmind</groupId>
     <artifactId>budgie</artifactId>
-    <version>0.6.5</version>
+    <version>0.6.6</version>
     <name>Budgie</name>
     <description>Simple and minimalist personal budget manager.</description>
 
