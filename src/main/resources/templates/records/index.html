@@ -160,7 +160,7 @@
                                         th:text="${#numbers.formatDecimal(record.recordValue, 0, 'POINT', 2, 'COMMA')}"
                                         th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></td>
                                     <td class="text-center">
-                                        <div th:if="${record.recordType == 'SingleRecord' OR record.recordType == 'ImportedRecord'}">
+                                        <div th:if="${record.recordType == 'SingleRecord'}">
                                              <div th:replace="fragments/record_delete_button :: SingleRecord(${record.id}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
                                         </div>
                                         <div th:if="${record.recordType == 'TransferRecord'}">

@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+    <body style="padding-top: 120px;">
+        <div th:replace="fragments/navbar :: navbar"></div>
+        <div class="container-fluid">
+             <div class="row mb-3">
+                <div class="col">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
+                        <li class="breadcrumb-item active">Budget</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-9 col-sm-12">
+                    <h1>Available Template Records</h1>
+                </div>
+                <div class="col-md-3 col-sm-12 text-right align-self-end">
+                    <a th:href="@{/budget/new}" class="btn btn-primary" title="Shows the form to create a new template record.">New Record</a>
+                </div>
+            </div>
+
+            <div class="row mt-4 mb-3">
+                <div class="col">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item" th:each="account: ${availableAccounts}">
+                            <a class="nav-link"
+                               th:href="@{'/budget'(accountId=${account.id})}"
+                               th:text="${account.name}"
+                               th:classappend="${account.id} == ${selectedAccount.id} ? active : ''"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row" th:if="${#lists.isEmpty(availableRecords)}">
+                <div class="col">
+                    <div class="jumbotron">
+                        <h2>No template record found.</h2>
+                        <p class="lead">There is no template record for this account yet.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12" th:if="${not #lists.isEmpty(availableRecords)}">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="text-center" style="width:70px;max-width:70px;">Date</th>
+                            <th>Description</th>
+                            <th class="text-center" style="width:150px;max-width:150px;">Value</th>
+                            <th style="width:70px;max-width:70px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="record: ${availableRecords}">
+                            <td class="text-center" th:text="${#temporals.format(record.recordDate,'dd')}"></td>
+                            <td>
+                                <span th:text="${record.description}"></span>
+                                <span class="badge badge-pill badge-dark" th:text="${record.category.name}"></span>
+                            </td>
+                            <td class="text-right"
+                                th:text="${#numbers.formatDecimal(record.recordValue, 0, 'POINT', 2, 'COMMA')}"
+                                th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></td>
+                            <td class="text-center">
+                                <a  th:href="@{'/budget/delete/{id}'(id=${record.id})}"
+                                    title="Remove the budget template record."
+                                    onclick="return confirm('Do you really want to remove the budget template record?\n It won\'t remove the records created based on this record.');"
+                                    class="btn btn-danger btn-sm">
+                                        <span class="fa fa-trash-alt"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div th:replace="fragments/footer :: footer"></div>
+    </body>
+</html>
