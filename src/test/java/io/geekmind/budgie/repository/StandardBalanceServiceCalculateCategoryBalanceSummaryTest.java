@@ -17,7 +17,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class StandardBalanceServiceCalculateCategoryBalanceSummaryTest {
 
-    private StandardBalanceService balanceService = new StandardBalanceService(null, null, null);
+    private StandardBalanceService balanceService = new StandardBalanceService(null, null, null, null);
     private ExistingCategory fakeDwelling;
     private ExistingCategory fakeInsurance;
     private ExistingCategory fakeSalary;

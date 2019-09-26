@@ -45,7 +45,7 @@ public class StandardBalanceServicePeriodIntervalFilterTest {
             this.endOfPeriodRecord,
             this.afterPeriodRecord
         ).filter(
-            new StandardBalanceService(null, null, null)
+            new StandardBalanceService(null, null, null, null)
                 .periodIntervalFilter(LocalDate.now(), LocalDate.now().plusDays(2L))
         ).collect(Collectors.toList());
     }

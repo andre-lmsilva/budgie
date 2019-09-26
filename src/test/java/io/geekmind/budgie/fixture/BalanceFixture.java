@@ -12,6 +12,7 @@ public class BalanceFixture {
         balance.setSummary(BalanceSummaryFixture.get());
         balance.setAccount(ExistingAccountFixture.getMainAccount());
         balance.setRecords(new ArrayList<>());
+        balance.setApplicableBudgetTemplateRecords(new ArrayList<>());
         return balance;
     }
 }

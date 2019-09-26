@@ -10,7 +10,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class StandardBalanceServiceCalculatePeriodBillingDateTest {
 
-    private StandardBalanceService balanceService = new StandardBalanceService(null, null, null);
+    private StandardBalanceService balanceService = new StandardBalanceService(null, null, null, null);
 
     @Test
     public void calculatePeriodBillingDate_WhenTheBillingDateOccursBeforeThePeriodEndDateDay_AdvanceOneMonth() {

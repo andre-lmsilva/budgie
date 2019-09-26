@@ -26,4 +26,6 @@ public class Balance {
 
     private List<CategoryBalanceSummary> categoryBalanceSummaries;
 
+    private List<ExistingRecord> applicableBudgetTemplateRecords;
+
 }

@@ -13,6 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -66,6 +67,8 @@ public class StandardBalanceServiceGenerateBalanceTest {
         );
         doReturn(fakeCategoryBalanceSummary)
             .when(this.balanceService).calculateCategoryBalanceSummary(eq(fakeRecords), eq(fakeSummary));
+        doReturn(new ArrayList<>())
+            .when(this.balanceService).loadApplicableTemplateRecords(anyInt());
 
         Balance result = this.balanceService.generateBalance(-1, LocalDate.now());
 

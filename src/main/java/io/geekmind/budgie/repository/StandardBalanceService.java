@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.Predicate;
@@ -23,8 +22,6 @@ import java.util.stream.Collectors;
 @Service
 public class StandardBalanceService {
 
-    private final AccountService accountService;
-    private final RecordService recordService;
 
     /**
      * Provides a predicate that will filter a list of {@link ExistingRecord} returning only the records with a positive
@@ -48,14 +45,19 @@ public class StandardBalanceService {
      */
     public static final Predicate<ExistingRecord> ANY_RECORDS_FILTER = (existingRecord -> null != existingRecord.getRecordValue());
 
+    private final AccountService accountService;
+    private final RecordService recordService;
+    private final BudgetTemplateRecordService budgetTemplateRecordService;
     private final MapperFacade mapper;
 
     @Autowired
     public StandardBalanceService(AccountService accountService,
                                   RecordService recordService,
+                                  BudgetTemplateRecordService budgetTemplateRecordService,
                                   MapperFacade mapper) {
         this.accountService = accountService;
         this.recordService = recordService;
+        this.budgetTemplateRecordService = budgetTemplateRecordService;
         this.mapper = mapper;
     }
 
@@ -84,8 +86,9 @@ public class StandardBalanceService {
                 records,
                 balanceSummary
             );
+            List<ExistingRecord> applicableBudgetTemplateRecords = this.loadApplicableTemplateRecords(existingAccount.getId());
 
-            balance = new Balance(existingAccount, balanceDates, records, balanceSummary, categoryBalanceSummaries);
+            balance = new Balance(existingAccount, balanceDates, records, balanceSummary, categoryBalanceSummaries, applicableBudgetTemplateRecords);
         }
         return balance;
     }
@@ -377,5 +380,9 @@ public class StandardBalanceService {
         return refDate.minusMonths(1L)
             .withDayOfMonth(monthStartingAt)
             .minusDays(1L);
+    }
+
+    protected List<ExistingRecord> loadApplicableTemplateRecords(Integer accountId) {
+        return this.budgetTemplateRecordService.loadAllFromAccount(accountId);
     }
 }
