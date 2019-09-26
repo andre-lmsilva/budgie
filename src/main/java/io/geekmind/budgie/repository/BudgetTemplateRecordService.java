@@ -17,14 +17,14 @@ public class BudgetTemplateRecordService {
 
     private final MapperFacade mapper;
     private final BudgetTemplateRecordRepository budgetTemplateRecordRepository;
-    private final BudgetTemplateRecordContainerRepository budgetTemplateRecordContainerRepository;
+    private final BudgetTemplateRecordContainerService budgetTemplateRecordContainerService;
 
     public BudgetTemplateRecordService(MapperFacade mapper,
                                        BudgetTemplateRecordRepository budgetTemplateRecordRepository,
-                                       BudgetTemplateRecordContainerRepository budgetTemplateRecordContainerRepository) {
+                                       BudgetTemplateRecordContainerService budgetTemplateRecordContainerService) {
         this.mapper = mapper;
         this.budgetTemplateRecordRepository = budgetTemplateRecordRepository;
-        this.budgetTemplateRecordContainerRepository = budgetTemplateRecordContainerRepository;
+        this.budgetTemplateRecordContainerService = budgetTemplateRecordContainerService;
     }
 
     public List<ExistingRecord> loadAllFromAccount(Integer accountId) {
@@ -42,7 +42,7 @@ public class BudgetTemplateRecordService {
         );
 
         return this.mapper.map(
-            this.budgetTemplateRecordContainerRepository.save(container).getRecords().get(0),
+            this.budgetTemplateRecordContainerService.save(container).getRecords().get(0),
             ExistingRecord.class
         );
     }
@@ -51,7 +51,7 @@ public class BudgetTemplateRecordService {
         return this.budgetTemplateRecordRepository.findById(id)
             .map(record -> {
                 if (record.getRecordContainer().getRecords().size() == 1) {
-                    this.budgetTemplateRecordContainerRepository.delete((BudgetTemplateRecordContainer)record.getRecordContainer());
+                    this.budgetTemplateRecordContainerService.remove(record.getRecordContainer().getId());
                 } else {
                     this.budgetTemplateRecordRepository.delete(record);
                 }
@@ -59,5 +59,8 @@ public class BudgetTemplateRecordService {
             });
     }
 
-
+    public Optional<ExistingRecord> loadById(Integer id) {
+        return this.budgetTemplateRecordRepository.findById(id)
+            .map(record -> this.mapper.map(record, ExistingRecord.class));
+    }
 }

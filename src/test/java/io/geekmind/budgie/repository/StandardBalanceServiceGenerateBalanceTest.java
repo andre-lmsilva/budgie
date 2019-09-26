@@ -68,7 +68,7 @@ public class StandardBalanceServiceGenerateBalanceTest {
         doReturn(fakeCategoryBalanceSummary)
             .when(this.balanceService).calculateCategoryBalanceSummary(eq(fakeRecords), eq(fakeSummary));
         doReturn(new ArrayList<>())
-            .when(this.balanceService).loadApplicableTemplateRecords(anyInt());
+            .when(this.balanceService).loadApplicableTemplateRecords(anyInt(), anyList());
 
         Balance result = this.balanceService.generateBalance(-1, LocalDate.now());
 

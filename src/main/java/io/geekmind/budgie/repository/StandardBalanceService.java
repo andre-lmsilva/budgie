@@ -86,7 +86,10 @@ public class StandardBalanceService {
                 records,
                 balanceSummary
             );
-            List<ExistingRecord> applicableBudgetTemplateRecords = this.loadApplicableTemplateRecords(existingAccount.getId());
+            List<ExistingRecord> applicableBudgetTemplateRecords = this.loadApplicableTemplateRecords(
+                existingAccount.getId(),
+                records
+            );
 
             balance = new Balance(existingAccount, balanceDates, records, balanceSummary, categoryBalanceSummaries, applicableBudgetTemplateRecords);
         }
@@ -382,7 +385,16 @@ public class StandardBalanceService {
             .minusDays(1L);
     }
 
-    protected List<ExistingRecord> loadApplicableTemplateRecords(Integer accountId) {
-        return this.budgetTemplateRecordService.loadAllFromAccount(accountId);
+    protected List<ExistingRecord> loadApplicableTemplateRecords(Integer accountId, List<ExistingRecord> balanceRecords) {
+        List<Integer> alreadyAppliedBudgetTemplateRecords = balanceRecords
+            .stream()
+            .filter(record -> record.getContainerId() != null)
+            .map(ExistingRecord::getContainerId)
+            .collect(Collectors.toList());
+
+        return this.budgetTemplateRecordService.loadAllFromAccount(accountId)
+            .stream()
+            .filter(record -> !alreadyAppliedBudgetTemplateRecords.contains(record.getContainerId()))
+            .collect(Collectors.toList());
     }
 }

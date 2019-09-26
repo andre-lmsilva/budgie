@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
 /**
  * Provides all the required capabilities to manage planned incomes and expenses and replicate them across periods.
  *

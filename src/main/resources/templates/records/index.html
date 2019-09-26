@@ -164,7 +164,7 @@
                                                 th:text="${#numbers.formatDecimal(budgetTemplateRecord.recordValue, 0, 'POINT', 2, 'COMMA')}"
                                                 th:classappend="${budgetTemplateRecord.recordValue} > 0 ? text-info : text-danger"></td>
                                             <td class="text-center">
-                                                <a th:href="@{'/budget/apply/{id}'(id=${budgetTemplateRecord.id},periodStartDate=${balance.balanceDates.periodStartDate},periodEndDate=${balance.balanceDates.periodEndDate})}"
+                                                <a th:href="@{'/budgetRecords/apply/{id}'(id=${budgetTemplateRecord.id},periodStartDate=${balance.balanceDates.periodStartDate},periodEndDate=${balance.balanceDates.periodEndDate})}"
                                                    title="Create a new balance record in this account and period based on this budget template record."
                                                    class="btn btn-info btn-sm">
                                                     <span class="fa fa-check"></span>
@@ -195,7 +195,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="record: ${balance.records}">
+                                        <tr th:each="record: ${balance.records}" th:class="${record.recordType} == 'BudgetRecord' ? table-info : ''">
                                             <td class="text-center" th:text="${#temporals.format(record.recordDate,'dd')}"></td>
                                             <td>
                                                 <a  th:if="${!#strings.equals(record.recordType, 'TransferRecord')}"
