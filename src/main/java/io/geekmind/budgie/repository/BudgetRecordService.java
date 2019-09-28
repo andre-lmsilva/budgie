@@ -5,6 +5,7 @@ import io.geekmind.budgie.model.entity.BudgetRecord;
 import io.geekmind.budgie.model.entity.BudgetTemplateRecordContainer;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -49,6 +50,20 @@ public class BudgetRecordService {
                     this.budgetRecordRepository.save(budgetRecord),
                     ExistingRecord.class
                 );
+            });
+    }
+
+    @Transactional
+    public Optional<ExistingRecord> remove(Integer budgetRecordId) {
+        return this.budgetRecordRepository.findById(budgetRecordId)
+            .map(record -> {
+                if (record.getRecordContainer().getRecords().size() == 1) {
+                    this.budgetTemplateRecordContainerService.remove(record.getRecordContainer().getId());
+                } else {
+                    record.getRecordContainer().getRecords().remove(record);
+                    this.budgetTemplateRecordContainerService.save((BudgetTemplateRecordContainer)record.getRecordContainer());
+                }
+                return this.mapper.map(record, ExistingRecord.class);
             });
     }
 

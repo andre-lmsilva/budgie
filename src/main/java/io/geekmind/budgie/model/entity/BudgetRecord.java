@@ -10,6 +10,7 @@ import javax.persistence.Entity;
  *
  * @author Andre Silva
  */
+@Data
 @Entity
 @EqualsAndHashCode(callSuper = true)
 public class BudgetRecord extends ContainerRecord {

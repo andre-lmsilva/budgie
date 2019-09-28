@@ -74,35 +74,44 @@
             </div>
 
             <div class="row" th:if="${not #lists.isEmpty(balance.records)} or ${not #lists.isEmpty(balance.applicableBudgetTemplateRecords)}">
-                <div class="col-sm-12 col-md-3">
-                    <div class="card text-white bg-primary mb-3">
-                        <div class="card-header">Current Balance</div>
-                        <div class="card-body text-right">
-                            <h4 class="card-title" th:text="${#numbers.formatDecimal(balance.summary.balanceUpToDate, 0, 'POINT', 2, 'COMMA')}"></h4>
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <h2>Summary</h2>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-12 col-md-3">
-                    <div class="card text-white bg-primary mb-3">
-                        <div class="card-header">Final Balance</div>
-                        <div class="card-body text-right">
-                            <h4 class="card-title" th:text="${#numbers.formatDecimal(balance.summary.finalBalance, 0, 'POINT', 2, 'COMMA')}"></h4>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-3">
+                            <div class="card text-white bg-primary mb-3">
+                                <div class="card-header">Current Balance</div>
+                                <div class="card-body text-right">
+                                    <h4 class="card-title" th:text="${#numbers.formatDecimal(balance.summary.balanceUpToDate, 0, 'POINT', 2, 'COMMA')}"></h4>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-sm-12 col-md-3">
-                    <div class="card text-white bg-primary mb-3">
-                        <div class="card-header">Incomes</div>
-                        <div class="card-body text-right">
-                            <h4 class="card-title" th:text="${#numbers.formatDecimal(balance.summary.totalIncomes, 0, 'POINT', 2, 'COMMA')}"></h4>
+                        <div class="col-sm-12 col-md-3">
+                            <div class="card text-white bg-primary mb-3">
+                                <div class="card-header">Final Balance</div>
+                                <div class="card-body text-right">
+                                    <h4 class="card-title" th:text="${#numbers.formatDecimal(balance.summary.finalBalance, 0, 'POINT', 2, 'COMMA')}"></h4>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-sm-12 col-md-3">
-                    <div class="card text-white bg-primary mb-3">
-                        <div class="card-header">Expenses</div>
-                        <div class="card-body text-right">
-                            <h4 class="card-title" th:text="${#numbers.formatDecimal(balance.summary.totalExpenses, 0, 'POINT', 2, 'COMMA')}"></h4>
+                        <div class="col-sm-12 col-md-3">
+                            <div class="card text-white bg-primary mb-3">
+                                <div class="card-header">Incomes</div>
+                                <div class="card-body text-right">
+                                    <h4 class="card-title" th:text="${#numbers.formatDecimal(balance.summary.totalIncomes, 0, 'POINT', 2, 'COMMA')}"></h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-3">
+                            <div class="card text-white bg-primary mb-3">
+                                <div class="card-header">Expenses</div>
+                                <div class="card-body text-right">
+                                    <h4 class="card-title" th:text="${#numbers.formatDecimal(balance.summary.totalExpenses, 0, 'POINT', 2, 'COMMA')}"></h4>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -217,6 +226,9 @@
                                                 </div>
                                                 <div th:if="${record.recordType == 'InstalmentRecord'}">
                                                     <div th:replace="fragments/record_delete_button :: InstalmentRecord(${record.id}, ${record.containerId}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
+                                                </div>
+                                                 <div th:if="${record.recordType == 'BudgetRecord'}">
+                                                     <div th:replace="fragments/record_delete_button :: BudgetRecord(${record.id}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
                                                 </div>
                                             </td>
                                         </tr>

@@ -375,6 +375,7 @@ public class StandardBalanceService {
 
         return categorySummaries.values()
             .stream()
+            .filter(categoryBalanceSummary -> categoryBalanceSummary.getCategory().getId() != -1)
             .sorted(Comparator.comparing(CategoryBalanceSummary::getBalance))
             .collect(Collectors.toList());
     }

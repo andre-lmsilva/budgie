@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/transfers")
@@ -34,7 +35,11 @@ public class TransferControllerImpl {
     public ModelAndView showNewForm(ModelAndView requestContext) {
         requestContext.addObject("availableCategories", this.categoryService.loadAll());
         requestContext.addObject("availableAccounts", this.accountService.loadNonDependantAccounts());
-        requestContext.addObject("newTransfer", new NewTransfer());
+
+        NewTransfer newTransfer = new NewTransfer();
+        newTransfer.setTransferDate(LocalDate.now());
+
+        requestContext.addObject("newTransfer", newTransfer);
         requestContext.setViewName("transfers/new.form");
         return requestContext;
     }

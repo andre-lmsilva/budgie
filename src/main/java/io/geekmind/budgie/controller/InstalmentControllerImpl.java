@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/instalments")
@@ -34,7 +35,9 @@ public class InstalmentControllerImpl {
     public ModelAndView showNewForm(ModelAndView requestContext) {
         requestContext.addObject("availableAccounts", this.accountService.loadAll());
         requestContext.addObject("availableCategories", this.categoryService.loadAll());
-        requestContext.addObject("newInstalment", new NewInstalment());
+        NewInstalment newInstalment = new NewInstalment();
+        newInstalment.setStartingAt(LocalDate.now());
+        requestContext.addObject("newInstalment", newInstalment);
         requestContext.setViewName("instalments/new.form");
         return requestContext;
     }
