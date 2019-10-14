@@ -10,4 +10,7 @@ public class ExistingCategoryFixture {
         return new ExistingCategory(-1, "Fake category", "Fake category used exclusively for test purposes.", BigDecimal.ZERO);
     }
 
+    public static ExistingCategory getFuel() {
+        return new ExistingCategory(-2, "Fake Fuel", "Fake fuel expenses category.", BigDecimal.ZERO);
+    }
 }
