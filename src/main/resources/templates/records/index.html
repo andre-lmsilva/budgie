@@ -207,10 +207,15 @@
                                         <tr th:each="record: ${balance.records}" th:class="${record.recordType} == 'BudgetRecord' ? table-info : ''">
                                             <td class="text-center" th:text="${#temporals.format(record.recordDate,'dd')}"></td>
                                             <td>
-                                                <a  th:if="${!#strings.equals(record.recordType, 'TransferRecord')}"
+                                                <a  th:if="${!#strings.equals(record.recordType, 'TransferRecord') && !#strings.equals(record.recordType, 'DependantAccountRecord')}"
                                                     th:href="@{/records/edit/{id}(id=${record.id})}"
                                                     th:text="${record.description}"
                                                     title="Edit record."></a>
+                                                <a  th:if="${#strings.equals(record.recordType, 'DependantAccountRecord')}"
+                                                    th:href="@{'/records'(accountId=${record.account.id},referenceDate=${record.periodStartDate})}"
+                                                    th:text="${record.description}"
+                                                    title="Show account balance."
+                                                    target="_blank"></a>
                                                 <span th:if="${#strings.equals(record.recordType, 'TransferRecord')}" th:text="${record.description}"></span>
                                                 <span class="text-small" th:if="${record.bankStatementId != null}" th:title="${record.bankStatementId}">
                                                     <i class="fas fa-info-circle"></i>

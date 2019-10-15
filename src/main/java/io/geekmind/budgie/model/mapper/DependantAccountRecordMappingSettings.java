@@ -34,8 +34,10 @@ public class DependantAccountRecordMappingSettings implements OrikaMapperFactory
                     @Override
                     public void mapAtoB(Balance balance, DependantAccountRecord dependantAccountRecord, MappingContext context) {
                         super.mapAtoB(balance, dependantAccountRecord, context);
+                        dependantAccountRecord.setRecordType(DependantAccountRecord.class.getSimpleName());
                         dependantAccountRecord.setId(-1);
                         dependantAccountRecord.setRecordDate(balance.getBalanceDates().getPeriodBillingDate());
+                        dependantAccountRecord.setPeriodStartDate(balance.getBalanceDates().getPeriodStartDate());
                         dependantAccountRecord.setRecordValue(balance.getSummary().getFinalBalance());
                         dependantAccountRecord.setCategory(accountBalanceCategory);
                         dependantAccountRecord.setAccount(balance.getAccount());

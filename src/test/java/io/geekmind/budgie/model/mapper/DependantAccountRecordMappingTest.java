@@ -40,8 +40,10 @@ public class DependantAccountRecordMappingTest {
         );
 
         assertThat(result)
+            .hasFieldOrPropertyWithValue("recordType", DependantAccountRecord.class.getSimpleName())
             .hasFieldOrPropertyWithValue("id", -1)
             .hasFieldOrPropertyWithValue("recordDate", fakeBalance.getBalanceDates().getPeriodBillingDate())
+            .hasFieldOrPropertyWithValue("periodStartDate", fakeBalance.getBalanceDates().getPeriodStartDate())
             .hasFieldOrPropertyWithValue("recordValue", fakeBalance.getSummary().getFinalBalance())
             .hasFieldOrPropertyWithValue("account", fakeBalance.getAccount())
             .hasFieldOrPropertyWithValue("description", expectedDescription)
