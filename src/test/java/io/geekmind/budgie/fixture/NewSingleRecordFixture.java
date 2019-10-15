@@ -13,7 +13,8 @@ public class NewSingleRecordFixture {
             -1,
             -99,
             "Fake Single Record",
-            BigDecimal.valueOf(3.1415D)
+            BigDecimal.valueOf(3.1415D),
+            "fakeBankStatementId"
         );
     }
 }

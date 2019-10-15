@@ -166,7 +166,7 @@
                                         <tr th:each="budgetTemplateRecord: ${balance.applicableBudgetTemplateRecords}">
                                             <td class="text-center" th:text="${#temporals.format(budgetTemplateRecord.recordDate,'dd')}"></td>
                                             <td>
-                                                <span th:text="${budgetTemplateRecord.description}"></span>
+                                                <span th:text="${budgetTemplateRecord.description}"></span><br/>
                                                 <span class="badge badge-pill badge-dark" th:text="${budgetTemplateRecord.category.name}"></span>
                                             </td>
                                             <td class="text-right"
@@ -212,6 +212,9 @@
                                                     th:text="${record.description}"
                                                     title="Edit record."></a>
                                                 <span th:if="${#strings.equals(record.recordType, 'TransferRecord')}" th:text="${record.description}"></span>
+                                                <span class="text-small" th:if="${record.bankStatementId != null}" th:title="${record.bankStatementId}">
+                                                    <i class="fas fa-info-circle"></i>
+                                                </span><br/>
                                                 <span class="badge badge-pill badge-dark" th:text="${record.category.name}"></span>
                                             </td>
                                             <td class="text-right"

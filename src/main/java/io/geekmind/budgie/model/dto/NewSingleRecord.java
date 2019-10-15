@@ -32,4 +32,7 @@ public class NewSingleRecord {
     @NotNull
     private BigDecimal recordValue;
 
+    @Size(max = 140)
+    private String bankStatementId;
+
 }

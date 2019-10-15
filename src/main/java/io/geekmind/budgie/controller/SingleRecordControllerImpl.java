@@ -57,7 +57,8 @@ public class SingleRecordControllerImpl {
             accountId,
             null,
             recordDescription,
-            recordValue
+            recordValue,
+            null
         );
         requestContext.addObject("newSingleRecord", newSingleRecord);
         requestContext.addObject("availableAccounts", this.accountService.loadAll());

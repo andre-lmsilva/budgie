@@ -39,4 +39,8 @@ public abstract class Record {
     @Type(type = "encryptedDecimalField")
     private BigDecimal recordValue;
 
+    @Size(max = 140)
+    @Type(type = "encryptedTextField")
+    private String bankStatementId;
+
 }

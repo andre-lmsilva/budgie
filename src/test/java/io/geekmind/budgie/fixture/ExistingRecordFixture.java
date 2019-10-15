@@ -15,6 +15,7 @@ public class ExistingRecordFixture {
         existingRecord.setDescription("Fake record.");
         existingRecord.setId(-1);
         existingRecord.setRecordValue(value);
+        existingRecord.setBankStatementId("fakeBankStatementId");
         return existingRecord;
     }
 

@@ -38,4 +38,7 @@ public class ExistingRecord {
     private String recordType;
 
     private Integer containerId;
+
+    @Size(max = 140)
+    private String bankStatementId;
 }
