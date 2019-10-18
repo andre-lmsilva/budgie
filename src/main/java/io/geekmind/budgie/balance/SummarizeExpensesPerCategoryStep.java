@@ -1,6 +1,7 @@
 package io.geekmind.budgie.balance;
 
 import io.geekmind.budgie.model.dto.*;
+import io.geekmind.budgie.model.entity.Account;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +10,8 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -62,10 +65,7 @@ public class SummarizeExpensesPerCategoryStep extends BaseBalanceCalculationStep
         return records
             .stream()
             .collect(
-                Collectors.groupingBy(
-                    ExistingRecord::getCategory,
-                    Collectors.reducing(BigDecimal.ZERO, ExistingRecord::getRecordValue, BigDecimal::add)
-                )
+                Collectors.groupingBy(ExistingRecord::getCategory)
             )
             .entrySet()
             .stream()
@@ -81,13 +81,27 @@ public class SummarizeExpensesPerCategoryStep extends BaseBalanceCalculationStep
      * values properly filled in the attributes.
      *
      * @param category                  Category having its records summarized for the period.
-     * @param balance                   Sum of all expense records classified with the category in the period.
+     * @param records                   Records assigned to the received category.
      * @param totalExpensesInBalance    Sum of all expense records in the period.
      * @return A new instance of {@link CategoryBalanceSummary} filled with the calculated summary values.
      */
-    protected CategoryBalanceSummary createSummary(ExistingCategory category, BigDecimal balance, BigDecimal totalExpensesInBalance) {
+    protected CategoryBalanceSummary createSummary(ExistingCategory category, List<ExistingRecord> records, BigDecimal totalExpensesInBalance) {
         BigDecimal maxExpenses = BigDecimal.ZERO;
         BigDecimal maxExpensesConsumption = BigDecimal.ZERO;
+
+        Map<String, BigDecimal> balanceBreakDown = records
+            .stream()
+            .collect(
+                Collectors.groupingBy(
+                    (ExistingRecord record) -> record.getAccount().getName(),
+                    Collectors.reducing(BigDecimal.ZERO, ExistingRecord::getRecordValue, BigDecimal::add)
+                )
+            );
+
+        BigDecimal balance = balanceBreakDown.values()
+            .stream()
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+
 
         if (null != category.getMaxExpenses() && category.getMaxExpenses().compareTo(BigDecimal.ZERO) != 0) {
             maxExpenses = category.getMaxExpenses();
@@ -104,7 +118,8 @@ public class SummarizeExpensesPerCategoryStep extends BaseBalanceCalculationStep
             balance,
             expensesConsumptionPercentage,
             maxExpensesConsumption,
-            maxExpenses
+            maxExpenses,
+            balanceBreakDown
         );
     }
 

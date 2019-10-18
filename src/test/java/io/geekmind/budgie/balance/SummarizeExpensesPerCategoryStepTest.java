@@ -2,6 +2,7 @@ package io.geekmind.budgie.balance;
 
 import io.geekmind.budgie.fixture.BalanceCalculationRequestFixture;
 import io.geekmind.budgie.fixture.BalanceFixture;
+import io.geekmind.budgie.fixture.ExistingAccountFixture;
 import io.geekmind.budgie.fixture.ExistingCategoryFixture;
 import io.geekmind.budgie.fixture.ExistingRecordFixture;
 import io.geekmind.budgie.model.dto.Balance;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
@@ -66,7 +68,10 @@ public class SummarizeExpensesPerCategoryStepTest {
         BigDecimal balance = BigDecimal.valueOf(10D).negate();
         BigDecimal totalExpenses = BigDecimal.valueOf(100D).negate();
 
-        CategoryBalanceSummary result = this.step.createSummary(category, balance, totalExpenses);
+        ExistingRecord singleRecord = ExistingRecordFixture.getWithValue(balance);
+        List<ExistingRecord> records = Collections.singletonList(singleRecord);
+
+        CategoryBalanceSummary result = this.step.createSummary(category, records, totalExpenses);
 
         assertThat(result)
             .hasFieldOrPropertyWithValue("category", category)
@@ -74,6 +79,9 @@ public class SummarizeExpensesPerCategoryStepTest {
             .hasFieldOrPropertyWithValue("expensesConsumptionPercentage", balance.divide(totalExpenses, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100D)))
             .hasFieldOrPropertyWithValue("maxExpensesConsumption", BigDecimal.ZERO)
             .hasFieldOrPropertyWithValue("maxExpenses", BigDecimal.ZERO);
+
+        assertThat(result.getBalanceBreakDown())
+            .containsEntry(singleRecord.getAccount().getName(), singleRecord.getRecordValue());
     }
 
     @Test
@@ -83,7 +91,11 @@ public class SummarizeExpensesPerCategoryStepTest {
         BigDecimal balance = BigDecimal.valueOf(10D).negate();
         BigDecimal totalExpenses = BigDecimal.valueOf(100D).negate();
 
-        CategoryBalanceSummary result = this.step.createSummary(category, balance, totalExpenses);
+        List<ExistingRecord> records = Collections.singletonList(
+            ExistingRecordFixture.getWithValue(balance)
+        );
+
+        CategoryBalanceSummary result = this.step.createSummary(category, records, totalExpenses);
 
         assertThat(result)
             .hasFieldOrPropertyWithValue("category", category)
@@ -91,6 +103,29 @@ public class SummarizeExpensesPerCategoryStepTest {
             .hasFieldOrPropertyWithValue("expensesConsumptionPercentage", balance.divide(totalExpenses, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100D)))
             .hasFieldOrPropertyWithValue("maxExpensesConsumption", balance.divide(category.getMaxExpenses(), RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100D)))
             .hasFieldOrPropertyWithValue("maxExpenses", category.getMaxExpenses());
+    }
+
+    @Test
+    public void createSummary_withRecordsOfMultipleAccounts_FillTheBalanceBreakdownGroupingByAccount() {
+        ExistingCategory category = ExistingCategoryFixture.get();
+        category.setMaxExpenses(BigDecimal.valueOf(20D).negate());
+        BigDecimal totalExpenses = BigDecimal.valueOf(100D).negate();
+
+        ExistingRecord mainAccountRecord = ExistingRecordFixture.getWithValue(BigDecimal.valueOf(100D).negate());
+        ExistingRecord savingsAccountRecord = ExistingRecordFixture.getWithValue(BigDecimal.valueOf(200D).negate());
+        savingsAccountRecord.setAccount(ExistingAccountFixture.getSavingsAccount());
+
+        List<ExistingRecord> records = Arrays.asList(mainAccountRecord, savingsAccountRecord);
+
+        CategoryBalanceSummary result = this.step.createSummary(category, records, totalExpenses);
+
+        assertThat(result.getBalance())
+            .isEqualTo(mainAccountRecord.getRecordValue().add(savingsAccountRecord.getRecordValue()));
+
+        assertThat(result.getBalanceBreakDown())
+            .hasSize(2)
+            .containsEntry(mainAccountRecord.getAccount().getName(), mainAccountRecord.getRecordValue())
+            .containsEntry(savingsAccountRecord.getAccount().getName(), savingsAccountRecord.getRecordValue());
     }
 
     @Test
@@ -104,7 +139,7 @@ public class SummarizeExpensesPerCategoryStepTest {
         doReturn(fakeSummary)
             .when(this.step).createSummary(
                 eq(firstRecord.getCategory()),
-                eq(firstRecord.getRecordValue().add(secondRecord.getRecordValue())),
+                anyList(),
                 eq(totalExpenses)
         );
 
@@ -116,7 +151,7 @@ public class SummarizeExpensesPerCategoryStepTest {
         assertThat(result).containsOnly(fakeSummary);
         verify(this.step).createSummary(
             eq(firstRecord.getCategory()),
-            eq(firstRecord.getRecordValue().add(secondRecord.getRecordValue())),
+            anyList(),
             eq(totalExpenses)
         );
     }
@@ -135,7 +170,7 @@ public class SummarizeExpensesPerCategoryStepTest {
         doReturn(firstSummary)
             .when(this.step).createSummary(
                 eq(firstRecord.getCategory()),
-                eq(firstRecord.getRecordValue()),
+                anyList(),
                 eq(totalExpenses)
         );
 
@@ -144,7 +179,7 @@ public class SummarizeExpensesPerCategoryStepTest {
         doReturn(secondSummary)
             .when(this.step).createSummary(
                 eq(secondRecord.getCategory()),
-                eq(secondRecord.getRecordValue()),
+                anyList(),
                 eq(totalExpenses)
         );
 
@@ -156,13 +191,13 @@ public class SummarizeExpensesPerCategoryStepTest {
         assertThat(result).containsExactly(secondSummary, firstSummary);
         verify(this.step).createSummary(
             eq(firstRecord.getCategory()),
-            eq(firstRecord.getRecordValue()),
+            anyList(),
             eq(totalExpenses)
         );
 
         verify(this.step).createSummary(
             eq(secondRecord.getCategory()),
-            eq(secondRecord.getRecordValue()),
+            anyList(),
             eq(totalExpenses)
         );
     }
@@ -178,7 +213,7 @@ public class SummarizeExpensesPerCategoryStepTest {
         doReturn(fakeSummary)
             .when(this.step).createSummary(
                 eq(firstRecord.getCategory()),
-                eq(firstRecord.getRecordValue().add(secondRecord.getRecordValue())),
+                anyList(),
                 eq(totalExpenses)
         );
 
