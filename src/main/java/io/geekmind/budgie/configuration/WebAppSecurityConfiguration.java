@@ -24,7 +24,7 @@ public class WebAppSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .requiresChannel().anyRequest().requiresSecure()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/images/**", "/webjars/**").permitAll()
+                .antMatchers("/", "/images/**", "/webjars/**", "/css/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

@@ -31,8 +31,19 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row d-md-none d-sm-inline">
                 <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <h4 th:text="|${balance.account.name} Summary|"></h4>
+                        </div>
+                    </div>
+                    <div class="row" th:replace="fragments/balance_summary :: HorizontalLayout(${balance.summary})"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 col-md-9">
                     <form action="#" th:object="${newSingleRecord}" th:action="@{/single_records/create}" method="post">
                         <fieldset>
                             <legend>Record Details</legend>
@@ -72,7 +83,7 @@
                             <div class="form-row">
                                 <div class="form-group col">
                                     <label for="bankStatementId">Bank Statement ID:</label>
-                                    <input type="text" class="form-control" th:field="*{bankStatementId}" placeholder="Bank statement identifier" th:appendclass="${#fields.hasErrors('bankStatementId')} ? is-invalid : ''" required/>
+                                    <input type="text" class="form-control" th:field="*{bankStatementId}" placeholder="Bank statement identifier" th:appendclass="${#fields.hasErrors('bankStatementId')} ? is-invalid : ''"/>
                                     <div class="invalid-feedback" th:if="${#fields.hasErrors('bankStatementId')}" th:errors="*{bankStatementId}"></div>
                                 </div>
                             </div>
@@ -84,6 +95,16 @@
                             </div>
                         </fieldset>
                     </form>
+                </div>
+                <div class="col-md-3 d-sm-none d-md-inline">
+                    <div class="row">
+                        <div class="col">
+                            <h4 th:text="|${balance.account.name} Summary|"></h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col" th:include="fragments/balance_summary.html :: VerticalLayout(${balance.summary})"></div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -4,6 +4,7 @@ import io.geekmind.budgie.model.dto.NewSingleRecord;
 import io.geekmind.budgie.repository.AccountService;
 import io.geekmind.budgie.repository.CategoryService;
 import io.geekmind.budgie.repository.SingleRecordService;
+import io.geekmind.budgie.repository.StandardBalanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,15 +31,19 @@ public class SingleRecordControllerImpl {
     private final AccountService accountService;
     private final CategoryService categoryService;
     private final SingleRecordService singleRecordService;
+    private final StandardBalanceService balanceService;
+
     private DateTimeFormatter dateFormatter;
 
     @Autowired
     public SingleRecordControllerImpl(AccountService accountService,
                                       CategoryService categoryService,
-                                      SingleRecordService singleRecordService) {
+                                      SingleRecordService singleRecordService,
+                                      StandardBalanceService balanceService) {
         this.accountService = accountService;
         this.categoryService = categoryService;
         this.singleRecordService = singleRecordService;
+        this.balanceService = balanceService;
     }
 
     @PostConstruct
@@ -61,6 +66,7 @@ public class SingleRecordControllerImpl {
             null
         );
         requestContext.addObject("newSingleRecord", newSingleRecord);
+        requestContext.addObject("balance", this.balanceService.generateBalance(accountId, recordDate));
         requestContext.addObject("availableAccounts", this.accountService.loadAll());
         requestContext.addObject("availableCategories", this.categoryService.loadAll());
         requestContext.setViewName("single_records/new.form");

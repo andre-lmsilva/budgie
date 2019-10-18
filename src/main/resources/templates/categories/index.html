@@ -64,7 +64,7 @@
                                         <span th:if="${category.maxExpenses != null and category.maxExpenses < 0}">
                                             <br/>
                                             <small class="text-mutted">
-                                                Expenses monthly limited to <span class="text-danger">$<span th:text="${#numbers.formatDecimal(category.maxExpenses * -1, 0, 'POINT', 2, 'COMMA')}"></span></span>.
+                                                Expenses monthly limited to <span class="text-danger">$<span th:text="${#numbers.formatDecimal(category.maxExpenses * -1, 1, 'POINT', 2, 'COMMA')}"></span></span>.
                                             </small>
                                         </span>
                                     </td>

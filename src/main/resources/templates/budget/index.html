@@ -64,7 +64,7 @@
                                 <span class="badge badge-pill badge-dark" th:text="${record.category.name}"></span>
                             </td>
                             <td class="text-right"
-                                th:text="${#numbers.formatDecimal(record.recordValue, 0, 'POINT', 2, 'COMMA')}"
+                                th:text="${#numbers.formatDecimal(record.recordValue, 1, 'POINT', 2, 'COMMA')}"
                                 th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></td>
                             <td class="text-center">
                                 <a  th:href="@{'/budget/delete/{id}'(id=${record.id})}"

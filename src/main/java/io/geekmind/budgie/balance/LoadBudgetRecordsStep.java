@@ -5,6 +5,7 @@ import io.geekmind.budgie.model.dto.ExistingRecord;
 import io.geekmind.budgie.repository.BudgetTemplateRecordService;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,6 +56,9 @@ public class LoadBudgetRecordsStep extends BaseBalanceCalculationStep {
         return null != balanceCalculationRequest &&
                 null != balanceCalculationRequest.getBalance() &&
                 null != balanceCalculationRequest.getBalance().getAccount() &&
-                null != balanceCalculationRequest.getBalance().getRecords();
+                null != balanceCalculationRequest.getBalance().getRecords() &&
+                null != balanceCalculationRequest.getBalance().getBalanceDates() &&
+                null != balanceCalculationRequest.getBalance().getBalanceDates().getPeriodEndDate() &&
+                balanceCalculationRequest.getBalance().getBalanceDates().getPeriodEndDate().compareTo(LocalDate.now()) >= 0;
     }
 }

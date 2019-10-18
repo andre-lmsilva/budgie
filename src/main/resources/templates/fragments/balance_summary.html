@@ -1,0 +1,40 @@
+<div xmlns:th="http://www.thymeleaf.org" class="col-sm-12 col-md-3" th:fragment="BalanceCard(title, value)">
+    <div class="card text-white bg-dark mb-3">
+        <div class="card-header" th:text="${title}"></div>
+        <div class="card-body text-right">
+            <h4 class="card-title" th:text="${value}"></h4>
+        </div>
+    </div>
+</div>
+
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="HorizontalLayout(summary)">
+    <div class="row">
+        <div class="col-sm-12 col-md-3"
+             th:include="fragments/balance_summary.html :: BalanceCard('Current Balance',${#numbers.formatDecimal(summary.balanceUpToDate, 1, 'POINT', 2, 'COMMA')})"></div>
+        <div class="col-sm-12 col-md-3"
+             th:include="fragments/balance_summary.html :: BalanceCard('Final Balance',${#numbers.formatDecimal(summary.finalBalance, 1, 'POINT', 2, 'COMMA')})"></div>
+        <div class="col-sm-12 col-md-3"
+             th:include="fragments/balance_summary.html :: BalanceCard('Incomes',${#numbers.formatDecimal(summary.totalIncomes, 1, 'POINT', 2, 'COMMA')})"></div>
+        <div class="col-sm-12 col-md-3"
+             th:include="fragments/balance_summary.html :: BalanceCard('Expenses',${#numbers.formatDecimal(summary.totalExpenses, 1, 'POINT', 2, 'COMMA')})"></div>
+    </div>
+</div>
+
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="VerticalLayout(summary)">
+    <div class="row">
+         <div class="col"
+             th:include="fragments/balance_summary.html :: BalanceCard('Current Balance',${#numbers.formatDecimal(summary.balanceUpToDate, 1, 'POINT', 2, 'COMMA')})"></div>
+    </div>
+    <div class="row">
+        <div class="col"
+             th:include="fragments/balance_summary.html :: BalanceCard('Final Balance',${#numbers.formatDecimal(summary.finalBalance, 1, 'POINT', 2, 'COMMA')})"></div>
+    </div>
+    <div class="row">
+        <div class="col"
+             th:include="fragments/balance_summary.html :: BalanceCard('Incomes',${#numbers.formatDecimal(summary.totalIncomes, 1, 'POINT', 2, 'COMMA')})"></div>
+    </div>
+    <div class="row">
+        <div class="col"
+             th:include="fragments/balance_summary.html :: BalanceCard('Expenses',${#numbers.formatDecimal(summary.totalExpenses, 1, 'POINT', 2, 'COMMA')})"></div>
+    </div>
+</div>

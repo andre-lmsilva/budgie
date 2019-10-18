@@ -19,7 +19,9 @@ spring:
       ddl-auto: validate
   flyway:
     url: ${spring.datasource.url}
-
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
 server:
   http2:
     enabled: true

@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,7 +53,28 @@ public class LoadBudgetRecordsStepTest {
     }
 
     @Test
-    public void shouldExecute_withAccountAndRecords_ReturnsTrue() {
+    public void shouldExecute_withNullBalanceDates_ReturnsFalse() {
+        BalanceCalculationRequest request = BalanceCalculationRequestFixture.get();
+        request.getBalance().setBalanceDates(null);
+        assertThat(this.step.shouldExecute(request)).isFalse();
+    }
+
+    @Test
+    public void shouldExecute_withNullPeriodEndDate_ReturnsFalse() {
+        BalanceCalculationRequest request = BalanceCalculationRequestFixture.get();
+        request.getBalance().getBalanceDates().setPeriodEndDate(null);
+        assertThat(this.step.shouldExecute(request)).isFalse();
+    }
+
+    @Test
+    public void shouldExecute_withPeriodEndDateInThePast_ReturnsFalse() {
+        BalanceCalculationRequest request = BalanceCalculationRequestFixture.get();
+        request.getBalance().getBalanceDates().setPeriodEndDate(LocalDate.now().minusDays(1));
+        assertThat(this.step.shouldExecute(request)).isFalse();
+    }
+
+    @Test
+    public void shouldExecute_withAccountAndRecordsAndPeriodEndDateNotInThePast_ReturnsTrue() {
         BalanceCalculationRequest request = BalanceCalculationRequestFixture.get();
         assertThat(this.step.shouldExecute(request)).isTrue();
     }
