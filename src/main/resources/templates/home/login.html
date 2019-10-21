@@ -9,11 +9,10 @@
                         <div class="alert alert-info">You have been logged out.</div>
                     </div>
 
-                    <img th:src="@{/images/pig.png}" class="mx-auto d-block" height="128" width="128"/>
+                    <img th:src="@{/images/wallet.png}" class="mx-auto d-block" height="128" width="128"/>
                     <h1 class="text-center">budgie.</h1>
                     <form th:action="@{/login}" method="post">
                         <fieldset>
-                            <legend>Credentials</legend>
                             <div th:if="${param.error}">
                                 <div class="alert alert-danger">Invalid username or password.</div>
                             </div>

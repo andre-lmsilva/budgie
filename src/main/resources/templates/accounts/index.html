@@ -60,7 +60,10 @@
                                         <span th:if="${account.showBalanceOnMainAccount}" class="badge badge-pill badge-primary">Dependant Account</span>
                                         <span th:if="${account.mainAccount}" class="badge badge-pill badge-success">Main Account</span><br/>
                                         <small class="text-muted" th:text="${account.description}"></small><br/>
-                                        <small class="text-muted">Starting @ <strong th:text="${account.monthStartingAt}"></strong>, Billing @ <strong th:text="${account.monthBillingDayAt}"></strong></small>
+                                        <small class="text-muted">
+                                            Monthly starting on <strong th:text="${T(io.geekmind.budgie.ui.TextHelper).formatOrdinal(account.monthStartingAt)}"></strong> and
+                                            billing on <strong th:text="${T(io.geekmind.budgie.ui.TextHelper).formatOrdinal(account.monthBillingDayAt)}">.</strong>
+                                        </small><br/>
                                         <a  th:href="@{/accounts/delete/{accountId}(accountId=${account.id})}"
                                             title="Remove account and all of its records."
                                             onclick="return confirm('Do you really want to remove this account and all of its records?');"

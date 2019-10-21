@@ -69,7 +69,6 @@ public class AccountService implements UniquenessValidationService {
             .map(account -> this.mapper.map(account, ExistingAccount.class));
     }
 
-    @Cacheable
     public List<ExistingAccount> loadDependantAccounts() {
         return this.accountRepository.findDependantAccounts()
             .stream()
@@ -109,7 +108,6 @@ public class AccountService implements UniquenessValidationService {
               .noneMatch(nAccount -> nAccount.getName().equals(entity.getName()));
     }
 
-    @Cacheable
     public List<ExistingAccount> loadNonDependantAccounts() {
         return this.accountRepository.findNonDependantAccounts()
             .stream()
