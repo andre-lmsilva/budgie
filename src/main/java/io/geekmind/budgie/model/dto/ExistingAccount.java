@@ -9,12 +9,13 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ValidateUniqueness(message = "There is another account with this name.")
-public class ExistingAccount {
+public class ExistingAccount implements Serializable {
 
     @NotNull
     private Integer id;

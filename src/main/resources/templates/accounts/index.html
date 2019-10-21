@@ -14,11 +14,9 @@
             </div>
 
             <div class="row mb-4">
-                <div class="col-md-9 col-sm-12">
-                    <h1>Available Accounts</h1>
-                </div>
-                <div class="col-md-3 col-sm-12 text-right align-self-end">
-                    <a th:href="@{/accounts/new}" class="btn btn-primary" title="Shows the form to create a new account.">New Account</a>
+                <div class="col">
+                    <h1 class="d-md-block d-sm-none d-none">Available Accounts</h1>
+                    <h4 class="d-md-none d-block">Available Accounts</h4>
                 </div>
             </div>
 
@@ -50,35 +48,25 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th>Account</th>
-                                    <th class="text-center">As Main Account Record</th>
-                                    <th class="text-center">Month Starts At</th>
-                                    <th class="text-center">Billing Day</th>
-                                    <th style="width:70px;max-width:70px;"></th>
                                 </tr>
                             </thead>
                             <tbody th:id="${not #lists.isEmpty(availableAccounts)}">
-                                <tr th:each="account: ${availableAccounts}" th:classappend="${account.mainAccount} ? table-info : ''">
+                                <tr th:each="account: ${availableAccounts}">
                                     <td>
-                                        <a th:href="@{/accounts/edit/{id}(id=${account.id})}"
-                                           title="Edit account.">
-                                            <strong th:text="${account.name}"></strong>&nbsp;
+                                        <h2 class="initial-letter d-inline float-left text-monospace" th:text="${#strings.substring(account.name, 0, 1)}"></h2>
+                                        <a th:href="@{/accounts/edit/{id}(id=${account.id})}" title="Edit account.">
+                                            <h5 class="item-title d-inline" th:text="${account.name}"></h5>
                                         </a>
-                                        <span class="badge badge-pill badge-danger" th:if="${account.mainAccount}">Main Account</span><br/>
-                                        <small class="text-muted" th:text="${account.description}"></small>
-                                    </td>
-                                    <td class="text-center">
-                                        <span th:if="${account.showBalanceOnMainAccount}">Yes</span>
-                                        <span th:if="${not account.showBalanceOnMainAccount}">No</span>
-                                    </td>
-                                    <td class="text-center" th:text="${account.monthStartingAt}"></td>
-                                    <td class="text-center" th:text="${account.monthBillingDayAt}"></td>
-                                    <td class="text-center">
+                                        <span th:if="${account.showBalanceOnMainAccount}" class="badge badge-pill badge-primary">Dependant Account</span>
+                                        <span th:if="${account.mainAccount}" class="badge badge-pill badge-success">Main Account</span><br/>
+                                        <small class="text-muted" th:text="${account.description}"></small><br/>
+                                        <small class="text-muted">Starting @ <strong th:text="${account.monthStartingAt}"></strong>, Billing @ <strong th:text="${account.monthBillingDayAt}"></strong></small>
                                         <a  th:href="@{/accounts/delete/{accountId}(accountId=${account.id})}"
                                             title="Remove account and all of its records."
                                             onclick="return confirm('Do you really want to remove this account and all of its records?');"
                                             th:if="${not account.mainAccount}"
-                                            class="btn btn-danger btn-sm">
-                                            <span class="fa fa-trash-alt"></span>
+                                            class="float-right text-danger">
+                                            <span class="fa fa-trash-alt fa-lg"></span>
                                         </a>
                                     </td>
                                 </tr>
@@ -87,6 +75,12 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="fab">
+            <a th:href="@{/accounts/new}" class="btn btn-primary btn-lg" title="Shows the form to create a new account.">
+                <i class="fa fa-lg fa-plus"></i>
+            </a>
         </div>
         <div th:replace="fragments/footer :: footer"></div>
     </body>

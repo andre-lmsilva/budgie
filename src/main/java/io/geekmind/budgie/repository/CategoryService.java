@@ -101,6 +101,7 @@ public class CategoryService implements UniquenessValidationService {
             .noneMatch(nCategory -> nCategory.getName().equals(entity.getName()));
     }
 
+    @CachePut(key = "#result.id")
     public ExistingCategory update(ExistingCategory existingCategory) {
         Optional<Category> categoryToUpdate = this.categoryRepository.findById(existingCategory.getId());
         if (categoryToUpdate.isPresent()) {

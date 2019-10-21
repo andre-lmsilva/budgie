@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@CacheConfig(cacheNames = "accounts")
 public class AccountService implements UniquenessValidationService {
 
     private final AccountRepository accountRepository;
@@ -31,6 +32,7 @@ public class AccountService implements UniquenessValidationService {
         this.mapper = mapper;
     }
 
+    @CachePut(key = "#result.id")
     public ExistingAccount create(NewAccount account) {
         Account newAccount = this.mapper.map(account, Account.class);
         newAccount.setMainAccount(Boolean.FALSE);
@@ -38,6 +40,7 @@ public class AccountService implements UniquenessValidationService {
         return this.mapper.map(persistedAccount, ExistingAccount.class);
     }
 
+    @Cacheable
     public List<ExistingAccount> loadAll() {
         return this.accountRepository.findAll()
             .stream()
@@ -46,6 +49,7 @@ public class AccountService implements UniquenessValidationService {
             .collect(Collectors.toList());
     }
 
+    @CacheEvict(key = "#id")
     public Optional<ExistingAccount> remove(Integer id) {
         return this.accountRepository.findById(id)
             .map(account -> {
@@ -65,6 +69,7 @@ public class AccountService implements UniquenessValidationService {
             .map(account -> this.mapper.map(account, ExistingAccount.class));
     }
 
+    @Cacheable
     public List<ExistingAccount> loadDependantAccounts() {
         return this.accountRepository.findDependantAccounts()
             .stream()
@@ -104,6 +109,7 @@ public class AccountService implements UniquenessValidationService {
               .noneMatch(nAccount -> nAccount.getName().equals(entity.getName()));
     }
 
+    @Cacheable
     public List<ExistingAccount> loadNonDependantAccounts() {
         return this.accountRepository.findNonDependantAccounts()
             .stream()
@@ -112,6 +118,7 @@ public class AccountService implements UniquenessValidationService {
             .collect(Collectors.toList());
     }
 
+    @CachePut(key = "#result.id")
     public ExistingAccount update(ExistingAccount existingAccount) {
         Optional<Account> accountToUpdate = this.accountRepository.findById(existingAccount.getId());
         if (accountToUpdate.isPresent()) {
