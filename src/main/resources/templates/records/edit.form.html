@@ -85,7 +85,7 @@
                             <div class="form-row">
                                 <div class="form-group col">
                                     <label for="bankStatementId">Bank Statement ID:</label>
-                                    <input type="text" class="form-control" th:field="*{bankStatementId}" placeholder="Bank statement identifier" th:appendclass="${#fields.hasErrors('bankStatementId')} ? is-invalid : ''" required/>
+                                    <input type="text" class="form-control" th:field="*{bankStatementId}" placeholder="Bank statement identifier" th:appendclass="${#fields.hasErrors('bankStatementId')} ? is-invalid : ''"/>
                                     <div class="invalid-feedback" th:if="${#fields.hasErrors('bankStatementId')}" th:errors="*{bankStatementId}"></div>
                                 </div>
                             </div>

@@ -13,7 +13,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
@@ -21,6 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@CacheConfig(cacheNames = "categories")
 public class CategoryService implements UniquenessValidationService {
 
     private final CategoryRepository categoryRepository;
@@ -33,6 +33,7 @@ public class CategoryService implements UniquenessValidationService {
         this.mapper = mapper;
     }
 
+    @Cacheable
     public List<ExistingCategory> loadAll() {
         return this.categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "name"))
             .stream()
@@ -41,6 +42,7 @@ public class CategoryService implements UniquenessValidationService {
             .collect(Collectors.toList());
     }
 
+    @CacheEvict(key = "#id")
     public Optional<ExistingCategory> remove(Integer id) {
         return this.categoryRepository.findById(id)
             .map(category -> {
@@ -49,6 +51,7 @@ public class CategoryService implements UniquenessValidationService {
             });
     }
 
+    @CachePut(key = "#result.id")
     public ExistingCategory create(NewCategory newCategory) {
         Category category = this.mapper.map(newCategory, Category.class);
         if (null != category.getMaxExpenses() &&
@@ -63,6 +66,7 @@ public class CategoryService implements UniquenessValidationService {
         );
     }
 
+    @Cacheable(key = "#id")
     public Optional<ExistingCategory> loadById(Integer id) {
         return this.categoryRepository.findById(id)
             .map(category -> this.mapper.map(category, ExistingCategory.class));

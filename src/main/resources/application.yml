@@ -22,6 +22,9 @@ spring:
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
 server:
   http2:
     enabled: true
