@@ -16,4 +16,5 @@
 
     <cache alias="categories" uses-template="default"></cache>
     <cache alias="accounts" uses-template="default"></cache>
+    <cache alias="budgetTemplateRecords" uses-template="default"></cache>
 </config>

@@ -14,11 +14,9 @@
             </div>
 
             <div class="row mb-4">
-                <div class="col-md-9 col-sm-12">
-                    <h1>Available Template Records</h1>
-                </div>
-                <div class="col-md-3 col-sm-12 text-right align-self-end">
-                    <a th:href="@{/budget/new}" class="btn btn-primary" title="Shows the form to create a new template record.">New Record</a>
+                <div class="col">
+                    <h2 class="d-md-block d-sm-none d-none">Available Template Records</h2>
+                    <h4 class="d-md-none d-block">Available Template Records</h4>
                 </div>
             </div>
 
@@ -50,34 +48,38 @@
                 <table class="table table-bordered table-hover table-striped">
                     <thead class="thead-dark">
                         <tr>
-                            <th class="text-center" style="width:70px;max-width:70px;">Date</th>
-                            <th>Description</th>
-                            <th class="text-center" style="width:150px;max-width:150px;">Value</th>
-                            <th style="width:70px;max-width:70px;"></th>
+                            <th>Template Records</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="record: ${availableRecords}">
-                            <td class="text-center" th:text="${#temporals.format(record.recordDate,'dd')}"></td>
                             <td>
-                                <span th:text="${record.description}"></span><br/>
-                                <span class="badge badge-pill badge-dark" th:text="${record.category.name}"></span>
-                            </td>
-                            <td class="text-right"
-                                th:text="${#numbers.formatDecimal(record.recordValue, 1, 'POINT', 2, 'COMMA')}"
-                                th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></td>
-                            <td class="text-center">
+                                <h4 class="day-of-month float-left text-monospace"
+                                    th:text="${#temporals.format(record.recordDate,'dd')}"></h4>
+                                <h5 class="item-title d-inline" th:text="${record.category.name}"></h5>
                                 <a  th:href="@{'/budget/delete/{id}'(id=${record.id})}"
                                     title="Remove the budget template record."
                                     onclick="return confirm('Do you really want to remove the budget template record?\n It won\'t remove the records created based on this record.');"
-                                    class="btn btn-danger btn-sm">
-                                        <span class="fa fa-trash-alt"></span>
-                                </a>
+                                    class="text-danger float-right">
+                                    <span class="fas fa-trash-alt fa-lg"></span>
+                                </a><br/>
+                                <span th:text="${record.description}"></span><br/>
+                                <span   class="text-right float-right"
+                                        th:text="${#numbers.formatDecimal(record.recordValue, 1, 'POINT', 2, 'COMMA')}"
+                                        th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></td>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+        </div>
+
+        <div class="fab-btn">
+            <a th:href="@{/budget/new}"
+               title="Show form to create a new budget template record."
+               class="btn btn-primary btn-lg">
+                <i class="fas fa-plus fa-lg"></i>
+            </a>
         </div>
 
         <div th:replace="fragments/footer :: footer"></div>

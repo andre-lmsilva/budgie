@@ -5,6 +5,10 @@ import io.geekmind.budgie.model.dto.NewBudgetTemplateRecord;
 import io.geekmind.budgie.model.entity.BudgetTemplateRecord;
 import io.geekmind.budgie.model.entity.BudgetTemplateRecordContainer;
 import ma.glasnost.orika.MapperFacade;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -13,6 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@CacheConfig(cacheNames = "budgetTemplateRecords")
 public class BudgetTemplateRecordService {
 
     private final MapperFacade mapper;
@@ -27,6 +32,7 @@ public class BudgetTemplateRecordService {
         this.budgetTemplateRecordContainerService = budgetTemplateRecordContainerService;
     }
 
+    @Cacheable(key = "#accountId")
     public List<ExistingRecord> loadAllFromAccount(Integer accountId) {
         return this.budgetTemplateRecordRepository.findByAccount_Id(accountId)
             .stream()
@@ -35,6 +41,7 @@ public class BudgetTemplateRecordService {
             .collect(Collectors.toList());
     }
 
+    @CachePut(key = "#result.id")
     public ExistingRecord create(NewBudgetTemplateRecord newBudgetTemplateRecord) {
         BudgetTemplateRecordContainer container = this.mapper.map(newBudgetTemplateRecord, BudgetTemplateRecordContainer.class);
         container.addRecord(
@@ -47,6 +54,7 @@ public class BudgetTemplateRecordService {
         );
     }
 
+    @CacheEvict(key = "#id")
     public Optional<ExistingRecord> remove(Integer id) {
         return this.budgetTemplateRecordRepository.findById(id)
             .map(record -> {

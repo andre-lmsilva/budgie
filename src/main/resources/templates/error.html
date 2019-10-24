@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: header"></head>
+    <body>
+        <div class="container-fluid">
+            <div class="row full-height align-items-center justify-content-center">
+                <div class="col-sm-5 text-center">
+                    <h1 class="super" th:text="|{${status}}.|"></h1>
+                    <p class="text-monospace" th:if="${status} == 500">
+                        An unexpected error occurred while the application was trying to process your request.<br/>
+                        Please, try to go back and sign in to access the system again.
+                    </p>
+                    <p class="text-monospace" th:if="${status} == 404">
+                        The page that you are looking for could not be found.<br/>
+                        Please, go back and sign in to access the system again.
+                    </p>
+                    <p class="text-monospace" th:if="${status} == 403">
+                        You are not authorized to access this page.<br/>
+                        Please, go back and sign in to access the system again.
+                    </p>
+                    <a th:href="@{/}" title="Go back to sign in page." class="btn btn-primary btn-lg">
+                        Go back to sign in page.
+                    </a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

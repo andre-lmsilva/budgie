@@ -66,7 +66,8 @@
                 <div class="col">
                     <div class="row">
                         <div class="col">
-                            <h2>Summary</h2>
+                            <h2 class="d-md-block d-sm-none d-none">Summary</h2>
+                            <h4 class="d-md-none d-block">Summary</h4>
                         </div>
                     </div>
                     <div class="row" th:replace="fragments/balance_summary :: HorizontalLayout(${balance.summary})"></div>
@@ -75,7 +76,8 @@
 
             <div class="row mb-3" th:if="${not #lists.isEmpty(balance.records)} or ${not #lists.isEmpty(balance.applicableBudgetTemplateRecords)}">
                 <div class="col-sm-12 col-md-3">
-                    <h3>Categories</h3>
+                    <h2 class="d-md-block d-sm-none d-none">Categories</h2>
+                    <h4 class="d-md-none d-block">Categories</h4>
                     <div class="jumbotron" th:if="${#lists.isEmpty(balance.categoryBalanceSummaries)}">
                         <h3>No records found.</h3>
                         <p class="lead">No category balance for this account and period yet.</p>
@@ -123,7 +125,8 @@
                 <div class="col-sm-12 col-md-9">
                     <div class="row" th:if="${not #lists.isEmpty(balance.applicableBudgetTemplateRecords)}" style="margin-bottom:20px">
                         <div class="col">
-                            <h3>Budget Template Records</h3>
+                            <h2 class="d-md-block d-sm-none d-none">Budget Template Records</h2>
+                            <h4 class="d-md-none d-block">Budget Template Records</h4>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover table-striped">
                                     <thead class="thead-dark">
@@ -156,7 +159,8 @@
 
                     <div class="row">
                         <div class="col">
-                            <h3>Balance Records</h3>
+                            <h2 class="d-md-block d-sm-none d-none">Balance Records</h2>
+                            <h4 class="d-md-none d-block">Balance Records</h4>
                             <div class="jumbotron" th:if="${#lists.isEmpty(balance.records)}">
                                 <h3>No records found.</h3>
                                 <p class="lead">There is no balance record for this account in this period yet.

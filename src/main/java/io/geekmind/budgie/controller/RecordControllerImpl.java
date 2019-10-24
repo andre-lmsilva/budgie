@@ -72,7 +72,11 @@ public class RecordControllerImpl {
                                      RedirectAttributes redirectAttributes) {
         Optional<ExistingRecord> existingRecord = this.recordService.loadById(id);
         if (existingRecord.isPresent()) {
-            requestContext.addObject("existingRecord", existingRecord.get());
+            ExistingRecord record = existingRecord.get();
+            requestContext.addObject("balance", this.balanceService.generateBalance(
+                record.getAccount().getId(), record.getRecordDate()
+            ));
+            requestContext.addObject("existingRecord", record);
             requestContext.addObject("availableAccounts", this.accountService.loadAll());
             requestContext.addObject("availableCategories", this.categoryService.loadAll());
             requestContext.setViewName("records/edit.form");
