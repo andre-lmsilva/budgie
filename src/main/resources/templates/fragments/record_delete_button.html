@@ -18,9 +18,9 @@
 
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="InstalmentRecord(recordId, containerId, referenceDate, accountId)">
     <div class="dropdown">
-        <button class="btn btn-danger dropdown-toggle" type="button" th:id="'btnDelete'+${recordId}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="fa fa-trash-alt"></span>
-        </button>
+        <a href="javascript:void(0)" class="text-danger dropdown-toggle" type="button" th:id="'btnDelete'+${recordId}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="fa fa-trash-alt fa-lg"></span>
+        </a>
         <div class="dropdown-menu" th:aria-labelledby="'btnDelete'+${recordId}">
             <a  th:href="@{'/records/delete/{id}'(id=${recordId},referenceDate=${referenceDate},accountId=${accountId})}"
                 title="Remove only this installment record."

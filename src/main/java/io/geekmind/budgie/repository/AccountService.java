@@ -38,6 +38,7 @@ public class AccountService implements UniquenessValidationService {
             .stream()
             .map(account -> this.mapper.map(account, ExistingAccount.class))
             .sorted(Comparator.comparing(ExistingAccount::getName))
+            .sorted((accountA, accountB) -> Boolean.compare(accountB.getMainAccount(), accountA.getMainAccount()))
             .collect(Collectors.toList());
     }
 

@@ -34,8 +34,10 @@
                         <li class="nav-item" th:each="account: ${availableAccounts}">
                             <a class="nav-link"
                                th:href="@{'/records'(accountId=${account.id},referenceDate=${balance.balanceDates.referenceDate})}"
-                               th:text="${account.name}"
-                               th:classappend="${account.id} == ${balance.account.id} ? active : ''"></a>
+                               th:classappend="${account.id} == ${balance.account.id} ? active : ''">
+                                <i th:if="${account.mainAccount}" class="fa fa-star"></i>
+                                <span th:text="${account.name}"></span>
+                            </a>
                         </li>
                     </ul>
                 </div>
