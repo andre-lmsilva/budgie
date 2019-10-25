@@ -1,4 +1,4 @@
-<nav xmlns:th="http://www.thymeleaf.org" th:fragment="navbar" class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+<nav xmlns:th="http://www.thymeleaf.org" th:fragment="navbar" class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/records}">
             <img th:src="@{/images/favicon-32x32.png}" width="30" height="30" alt="" class="d-inline-block align-top"/>
@@ -11,19 +11,29 @@
         <div class="collapse navbar-collapse" id="mainMenu">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{'/records'}">Balance</a>
+                    <a class="nav-link" th:href="@{'/records'}" title="Show current main account balance.">
+                        <i class="fa fa-home fa-lg"></i><span class="d-sm-inline d-md-none">Balance</span>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{'/accounts'}">Accounts</a>
+                    <a class="nav-link" th:href="@{'/accounts'}" title="Manage accounts.">
+                        <i class="fa fa-folder fa-lg"></i><span class="d-sm-inline d-md-none">Accounts</span>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{'/categories'}">Categories</a>
+                    <a class="nav-link" th:href="@{'/categories'}" title="Manage categories.">
+                        <i class="fa fa-tags fa-lg"></i><span class="d-sm-inline d-md-none">Categories</span>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{'/budget'}">Budget</a>
+                    <a class="nav-link" th:href="@{'/budget'}" title="Manager budget template records.">
+                        <i class="fa fa-list-ul fa-lg"></i><span class="d-sm-inline d-md-none">Budget</span>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/logout}">Logout</a>
+                    <a class="nav-link" th:href="@{/logout}" title="End your current session safely.">
+                        <i class="fa fa-power-off fa-lg"></i><span class="d-sm-inline d-md-none">Logout</span>
+                    </a>
                 </li>
             </ul>
             <span class="navbar-text text-mutted">

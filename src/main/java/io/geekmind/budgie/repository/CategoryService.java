@@ -6,10 +6,6 @@ import io.geekmind.budgie.model.entity.Category;
 import io.geekmind.budgie.validation.UniquenessValidationService;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +16,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@CacheConfig(cacheNames = "categories")
 public class CategoryService implements UniquenessValidationService {
 
     private final CategoryRepository categoryRepository;
@@ -33,7 +28,6 @@ public class CategoryService implements UniquenessValidationService {
         this.mapper = mapper;
     }
 
-    @Cacheable
     public List<ExistingCategory> loadAll() {
         return this.categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "name"))
             .stream()
@@ -42,7 +36,6 @@ public class CategoryService implements UniquenessValidationService {
             .collect(Collectors.toList());
     }
 
-    @CacheEvict(key = "#id")
     public Optional<ExistingCategory> remove(Integer id) {
         return this.categoryRepository.findById(id)
             .map(category -> {
@@ -51,7 +44,6 @@ public class CategoryService implements UniquenessValidationService {
             });
     }
 
-    @CachePut(key = "#result.id")
     public ExistingCategory create(NewCategory newCategory) {
         Category category = this.mapper.map(newCategory, Category.class);
         if (null != category.getMaxExpenses() &&
@@ -66,7 +58,6 @@ public class CategoryService implements UniquenessValidationService {
         );
     }
 
-    @Cacheable(key = "#id")
     public Optional<ExistingCategory> loadById(Integer id) {
         return this.categoryRepository.findById(id)
             .map(category -> this.mapper.map(category, ExistingCategory.class));
@@ -101,7 +92,6 @@ public class CategoryService implements UniquenessValidationService {
             .noneMatch(nCategory -> nCategory.getName().equals(entity.getName()));
     }
 
-    @CachePut(key = "#result.id")
     public ExistingCategory update(ExistingCategory existingCategory) {
         Optional<Category> categoryToUpdate = this.categoryRepository.findById(existingCategory.getId());
         if (categoryToUpdate.isPresent()) {
