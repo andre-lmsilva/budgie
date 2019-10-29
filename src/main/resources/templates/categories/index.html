@@ -44,13 +44,16 @@
             <div class="row" th:if="${not #lists.isEmpty(availableCategories)}">
                 <div class="col">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-hover">
+                        <table class="table table-bordered table-striped table-hover filterable">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>Category</th>
                                 </tr>
                             </thead>
-                            <tbody th:id="${not #lists.isEmpty(availableCategories)}">
+                            <tbody th:if="${not #lists.isEmpty(availableCategories)}">
+                                <tr>
+                                    <td th:include="fragments/filter_form_table_row :: FilterTableRow"></td>
+                                </tr>
                                 <tr th:each="category: ${availableCategories}">
                                     <td>
                                         <h2 class="d-inline float-left initial-letter text-monospace" th:text="${#strings.substring(category.name, 0, 1)}"></h2>

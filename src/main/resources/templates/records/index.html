@@ -168,13 +168,16 @@
                                 <p class="lead">There is no balance record for this account in this period yet.
                             </div>
                             <div class="table-responsive" th:if="${not #lists.isEmpty(balance.records)}">
-                                <table class="table table-bordered table-hover table-striped">
+                                <table class="table table-bordered table-hover table-striped filterable">
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>Record</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <tr>
+                                            <td th:include="fragments/filter_form_table_row :: FilterTableRow"></td>
+                                        </tr>
                                         <tr th:each="record: ${balance.records}" th:class="${record.recordType} == 'BudgetRecord' ? table-info : ''">
                                             <td>
                                                 <h4 class="day-of-month d-inline float-left text-monospace" th:text="${#temporals.format(record.recordDate,'dd')}"></h4>

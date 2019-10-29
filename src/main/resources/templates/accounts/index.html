@@ -44,13 +44,16 @@
             <div class="row" th:if="${not #lists.isEmpty(availableAccounts)}">
                 <div class="col">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-hover">
+                        <table class="table table-bordered table-striped table-hover filterable">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>Account</th>
                                 </tr>
                             </thead>
-                            <tbody th:id="${not #lists.isEmpty(availableAccounts)}">
+                            <tbody th:if="${not #lists.isEmpty(availableAccounts)}">
+                                <tr>
+                                    <td th:include="fragments/filter_form_table_row :: FilterTableRow"></td>
+                                </tr>
                                 <tr th:each="account: ${availableAccounts}">
                                     <td>
                                         <h2 class="initial-letter d-inline float-left text-monospace" th:text="${#strings.substring(account.name, 0, 1)}"></h2>

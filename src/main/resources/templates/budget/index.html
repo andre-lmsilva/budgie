@@ -45,13 +45,16 @@
 
         <div class="col-sm-12" th:if="${not #lists.isEmpty(availableRecords)}">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover table-striped">
+                <table class="table table-bordered table-hover table-striped filterable">
                     <thead class="thead-dark">
                         <tr>
                             <th>Template Records</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <tr>
+                            <td th:include="fragments/filter_form_table_row :: FilterTableRow"></td>
+                        </tr>
                         <tr th:each="record: ${availableRecords}">
                             <td>
                                 <h4 class="day-of-month float-left text-monospace"

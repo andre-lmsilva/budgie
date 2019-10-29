@@ -47,3 +47,7 @@
 .super {
     font-size: 10em;
 }
+
+em {
+    background-color: yellow;
+}

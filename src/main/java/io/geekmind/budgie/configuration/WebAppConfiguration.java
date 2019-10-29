@@ -10,8 +10,8 @@ public class WebAppConfiguration implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-            .addResourceHandler("/webjars/**", "/images/**", "/css/**")
-            .addResourceLocations("/webjars/", "classpath:/images/", "classpath:/css/");
+            .addResourceHandler("/webjars/**", "/images/**", "/css/**", "/js/**")
+            .addResourceLocations("/webjars/", "classpath:/images/", "classpath:/css/", "classpath:/js/");
     }
 
 }
