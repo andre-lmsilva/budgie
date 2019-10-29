@@ -59,7 +59,7 @@
                                         </a>
                                         <span th:if="${account.showBalanceOnMainAccount}" class="badge badge-pill badge-primary">Dependant Account</span>
                                         <span th:if="${account.mainAccount}" class="badge badge-pill badge-success">Main Account</span><br/>
-                                        <small class="text-muted" th:text="${account.description}"></small><br/>
+                                        <small class="text-muted d-block" th:text="${account.description}" th:if="${account.description != null}"></small>
                                         <small class="text-muted">
                                             Monthly starting on <strong th:text="${T(io.geekmind.budgie.ui.TextHelper).formatOrdinal(account.monthStartingAt)}"></strong> and
                                             billing on <strong th:text="${T(io.geekmind.budgie.ui.TextHelper).formatOrdinal(account.monthBillingDayAt)}">.</strong>

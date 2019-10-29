@@ -29,7 +29,7 @@ public class NewBudgetTemplateRecord {
     private Integer categoryId;
 
     @NotNull
-    @Size(min = 5)
+    @Size(min = 5, max = 140)
     private String description;
 
     @NotNull

@@ -37,12 +37,14 @@
                     <form action="#" th:object="${existingCategory}" th:action="@{/categories/update}" method="post">
                         <fieldset>
                             <legend>Category Details</legend>
-                            <div class="form-group">
+                            <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'has-danger' : ''">
                                 <label for="name">Name:</label>
                                 <input type="hidden" th:field="*{id}"/>
                                 <input type="text"
                                        class="form-control"
-                                       th:appendclass="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
+                                       minlength="5"
+                                       maxlength="140"
+                                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
                                        th:field="*{name}"
                                        placeholder="Category name."
                                        autofocus

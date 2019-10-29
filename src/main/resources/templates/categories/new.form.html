@@ -37,13 +37,15 @@
                     <form action="#" th:object="${newCategory}" th:action="@{/categories/create}" method="post">
                         <fieldset>
                             <legend>Category Details</legend>
-                            <div class="form-group">
+                            <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'has-danger' : ''">
                                 <label for="name">Name:</label>
                                 <input type="text"
                                        class="form-control"
-                                       th:appendclass="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
+                                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
                                        th:field="*{name}"
                                        placeholder="Category name."
+                                       maxlength="140"
+                                       minlength="5"
                                        autofocus
                                        required/>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>

@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 public class NewAccount {
 
     @NotNull
-    @Size(min = 5, max = 255)
+    @Size(min = 5, max = 140)
     private String name;
 
     private String description;

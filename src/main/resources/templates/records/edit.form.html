@@ -59,16 +59,26 @@
                         <fieldset>
                             <legend>Record Details</legend>
                              <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-6" th:classappend="${#fields.hasErrors('recordDate')} ? 'has-danger' : ''">
                                     <label for="recordDate">Date:</label>
                                     <input type="hidden" th:field="*{id}"/>
                                     <input type="hidden" th:field="*{recordType}"/>
-                                    <input type="date" class="form-control" th:field="*{recordDate}" th:appendclass="${#fields.hasErrors('recordDate')} ? is-invalid : ''" autofocus required/>
+                                    <input  type="date"
+                                            class="form-control"
+                                            th:field="*{recordDate}"
+                                            th:classappend="${#fields.hasErrors('recordDate')} ? 'is-invalid' : ''"
+                                            autofocus
+                                            required/>
                                     <div class="invalid-feedback" th:if="${#fields.hasErrors('recordDate')}" th:errors="*{recordDate}"/>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-6" th:classappend="${#fields.hasErrors('recordValue')} ? 'has-danger' : ''">
                                     <label for="recordValue">Value ($):</label>
-                                    <input type="text" class="form-control" th:field="*{recordValue}" placeholder="0.000,00" th:appendclass="${#fields.hasErrors('recordValue')} ? is-invalid : ''" required/>
+                                    <input  type="text"
+                                            class="form-control"
+                                            placeholder="0.000,00"
+                                            th:field="*{recordValue}"
+                                            th:classappend="${#fields.hasErrors('recordValue')} ? 'is-invalid' : ''"
+                                            required/>
                                     <div class="invalid-feedback" th:if="${#fields.hasErrors('recordValue')}" th:errors="*{recordValue}"></div>
                                 </div>
                             </div>
@@ -87,22 +97,27 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col">
+                                <div class="form-group col" th:classappend="${#fields.hasErrors('description')} ? 'has-danger' : ''">
                                     <label for="description">Description:</label>
-                                    <textarea class="form-control" th:field="*{description}" placeholder="Brief description of the record." th:appendclass="${#fields.hasErrors('description')} ? is-invalid : ''" required/>
+                                    <textarea   class="form-control"
+                                                placeholder="Brief description of the record."
+                                                minlength="5"
+                                                maxlength="140"
+                                                th:field="*{description}"
+                                                th:classappend="${#fields.hasErrors('description')} ? 'is-invalid' : ''"
+                                                required/>
                                     <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col">
                                     <label for="bankStatementId">Bank Statement ID:</label>
-                                    <input type="text" class="form-control" th:field="*{bankStatementId}" placeholder="Bank statement identifier" th:appendclass="${#fields.hasErrors('bankStatementId')} ? is-invalid : ''"/>
-                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('bankStatementId')}" th:errors="*{bankStatementId}"></div>
+                                    <input type="text" class="form-control" th:field="*{bankStatementId}" placeholder="Bank statement identifier" maxlength="140"/>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col">
-                                    <button type="submit" class="btn btn-primary">Update</button>&nbsp;
+                                    <button type="submit" class="btn btn-primary" title="Saves the changes for the record.">Update</button>&nbsp;
                                     <a class="btn btn-default" th:href="@{/records}" title="Go back to balance without save the changes.">Cancel</a>
                                 </div>
                             </div>

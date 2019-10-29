@@ -36,9 +36,9 @@
                     <form action="#" th:object="${newTransfer}" th:action="@{/transfers/create}" method="post">
                         <fieldset>
                              <legend>Transfer Details</legend>
-                             <div class="form-group">
+                             <div class="form-group" th:classappend="${#fields.hasErrors('transferDate')} ? 'has-danger' : ''">
                                 <label for="transferDate">Transfer Date:</label>
-                                <input type="date" class="form-control" th:field="*{transferDate}" th:appendclass="${#fields.hasErrors('transferDate')} ? is-invalid : ''" autofocus required/>
+                                <input type="date" class="form-control" th:field="*{transferDate}" th:classappend="${#fields.hasErrors('transferDate')} ? 'is-invalid' : ''" autofocus required/>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('transferDate')}" th:errors="*{transferDate}"/>
                             </div>
                             <div class="form-group">
@@ -59,18 +59,30 @@
                                     <option th:each="category: ${availableCategories}" th:value="${category.id}" th:text="${category.name}"></option>
                                 </select>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" th:classappend="${#fields.hasErrors('description')} ? 'has-danger' : ''">
                                 <label for="description">Description:</label>
-                                <input type="text" class="form-control" th:field="*{description}" placeholder="Brief description of the record." th:appendclass="${#fields.hasErrors('description')} ? is-invalid : ''" required/>
+                                <input  type="text"
+                                        class="form-control"
+                                        placeholder="Brief description of the record."
+                                        minlength="5"
+                                        maxlength="140"
+                                        th:field="*{description}"
+                                        th:classappend="${#fields.hasErrors('description')} ? 'is-invalid' : ''"
+                                        required/>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" th:classappend="${#fields.hasErrors('transferValue')} ? 'has-danger' : ''">
                                 <label for="transferValue">Transfer Value (€):</label>
-                                <input type="text" class="form-control" th:field="*{transferValue}" placeholder="0.000,00" th:appendclass="${#fields.hasErrors('transferValue')} ? is-invalid : ''" required/>
+                                <input  type="text"
+                                        class="form-control"
+                                        th:field="*{transferValue}"
+                                        th:classappend="${#fields.hasErrors('transferValue')} ? 'is-invalid' : ''"
+                                        placeholder="0.000,00"
+                                        required/>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('transferValue')}" th:errors="*{transferValue}"></div>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Create</button>&nbsp;
+                                <button type="submit" class="btn btn-primary" title="Creates a new transfer">Create</button>&nbsp;
                                 <a class="btn btn-default" th:href="@{/records}" title="Go back to balance without save the changes.">Cancel</a>
                             </div>
                         </fieldset>

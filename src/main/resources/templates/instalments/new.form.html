@@ -33,12 +33,16 @@
 
             <div class="row">
                 <div class="col">
-                    <form action="#" th:object="${newInstalment}" th:action="@{/instalments/create}" method="post">
+                    <form th:object="${newInstalment}" th:action="@{/instalments/create}" method="post">
                         <fieldset>
                              <legend>Instalments Details</legend>
-                             <div class="form-group">
+                             <div class="form-group" th:classappend="${#fields.hasErrors('startingAt')} ? 'has-danger' : ''">
                                 <label for="startingAt">Starting Date:</label>
-                                <input type="date" class="form-control" th:field="*{startingAt}" th:appendclass="${#fields.hasErrors('startingAt')} ? is-invalid : ''" autofocus required/>
+                                <input  type="date"
+                                        class="form-control"
+                                        th:field="*{startingAt}"
+                                        th:appendclass="${#fields.hasErrors('startingAt')} ? 'is-invalid' : ''"
+                                        autofocus required/>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('startingAt')}" th:errors="*{startingAt}"/>
                             </div>
                             <div class="form-group">
@@ -53,23 +57,36 @@
                                     <option th:each="category: ${availableCategories}" th:value="${category.id}" th:text="${category.name}"></option>
                                 </select>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" th:classappend="${#fields.hasErrors('description')} ? 'has-danger' : ''">
                                 <label for="description">Description:</label>
-                                <input type="text" class="form-control" th:field="*{description}" placeholder="Brief description of the record." th:appendclass="${#fields.hasErrors('description')} ? is-invalid : ''" required/>
+                                <input  type="text"
+                                        class="form-control"
+                                        placeholder="Brief description of the record."
+                                        minlength="5"
+                                        maxlength="140"
+                                        th:field="*{description}"
+                                        th:classappend="${#fields.hasErrors('description')} ? 'is-invalid' : ''"
+                                        required/>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" th:classappend="${#fields.hasErrors('numberOfInstalments')} ? 'has-danger' : ''">
                                 <label for="numberOfInstalments">Number of Instalments (2-120):</label>
-                                <input type="text" class="form-control" th:field="*{numberOfInstalments}" th:appendclass="${#fields.hasErrors('numberOfInstalments')} ? is-invalid : ''" required/>
+                                <input  type="number"
+                                        class="form-control"
+                                        min="2"
+                                        max="120"
+                                        th:field="*{numberOfInstalments}"
+                                        th:classappend="${#fields.hasErrors('numberOfInstalments')} ? 'is-invalid' : ''"
+                                        required/>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('numberOfInstalments')}" th:errors="*{numberOfInstalment}"></div>
                             </div>
                             <div class="form-group">
                                 <label for="instalmentValue">Instalment Value (€):</label>
-                                <input type="text" class="form-control" th:field="*{instalmentValue}" placeholder="0.000,00" th:appendclass="${#fields.hasErrors('instalmentValue')} ? is-invalid : ''" required/>
+                                <input type="text" class="form-control" th:field="*{instalmentValue}" placeholder="0.000,00" th:appendclass="${#fields.hasErrors('instalmentValue')} ? 'is-invalid' : ''" required/>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('instalmentValue')}" th:errors="*{instalmentValue}"></div>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Create</button>&nbsp;
+                                <button type="submit" class="btn btn-primary" title="Creates new instalments.">Create</button>&nbsp;
                                 <a class="btn btn-default" th:href="@{/records}" title="Go back to balance without save the changes.">Cancel</a>
                             </div>
                         </fieldset>
