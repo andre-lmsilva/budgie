@@ -180,6 +180,7 @@
                                         </tr>
                                         <tr th:each="record: ${balance.records}" th:class="${record.recordType} == 'BudgetRecord' ? table-info : ''">
                                             <td>
+                                                <input type="hidden" class="record-value" th:value="${record.recordValue}"/>
                                                 <h4 class="day-of-month d-inline float-left text-monospace" th:text="${#temporals.format(record.recordDate,'dd')}"></h4>
                                                 <h5 class="item-title d-inline" th:text="${record.category.name}"></h5>
 
@@ -224,17 +225,19 @@
                                                     th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></span>
                                             </td>
                                         </tr>
+                                    </tbody>
+                                    <tfoot>
                                         <tr>
                                             <td class="text-right">
-                                                <strong>Final Balance:</strong>
+                                                <strong>Balance:</strong>
                                                 <a  th:href="@{'/single_records/new'(recordDate=${balance.balanceDates.nextPeriodStartDate},recordDescription='Previous period balance.', accountId=${balance.account.id}, recordValue=${balance.summary.finalBalance})}"
                                                     title="Copy final balance to the next period."
                                                     th:class="${balance.summary.finalBalance} > 0 ? text-info : text-danger">
-                                                    <span th:text="|€ ${#numbers.formatDecimal(balance.summary.finalBalance, 1, 'POINT', 2, 'COMMA')}|"></span>
+                                                    <span th:text="|€ ${#numbers.formatDecimal(balance.summary.finalBalance, 1, 'POINT', 2, 'COMMA')}|" id="lblBalance"></span>
                                                 </a>
                                             </td>
                                         </tr>
-                                    </tbody>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>

@@ -26,8 +26,10 @@
                         <li class="nav-item" th:each="account: ${availableAccounts}">
                             <a class="nav-link"
                                th:href="@{'/budget'(accountId=${account.id})}"
-                               th:text="${account.name}"
-                               th:classappend="${account.id} == ${selectedAccount.id} ? active : ''"></a>
+                               th:classappend="${account.id} == ${selectedAccount.id} ? active : ''">
+                                <i th:if="${account.mainAccount}" class="fa fa-star"></i>
+                                <span th:text="${account.name}"></span>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -57,6 +59,7 @@
                         </tr>
                         <tr th:each="record: ${availableRecords}">
                             <td>
+                                <input type="hidden" class="record-value" th:value="${record.recordValue}"/>
                                 <h4 class="day-of-month float-left text-monospace"
                                     th:text="${#temporals.format(record.recordDate,'dd')}"></h4>
                                 <h5 class="item-title d-inline" th:text="${record.category.name}"></h5>
@@ -73,6 +76,14 @@
                             </td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="text-right">
+                                <strong>Balance:</strong>
+                                <span id="lblBalance"></span>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -86,5 +97,11 @@
         </div>
 
         <div th:replace="fragments/footer :: footer"></div>
+        <script type="text/javascript">
+            /*
+             * This is a workaround and should be removed when a balance is being generated to template records.
+             */
+            sumFilteredValues();
+        </script>
     </body>
 </html>

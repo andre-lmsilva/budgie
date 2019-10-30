@@ -1,3 +1,31 @@
+numeral.register('locale', 'ie', {
+    delimiters: {
+        thousands: '.',
+        decimal: ','
+    },
+    abbreviations: {
+        thousand: 'k',
+        million: 'm',
+        billion: 'b',
+        trillion: 't'
+    },
+    ordinal: function (number) {
+        if (number == 1) {
+            return 'st';
+        } else if (number == 2) {
+            return 'nd';
+        } else if (number == 3) {
+            return 'rd';
+        } else {
+            return 'th';
+        }
+    },
+    currency: {
+        symbol: '€'
+    }
+});
+numeral.locale('ie')
+
 /*
  * Highlights the received text inside the node, wrapping the text with <em>...</em>.
  */
@@ -35,6 +63,7 @@ function filterTable() {
             row.addClass('d-none');
         }
     }
+    sumFilteredValues();
 }
 
 /*
@@ -47,5 +76,34 @@ function resetFilteredTable() {
         removeHighlightText(row);
     }
     $('.filter-value').val('');
+    sumFilteredValues();
+}
+
+/*
+ * Calculates and show the
+ */
+function sumFilteredValues() {
+    let valueFields = $('.filterable > tbody > tr > td > .record-value');
+    let balance = 0.00;
+    for(let fieldIndex = 0; fieldIndex < valueFields.length; fieldIndex++) {
+        let field = $(valueFields[fieldIndex]);
+        if (!field.closest('tr').hasClass('d-none')) {
+            balance += parseFloat(field.val());
+        }
+    }
+
+    if ($('#lblBalance').length > 0) {
+        $('#lblBalance').text(
+            '€ '+numeral(balance).format('0,0.00')
+        );
+
+        $('#lblBalance').removeClass('text-danger');
+        $('#lblBalance').removeClass('text-info');
+
+        let style = 'text-danger';
+        if (balance >= 0) style = 'text-info';
+
+        $('#lblBalance').addClass(style);
+    }
 }
 
