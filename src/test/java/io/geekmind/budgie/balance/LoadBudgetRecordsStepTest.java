@@ -3,6 +3,7 @@ package io.geekmind.budgie.balance;
 import io.geekmind.budgie.fixture.BalanceCalculationRequestFixture;
 import io.geekmind.budgie.fixture.ExistingRecordFixture;
 import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
+import io.geekmind.budgie.model.dto.BalanceType;
 import io.geekmind.budgie.model.dto.ExistingRecord;
 import io.geekmind.budgie.repository.BudgetTemplateRecordService;
 import org.junit.Test;
@@ -36,6 +37,20 @@ public class LoadBudgetRecordsStepTest {
     @Test
     public void shouldExecute_withNullBalance_ReturnsFalse() {
         assertThat(step.shouldExecute(new BalanceCalculationRequest())).isFalse();
+    }
+
+    @Test
+    public void shouldExecute_withNullBalanceType_ReturnsFalse() {
+        BalanceCalculationRequest request = BalanceCalculationRequestFixture.get();
+        request.getBalance().setBalanceType(null);
+        assertThat(step.shouldExecute(request)).isFalse();
+    }
+
+    @Test
+    public void shouldExecute_withBudgetBalanceType_ReturnsFalse() {
+        BalanceCalculationRequest request = BalanceCalculationRequestFixture.get();
+        request.getBalance().setBalanceType(BalanceType.BUDGET_TEMPLATE_BALANCE);
+        assertThat(step.shouldExecute(request)).isFalse();
     }
 
     @Test

@@ -28,4 +28,6 @@ public class Balance {
 
     private List<ExistingRecord> applicableBudgetTemplateRecords;
 
+    private BalanceType balanceType = BalanceType.REGULAR_PERIOD_BALANCE;
+
 }

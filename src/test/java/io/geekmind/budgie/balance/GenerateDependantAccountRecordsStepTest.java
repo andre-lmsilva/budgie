@@ -3,7 +3,10 @@ package io.geekmind.budgie.balance;
 import io.geekmind.budgie.fixture.BalanceCalculationRequestFixture;
 import io.geekmind.budgie.fixture.BalanceFixture;
 import io.geekmind.budgie.fixture.ExistingAccountFixture;
-import io.geekmind.budgie.model.dto.*;
+import io.geekmind.budgie.model.dto.Balance;
+import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
+import io.geekmind.budgie.model.dto.BalanceType;
+import io.geekmind.budgie.model.dto.DependantAccountRecord;
 import ma.glasnost.orika.MapperFacade;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +41,20 @@ public class GenerateDependantAccountRecordsStepTest {
     @Test
     public void shouldExecute_withNullBalance_ReturnsFalse() {
         assertThat(this.step.shouldExecute(new BalanceCalculationRequest())).isFalse();
+    }
+
+    @Test
+    public void shouldExecute_withNullBalanceType_ReturnsFalse() {
+        BalanceCalculationRequest request = BalanceCalculationRequestFixture.get();
+        request.getBalance().setBalanceType(null);
+        assertThat(this.step.shouldExecute(request)).isFalse();
+    }
+
+    @Test
+    public void shouldExecute_withBudgetBalanceType_ReturnsFalse() {
+        BalanceCalculationRequest request = BalanceCalculationRequestFixture.get();
+        request.getBalance().setBalanceType(BalanceType.BUDGET_TEMPLATE_BALANCE);
+        assertThat(this.step.shouldExecute(request)).isFalse();
     }
 
     @Test

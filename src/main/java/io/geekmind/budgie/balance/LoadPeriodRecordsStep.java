@@ -1,6 +1,5 @@
 package io.geekmind.budgie.balance;
 
-import io.geekmind.budgie.model.dto.Balance;
 import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
 import io.geekmind.budgie.repository.RecordService;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * Retrieves all records within the calculated period, sort them by date in an ascending order and sets the list on
  * the balance being calculated. Because it depends on the balance dates already calculated, it mus be chained after
- * the {@link CalculateBalanceDatesStep}.
+ * the {@link CalculateRegularBalanceDatesStep}.
  *
  * @author Andre Silva
  */

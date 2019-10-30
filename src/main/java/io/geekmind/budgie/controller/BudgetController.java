@@ -1,10 +1,12 @@
 package io.geekmind.budgie.controller;
 
+import io.geekmind.budgie.model.dto.BalanceType;
 import io.geekmind.budgie.model.dto.ExistingAccount;
 import io.geekmind.budgie.model.dto.NewBudgetTemplateRecord;
 import io.geekmind.budgie.repository.AccountService;
 import io.geekmind.budgie.repository.BudgetTemplateRecordService;
 import io.geekmind.budgie.repository.CategoryService;
+import io.geekmind.budgie.repository.StandardBalanceService;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -25,31 +27,34 @@ public class BudgetController {
     private final AccountService accountService;
     private final CategoryService categoryService;
     private final BudgetTemplateRecordService budgetTemplateRecordService;
+    private final StandardBalanceService balanceService;
 
     public BudgetController(AccountService accountService,
                             CategoryService categoryService,
-                            BudgetTemplateRecordService budgetTemplateRecordService) {
+                            BudgetTemplateRecordService budgetTemplateRecordService,
+                            StandardBalanceService balanceService) {
         this.accountService = accountService;
         this.categoryService = categoryService;
         this.budgetTemplateRecordService = budgetTemplateRecordService;
+        this.balanceService = balanceService;
     }
 
     @GetMapping
     public ModelAndView loadRecordsFor(@RequestParam(name = "accountId", required = false) Integer accountId,
                                        ModelAndView requestContext) {
 
-        ExistingAccount selectedAccount = null;
+        ExistingAccount selectedAccount;
         if (null == accountId) {
             selectedAccount = this.accountService.getMainAccount().orElse(null);
         } else {
             selectedAccount = this.accountService.loadById(accountId).orElse(null);
         }
 
+        requestContext.addObject("balance",
+            this.balanceService.generateBalance(selectedAccount.getId(), null, BalanceType.BUDGET_TEMPLATE_BALANCE)
+        );
         requestContext.addObject("selectedAccount", selectedAccount);
         requestContext.addObject("availableAccounts", this.accountService.loadAll());
-        requestContext.addObject("availableRecords",
-            this.budgetTemplateRecordService.loadAllFromAccount(selectedAccount.getId())
-        );
         requestContext.setViewName("budget/index");
         return requestContext;
     }

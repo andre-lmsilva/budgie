@@ -6,6 +6,7 @@ import io.geekmind.budgie.fixture.BalanceFixture;
 import io.geekmind.budgie.fixture.ExistingAccountFixture;
 import io.geekmind.budgie.model.dto.Balance;
 import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
+import io.geekmind.budgie.model.dto.BalanceType;
 import io.geekmind.budgie.model.dto.ExistingAccount;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -95,7 +96,7 @@ public class StandardBalanceServiceTest {
         List<Balance> result = this.service.calculateDependantAccountsBalancesFor(fakeMainAccount, fakeReferenceDate);
 
         assertThat(result).isNotNull().isEmpty();
-        verify(this.service, never()).generateBalance(anyInt(), any());
+        verify(this.service, never()).generateBalance(anyInt(), any(), any());
     }
 
     @Test
@@ -116,7 +117,7 @@ public class StandardBalanceServiceTest {
 
         Balance fakeBalance = BalanceFixture.getCurrentPeriodBalance();
         doReturn(fakeBalance)
-            .when(this.service).generateBalance(eq(fakeSavingsAccount.getId()), eq(fakeAccountPeriodEndDate));
+            .when(this.service).generateBalance(eq(fakeSavingsAccount.getId()), eq(fakeAccountPeriodEndDate), eq(BalanceType.REGULAR_PERIOD_BALANCE));
 
         List<Balance> result = this.service.calculateDependantAccountsBalancesFor(fakeMainAccount, fakeAccountPeriodEndDate);
 
@@ -128,7 +129,7 @@ public class StandardBalanceServiceTest {
         doReturn(Optional.empty())
             .when(this.service).retrieveAccount(eq(-1));
 
-        Balance result = this.service.generateBalance(-1, null);
+        Balance result = this.service.generateBalance(-1, null, BalanceType.REGULAR_PERIOD_BALANCE);
 
         assertThat(result).isNotNull();
         verifyZeroInteractions(this.calculationsChainEntryStep);
@@ -147,7 +148,7 @@ public class StandardBalanceServiceTest {
             return invocationOnMock;
         }).when(this.calculationsChainEntryStep).proceed(any(BalanceCalculationRequest.class));
 
-        Balance result = this.service.generateBalance(-1, null);
+        Balance result = this.service.generateBalance(-1, null, BalanceType.REGULAR_PERIOD_BALANCE);
 
         assertThat(result).isSameAs(fakeBalance);
         verify(this.service, never()).calculateDependantAccountsBalancesFor(any(), any());
@@ -172,7 +173,7 @@ public class StandardBalanceServiceTest {
             return invocationOnMock;
         }).when(this.calculationsChainEntryStep).proceed(any(BalanceCalculationRequest.class));
 
-        Balance result = this.service.generateBalance(-1, null);
+        Balance result = this.service.generateBalance(-1, null, BalanceType.REGULAR_PERIOD_BALANCE);
 
         assertThat(result).isSameAs(fakeBalance);
         verify(this.service).calculateDependantAccountsBalancesFor(eq(fakeAccount), eq(LocalDate.now()));

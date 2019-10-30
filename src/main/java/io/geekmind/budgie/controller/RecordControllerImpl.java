@@ -1,5 +1,6 @@
 package io.geekmind.budgie.controller;
 
+import io.geekmind.budgie.model.dto.BalanceType;
 import io.geekmind.budgie.model.dto.ExistingRecord;
 import io.geekmind.budgie.repository.AccountService;
 import io.geekmind.budgie.repository.CategoryService;
@@ -46,7 +47,7 @@ public class RecordControllerImpl {
                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate referenceDate,
                                     @RequestParam(name = "accountId", required = false) Integer accountId,
                                     ModelAndView requestContext) {
-        requestContext.addObject("balance", this.balanceService.generateBalance(accountId, referenceDate));
+        requestContext.addObject("balance", this.balanceService.generateBalance(accountId, referenceDate, BalanceType.REGULAR_PERIOD_BALANCE));
         requestContext.addObject("availableAccounts", this.accountService.loadAll());
         requestContext.setViewName("records/index");
         return requestContext;
@@ -74,7 +75,7 @@ public class RecordControllerImpl {
         if (existingRecord.isPresent()) {
             ExistingRecord record = existingRecord.get();
             requestContext.addObject("balance", this.balanceService.generateBalance(
-                record.getAccount().getId(), record.getRecordDate()
+                record.getAccount().getId(), record.getRecordDate(), BalanceType.REGULAR_PERIOD_BALANCE
             ));
             requestContext.addObject("existingRecord", record);
             requestContext.addObject("availableAccounts", this.accountService.loadAll());

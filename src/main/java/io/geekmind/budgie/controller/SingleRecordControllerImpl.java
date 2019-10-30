@@ -1,5 +1,6 @@
 package io.geekmind.budgie.controller;
 
+import io.geekmind.budgie.model.dto.BalanceType;
 import io.geekmind.budgie.model.dto.NewSingleRecord;
 import io.geekmind.budgie.repository.AccountService;
 import io.geekmind.budgie.repository.CategoryService;
@@ -66,7 +67,7 @@ public class SingleRecordControllerImpl {
             null
         );
         requestContext.addObject("newSingleRecord", newSingleRecord);
-        requestContext.addObject("balance", this.balanceService.generateBalance(accountId, recordDate));
+        requestContext.addObject("balance", this.balanceService.generateBalance(accountId, recordDate, BalanceType.REGULAR_PERIOD_BALANCE));
         requestContext.addObject("availableAccounts", this.accountService.loadAll());
         requestContext.addObject("availableCategories", this.categoryService.loadAll());
         requestContext.setViewName("single_records/new.form");

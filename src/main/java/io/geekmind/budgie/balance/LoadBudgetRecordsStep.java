@@ -1,6 +1,7 @@
 package io.geekmind.budgie.balance;
 
 import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
+import io.geekmind.budgie.model.dto.BalanceType;
 import io.geekmind.budgie.model.dto.ExistingRecord;
 import io.geekmind.budgie.repository.BudgetTemplateRecordService;
 import org.springframework.stereotype.Component;
@@ -55,6 +56,8 @@ public class LoadBudgetRecordsStep extends BaseBalanceCalculationStep {
     public Boolean shouldExecute(BalanceCalculationRequest balanceCalculationRequest) {
         return null != balanceCalculationRequest &&
                 null != balanceCalculationRequest.getBalance() &&
+                null != balanceCalculationRequest.getBalance().getBalanceType() &&
+                !balanceCalculationRequest.getBalance().getBalanceType().equals(BalanceType.BUDGET_TEMPLATE_BALANCE) &&
                 null != balanceCalculationRequest.getBalance().getAccount() &&
                 null != balanceCalculationRequest.getBalance().getRecords() &&
                 null != balanceCalculationRequest.getBalance().getBalanceDates() &&

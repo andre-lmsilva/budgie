@@ -38,3 +38,14 @@
              th:include="fragments/balance_summary.html :: BalanceCard('Expenses',${#numbers.formatDecimal(summary.totalExpenses, 1, 'POINT', 2, 'COMMA')})"></div>
     </div>
 </div>
+
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="BudgetHorizontalLayout(summary)">
+    <div class="row">
+        <div class="col-sm-12 col-md-4"
+             th:include="fragments/balance_summary.html :: BalanceCard('Final Balance',${#numbers.formatDecimal(summary.finalBalance, 1, 'POINT', 2, 'COMMA')})"></div>
+        <div class="col-sm-12 col-md-4"
+             th:include="fragments/balance_summary.html :: BalanceCard('Incomes',${#numbers.formatDecimal(summary.totalIncomes, 1, 'POINT', 2, 'COMMA')})"></div>
+        <div class="col-sm-12 col-md-4"
+             th:include="fragments/balance_summary.html :: BalanceCard('Expenses',${#numbers.formatDecimal(summary.totalExpenses, 1, 'POINT', 2, 'COMMA')})"></div>
+    </div>
+</div>

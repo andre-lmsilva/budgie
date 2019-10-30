@@ -26,7 +26,7 @@
                         <li class="nav-item" th:each="account: ${availableAccounts}">
                             <a class="nav-link"
                                th:href="@{'/budget'(accountId=${account.id})}"
-                               th:classappend="${account.id} == ${selectedAccount.id} ? active : ''">
+                               th:classappend="${account.id} == ${balance.account.id} ? active : ''">
                                 <i th:if="${account.mainAccount}" class="fa fa-star"></i>
                                 <span th:text="${account.name}"></span>
                             </a>
@@ -35,7 +35,7 @@
                 </div>
             </div>
 
-            <div class="row" th:if="${#lists.isEmpty(availableRecords)}">
+            <div class="row" th:if="${#lists.isEmpty(balance.records)}">
                 <div class="col">
                     <div class="jumbotron">
                         <h2>No template record found.</h2>
@@ -45,46 +45,59 @@
             </div>
         </div>
 
-        <div class="col-sm-12" th:if="${not #lists.isEmpty(availableRecords)}">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover table-striped filterable">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Template Records</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td th:include="fragments/filter_form_table_row :: FilterTableRow"></td>
-                        </tr>
-                        <tr th:each="record: ${availableRecords}">
-                            <td>
-                                <input type="hidden" class="record-value" th:value="${record.recordValue}"/>
-                                <h4 class="day-of-month float-left text-monospace"
-                                    th:text="${#temporals.format(record.recordDate,'dd')}"></h4>
-                                <h5 class="item-title d-inline" th:text="${record.category.name}"></h5>
-                                <a  th:href="@{'/budget/delete/{id}'(id=${record.id})}"
-                                    title="Remove the budget template record."
-                                    onclick="return confirm('Do you really want to remove the budget template record?\n It won\'t remove the records created based on this record.');"
-                                    class="text-danger float-right">
-                                    <span class="fas fa-trash-alt fa-lg"></span>
-                                </a><br/>
-                                <span th:text="${record.description}"></span><br/>
-                                <span   class="text-right float-right"
-                                        th:text="${#numbers.formatDecimal(record.recordValue, 1, 'POINT', 2, 'COMMA')}"
-                                        th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></td>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td class="text-right">
-                                <strong>Balance:</strong>
-                                <span id="lblBalance"></span>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+        <div class="col-sm-12" th:if="${not #lists.isEmpty(balance.records)}">
+            <div class="row">
+                <div class="col">
+                     <h2 class="d-md-block d-sm-none d-none">Summary</h2>
+                    <h4 class="d-md-none d-block">Summary</h4>
+                </div>
+            </div>
+            <div class="row" th:replace="fragments/balance_summary :: BudgetHorizontalLayout(${balance.summary})"></div>
+            <div class="row">
+                <div class="col">
+                    <h2 class="d-md-block d-sm-none d-none">Budget Template Records</h2>
+                    <h4 class="d-md-none d-block">Budget Template Records</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped filterable">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Template Records</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td th:include="fragments/filter_form_table_row :: FilterTableRow"></td>
+                                </tr>
+                                <tr th:each="record: ${balance.records}">
+                                    <td>
+                                        <input type="hidden" class="record-value" th:value="${record.recordValue}"/>
+                                        <h4 class="day-of-month float-left text-monospace"
+                                            th:text="${#temporals.format(record.recordDate,'dd')}"></h4>
+                                        <h5 class="item-title d-inline" th:text="${record.category.name}"></h5>
+                                        <a  th:href="@{'/budget/delete/{id}'(id=${record.id})}"
+                                            title="Remove the budget template record."
+                                            onclick="return confirm('Do you really want to remove the budget template record?\n It won\'t remove the records created based on this record.');"
+                                            class="text-danger float-right">
+                                            <span class="fas fa-trash-alt fa-lg"></span>
+                                        </a><br/>
+                                        <span th:text="${record.description}"></span><br/>
+                                        <span   class="text-right float-right"
+                                                th:text="${#numbers.formatDecimal(record.recordValue, 1, 'POINT', 2, 'COMMA')}"
+                                                th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></td>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="text-right">
+                                        <strong>Balance:</strong>
+                                        <span th:text="|€ ${#numbers.formatDecimal(balance.summary.finalBalance, 1, 'POINT', 2, 'COMMA')}|" id="lblBalance"></span>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -97,11 +110,5 @@
         </div>
 
         <div th:replace="fragments/footer :: footer"></div>
-        <script type="text/javascript">
-            /*
-             * This is a workaround and should be removed when a balance is being generated to template records.
-             */
-            sumFilteredValues();
-        </script>
     </body>
 </html>

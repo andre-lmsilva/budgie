@@ -4,6 +4,7 @@ import io.geekmind.budgie.balance.BaseBalanceCalculationStep;
 import io.geekmind.budgie.balance.commons.BalanceDatesCalculator;
 import io.geekmind.budgie.model.dto.Balance;
 import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
+import io.geekmind.budgie.model.dto.BalanceType;
 import io.geekmind.budgie.model.dto.ExistingAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,14 +45,16 @@ public class StandardBalanceService {
      * @param referenceDate     Period reference date. It is optional. The current date will be assume when null.
      * @return
      */
-    public Balance generateBalance(Integer accountId, LocalDate referenceDate) {
+    public Balance generateBalance(Integer accountId, LocalDate referenceDate, BalanceType balanceType) {
         return this.retrieveAccount(accountId)
             .map(account -> {
                 LocalDate refDate = Optional.ofNullable(referenceDate).orElse(LocalDate.now());
                 BalanceCalculationRequest.BalanceCalculationRequestBuilder requestBuilder =
                         new BalanceCalculationRequest.BalanceCalculationRequestBuilder();
 
-                requestBuilder.withAccount(account).withReferenceDate(refDate);
+                requestBuilder.withBalanceType(balanceType)
+                    .withAccount(account)
+                    .withReferenceDate(refDate);
                 if (account.getMainAccount()) {
                     this.calculateDependantAccountsBalancesFor(account, refDate)
                         .forEach(requestBuilder::addDependantAccountBalance);
@@ -78,7 +81,7 @@ public class StandardBalanceService {
             .map(account -> {
                 LocalDate periodBillingDate = mainAccountPeriodEndDate.withDayOfMonth(account.getMonthBillingDayAt());
                 LocalDate accountPeriodEndDate = this.balanceDatesCalculator.calculatePeriodEndDateBasedOnBillingDate(periodBillingDate, account);
-                return this.generateBalance(account.getId(), accountPeriodEndDate);
+                return this.generateBalance(account.getId(), accountPeriodEndDate, BalanceType.REGULAR_PERIOD_BALANCE);
             })
             .collect(Collectors.toList());
     }

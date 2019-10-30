@@ -1,10 +1,7 @@
 package io.geekmind.budgie.balance;
 
 import io.geekmind.budgie.balance.commons.BalanceDatesCalculator;
-import io.geekmind.budgie.model.dto.Balance;
-import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
-import io.geekmind.budgie.model.dto.BalanceDates;
-import io.geekmind.budgie.model.dto.ExistingAccount;
+import io.geekmind.budgie.model.dto.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -27,12 +24,12 @@ import java.time.LocalDate;
  * @author Andre Silva
  */
 @Component("balanceCalculationChainEntryPoint")
-public class CalculateBalanceDatesStep extends BaseBalanceCalculationStep{
+public class CalculateRegularBalanceDatesStep extends BaseBalanceCalculationStep{
 
     private final BalanceDatesCalculator dateCalculator;
 
-    public CalculateBalanceDatesStep(@Qualifier("loadPeriodRecordsStep") BaseBalanceCalculationStep nextChainedStep,
-                                     BalanceDatesCalculator dateCalculator) {
+    public CalculateRegularBalanceDatesStep(@Qualifier("calculateBudgetBalanceDatesStep") BaseBalanceCalculationStep nextChainedStep,
+                                            BalanceDatesCalculator dateCalculator) {
         super(nextChainedStep);
         this.dateCalculator = dateCalculator;
     }
@@ -66,6 +63,7 @@ public class CalculateBalanceDatesStep extends BaseBalanceCalculationStep{
     public Boolean shouldExecute(BalanceCalculationRequest balanceCalculationRequest) {
         return balanceCalculationRequest != null &&
                 balanceCalculationRequest.getBalance() != null &&
+                balanceCalculationRequest.getBalance().getBalanceType().equals(BalanceType.REGULAR_PERIOD_BALANCE) &&
                 balanceCalculationRequest.getBalance().getBalanceDates() != null &&
                 balanceCalculationRequest.getBalance().getBalanceDates().getReferenceDate() != null &&
                 balanceCalculationRequest.getBalance().getAccount() != null;

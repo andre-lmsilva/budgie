@@ -1,11 +1,13 @@
 package io.geekmind.budgie.balance;
 
 import io.geekmind.budgie.balance.commons.BalanceDatesCalculator;
+import io.geekmind.budgie.fixture.BalanceCalculationRequestFixture;
 import io.geekmind.budgie.fixture.BalanceFixture;
 import io.geekmind.budgie.fixture.ExistingAccountFixture;
 import io.geekmind.budgie.model.dto.Balance;
 import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
 import io.geekmind.budgie.model.dto.BalanceDates;
+import io.geekmind.budgie.model.dto.BalanceType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,13 +22,13 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doReturn;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CalculateBalanceDatesStepTest {
+public class CalculateRegularBalanceDatesStepTest {
 
     @Mock
     private BalanceDatesCalculator datesCalculator;
 
     @InjectMocks
-    private CalculateBalanceDatesStep step;
+    private CalculateRegularBalanceDatesStep step;
 
     private Balance balance;
     private LocalDate periodStartDate;
@@ -111,6 +113,14 @@ public class CalculateBalanceDatesStepTest {
     @Test
     public void shouldExecute_withNullBalance_ReturnsFalse() {
         assertThat(this.step.shouldExecute(new BalanceCalculationRequest())).isFalse();
+    }
+
+    @Test
+    public void shouldExecute_withBudgetBalanceType_ReturnsFalse() {
+        BalanceCalculationRequest request = BalanceCalculationRequestFixture.get();
+        request.getBalance().setBalanceType(BalanceType.BUDGET_TEMPLATE_BALANCE);
+        assertThat(this.step.shouldExecute(request))
+            .isFalse();
     }
 
     @Test

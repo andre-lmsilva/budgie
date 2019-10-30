@@ -24,6 +24,12 @@ public class BalanceCalculationRequest {
         private ExistingAccount existingAccount;
         private LocalDate referenceDate;
         private Map<ExistingAccount, Balance> dependantAccountBalances;
+        private BalanceType balanceType = BalanceType.REGULAR_PERIOD_BALANCE;
+
+        public BalanceCalculationRequestBuilder withBalanceType(BalanceType balanceType) {
+            this.balanceType = balanceType;
+            return this;
+        }
 
         public BalanceCalculationRequestBuilder withAccount(ExistingAccount existingAccount) {
             this.existingAccount = existingAccount;
@@ -50,6 +56,7 @@ public class BalanceCalculationRequest {
             Balance balance = new Balance();
             request.setBalance(balance);
             balance.setAccount(this.existingAccount);
+            balance.setBalanceType(this.balanceType);
 
             BalanceDates balanceDates = new BalanceDates();
             balance.setBalanceDates(balanceDates);
