@@ -84,46 +84,9 @@
                         <h3>No records found.</h3>
                         <p class="lead">No category balance for this account and period yet.</p>
                     </div>
-                    <div class="card bg-secondary mb-3" th:each="categorySummary: ${balance.categoryBalanceSummaries}">
-                        <div class="card-header">
-                            <span th:text="${categorySummary.category.name}"></span>
-                            <a th:href="|#breakdown-${categorySummary.category.id}|" data-toggle="collapse" aria-expanded="false" th:aria-controls="|breakdown-${categorySummary.category.id}|" class="float-right" title="Show breakdown.">
-                                <small>Details</small>
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <h4 class="card-title" th:text="|€ ${#numbers.formatDecimal(categorySummary.balance, 1, 'POINT', 2, 'COMMA')}"></h4>
-                            <div class="card-text">
-                                <small class="text-muted">
-                                    <strong th:text="${#numbers.formatDecimal(categorySummary.expensesConsumptionPercentage, 1, 'POINT', 2, 'COMMA')}"></strong>% of the total expenses.
-                                </small>
-                                <div th:if="${categorySummary.maxExpensesConsumption != 0}">
-                                    <small class="text-muted">
-                                        <strong th:text="${#numbers.formatDecimal(categorySummary.maxExpensesConsumption, 1, 'POINT', 2, 'COMMA')}"></strong>% of €
-                                        <strong th:text="${#numbers.formatDecimal(categorySummary.maxExpenses, 1, 'POINT', 2, 'COMMA')}"></strong> monthly limit.
-                                    </small>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-striped"
-                                             role="progressbar"
-                                             th:style="|width: ${#numbers.formatDecimal(categorySummary.maxExpensesConsumption, 1, 'POINT', 0, 'COMMA')}%|"
-                                             th:aria-valuenow="${#numbers.formatDecimal(categorySummary.maxExpensesConsumption, 1, 'POINT', 0, 'COMMA')}"
-                                             th:classappend="${categorySummary.maxExpensesConsumption >= 75} ? bg-danger : (${categorySummary.maxExpensesConsumption >= 50} ? bg-warning : 'bg-success')"
-                                             aria-valuemin="0"
-                                             aria-valuemax="100">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <ul class="list-group list-group-flush collapse" th:id="|breakdown-${categorySummary.category.id}|">
-                            <li class="list-group-item" th:each="entry :${categorySummary.balanceBreakDown}">
-                                <span th:text="${entry.key}"></span>
-                                <span class="float-right" th:text="|€ ${#numbers.formatDecimal(entry.value, 1, 'POINT', 2, 'COMMA')}|"></span>
-                            </li>
-                        </ul>
-                    </div>
+                    <div th:replace="fragments/category_summary :: CategorySummariesDeck(${balance.categoryBalanceSummaries})"/>
                 </div>
-
+                
                 <div class="col-sm-12 col-md-9">
                     <div class="row" th:if="${not #lists.isEmpty(balance.applicableBudgetTemplateRecords)}" style="margin-bottom:20px">
                         <div class="col">
