@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BudgetRecordService {
@@ -65,6 +67,15 @@ public class BudgetRecordService {
                 }
                 return this.mapper.map(record, ExistingRecord.class);
             });
+    }
+
+
+    @Transactional
+    public List<ExistingRecord> applyAllBudget(Integer accountId, LocalDate periodStartDate, LocalDate periodEndDate) {
+        return this.budgetTemplateRecordService.loadAllFromAccount(accountId)
+            .stream()
+            .map(record -> this.create(record.getId(), periodStartDate, periodEndDate).orElse(null))
+            .collect(Collectors.toList());
     }
 
 }

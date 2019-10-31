@@ -86,7 +86,7 @@
                     </div>
                     <div th:replace="fragments/category_summary :: CategorySummariesDeck(${balance.categoryBalanceSummaries})"/>
                 </div>
-                
+
                 <div class="col-sm-12 col-md-9">
                     <div class="row" th:if="${not #lists.isEmpty(balance.applicableBudgetTemplateRecords)}" style="margin-bottom:20px">
                         <div class="col">
@@ -96,7 +96,16 @@
                                 <table class="table table-bordered table-hover table-striped">
                                     <thead class="thead-dark">
                                         <tr>
-                                            <th>Template Record</th>
+                                            <th>
+                                                <span class="d-inline float-left">Template Record</span>
+                                                <span class="d-inline float-right">
+                                                    <a  th:href="@{'/budgetRecords/applyAll/{accountId}'(accountId=${balance.account.id},periodStartDate=${balance.balanceDates.periodStartDate},periodEndDate=${balance.balanceDates.periodEndDate})}"
+                                                        class="btn btn-info btn-sm"
+                                                        title="Apply all available budget records for this period.">
+                                                        <i class="fa fa-check"></i>
+                                                    </a>
+                                                </span>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>

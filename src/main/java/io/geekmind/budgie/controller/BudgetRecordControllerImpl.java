@@ -59,4 +59,20 @@ public class BudgetRecordControllerImpl {
         return requestContext;
     }
 
+    @GetMapping("/applyAll/{accountId}")
+    public ModelAndView applyAll(@PathVariable("accountId")Integer accountId,
+                                 @RequestParam(name = "periodStartDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate periodStartDate,
+                                 @RequestParam(name = "periodEndDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate periodEndDate,
+                                 ModelAndView requestContext) {
+        this.budgetRecordService.applyAllBudget(accountId, periodStartDate, periodEndDate);
+        requestContext.setViewName(
+            String.format(
+                "redirect:/records?accountId=%s&referenceDate=%s",
+                accountId,
+                periodStartDate
+            )
+        );
+        return requestContext;
+    }
+
 }
