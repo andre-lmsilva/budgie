@@ -55,7 +55,7 @@ public class StandardBalanceService {
                 requestBuilder.withBalanceType(balanceType)
                     .withAccount(account)
                     .withReferenceDate(refDate);
-                if (account.getMainAccount()) {
+                if (account.getMainAccount() && !balanceType.equals(BalanceType.BUDGET_TEMPLATE_BALANCE)) {
                     this.calculateDependantAccountsBalancesFor(account, refDate)
                         .forEach(requestBuilder::addDependantAccountBalance);
                 }
