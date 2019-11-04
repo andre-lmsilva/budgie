@@ -1,30 +1,32 @@
 package io.geekmind.budgie.fixture;
 
-import io.geekmind.budgie.model.dto.ExistingAccount;
+import io.geekmind.budgie.model.dto.account.ExistingAccount;
 
 public class ExistingAccountFixture {
 
     public static ExistingAccount getMainAccount() {
-        return new ExistingAccount(
-            -1,
-            "Fake Existing Account",
-            "Used only for test purposes.",
-            1,
-            5,
-           Boolean.TRUE,
-           Boolean.FALSE
-        );
+        ExistingAccount account = new ExistingAccount();
+        account.setId(-1);
+        account.setName("Fake Existing Account");
+        account.setDescription("Used only for test purposes.");
+        account.setMonthStartingAt(1);
+        account.setMonthBillingDayAt(5);
+        account.setMainAccount(Boolean.TRUE);
+        account.setShowBalanceOnMainAccount(Boolean.FALSE);
+        account.setCurrency(AccountCurrencyFixture.euro());
+        return account;
     }
 
     public static ExistingAccount getSavingsAccount() {
-        return new ExistingAccount(
-            -9,
-            "Fake Savings Account",
-            "Used only for test purposes.",
-            1,
-            5,
-            Boolean.FALSE,
-            Boolean.TRUE
-        );
+        ExistingAccount account = new ExistingAccount();
+        account.setId(-9);
+        account.setName("Fake Savings Account");
+        account.setDescription("Used only for test purposes.");
+        account.setMonthStartingAt(1);
+        account.setMonthBillingDayAt(5);
+        account.setMainAccount(Boolean.FALSE);
+        account.setShowBalanceOnMainAccount(Boolean.TRUE);
+        account.setCurrency(AccountCurrencyFixture.euro());
+        return account;
     }
 }

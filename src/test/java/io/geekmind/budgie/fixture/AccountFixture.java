@@ -13,6 +13,7 @@ public class AccountFixture {
         account.setShowBalanceOnMainAccount(Boolean.FALSE);
         account.setMonthStartingAt(1);
         account.setMonthBillingDayAt(31);
+        account.setCurrencyCode("EUR");
         return account;
     }
 

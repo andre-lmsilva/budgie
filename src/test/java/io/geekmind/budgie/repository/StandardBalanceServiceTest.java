@@ -7,7 +7,7 @@ import io.geekmind.budgie.fixture.ExistingAccountFixture;
 import io.geekmind.budgie.model.dto.Balance;
 import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
 import io.geekmind.budgie.model.dto.BalanceType;
-import io.geekmind.budgie.model.dto.ExistingAccount;
+import io.geekmind.budgie.model.dto.account.ExistingAccount;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

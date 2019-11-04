@@ -1,8 +1,10 @@
 package io.geekmind.budgie.controller;
 
-import io.geekmind.budgie.model.dto.ExistingAccount;
-import io.geekmind.budgie.model.dto.NewAccount;
+import io.geekmind.budgie.model.dto.account.EditAccount;
+import io.geekmind.budgie.model.dto.account.ExistingAccount;
+import io.geekmind.budgie.model.dto.account.NewAccount;
 import io.geekmind.budgie.repository.AccountService;
+import io.geekmind.budgie.repository.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -21,10 +23,13 @@ import java.util.Optional;
 public class AccountControllerImpl {
 
     private final AccountService accountService;
+    private final CurrencyService currencyService;
 
     @Autowired
-    public AccountControllerImpl(AccountService accountService) {
+    public AccountControllerImpl(AccountService accountService,
+                                 CurrencyService currencyService) {
         this.accountService = accountService;
+        this.currencyService = currencyService;
     }
 
     @GetMapping
@@ -36,6 +41,7 @@ public class AccountControllerImpl {
 
     @GetMapping("/new")
     public ModelAndView showNewAccountForm(ModelAndView requestContext) {
+        requestContext.addObject("availableCurrencies", this.currencyService.loadAll());
         requestContext.addObject("newAccount", new NewAccount());
         requestContext.setViewName("accounts/new.form");
         return requestContext;
@@ -47,6 +53,7 @@ public class AccountControllerImpl {
                                          ModelAndView requestContext,
                                          RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
+            requestContext.addObject("availableCurrencies", this.currencyService.loadAll());
             requestContext.addObject("newAccount", newAccount);
             requestContext.setViewName("accounts/new.form");
         } else {
@@ -71,9 +78,10 @@ public class AccountControllerImpl {
     public ModelAndView showEditForm(@PathVariable("id") Integer id,
                                      ModelAndView requestContext,
                                      RedirectAttributes redirectAttributes) {
-        Optional<ExistingAccount> existingAccount = this.accountService.loadById(id);
-        if (existingAccount.isPresent()) {
-            requestContext.addObject("existingAccount", existingAccount.get());
+        Optional<EditAccount> editAccount = this.accountService.loadByIdForEdit(id);
+        if (editAccount.isPresent()) {
+            requestContext.addObject("availableCurrencies", this.currencyService.loadAll());
+            requestContext.addObject("editAccount", editAccount.get());
             requestContext.setViewName("accounts/edit.form");
         } else {
             redirectAttributes.addFlashAttribute("error", "Account not found.");
@@ -83,16 +91,17 @@ public class AccountControllerImpl {
     }
 
     @PostMapping("/update")
-    public ModelAndView updateAccount(@Valid ExistingAccount existingAccount,
+    public ModelAndView updateAccount(@Valid EditAccount editAccount,
                                BindingResult bindingResult,
                                ModelAndView requestContext,
                                RedirectAttributes redirectAttributes) {
         if (!bindingResult.hasErrors()) {
-            this.accountService.update(existingAccount);
+            this.accountService.update(editAccount);
             redirectAttributes.addFlashAttribute("message", "Account successfully updated.");
             requestContext.setViewName("redirect:/accounts");
         } else {
-            requestContext.addObject("existingAccount", existingAccount);
+            requestContext.addObject("availableCurrencies", this.currencyService.loadAll());
+            requestContext.addObject("editAccount", editAccount);
             requestContext.setViewName("accounts/edit.form");
         }
         return requestContext;

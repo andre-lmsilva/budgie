@@ -1,7 +1,6 @@
 package io.geekmind.budgie.balance.commons;
 
-import io.geekmind.budgie.model.dto.ExistingAccount;
-import org.apache.tomcat.jni.Local;
+import io.geekmind.budgie.model.dto.account.ExistingAccount;
 
 import java.time.LocalDate;
 

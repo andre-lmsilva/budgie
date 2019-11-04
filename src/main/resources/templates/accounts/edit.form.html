@@ -9,7 +9,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
                         <li class="breadcrumb-item"><a th:href="@{'/accounts'}">Accounts</a></li>
-                        <li class="breadcrumb-item active" th:text="${existingAccount.name}"></li>
+                        <li class="breadcrumb-item active" th:text="${editAccount.name}"></li>
                     </ol>
                 </div>
             </div>
@@ -26,66 +26,84 @@
                 </div>
             </div>
 
-            <div class="row mb-3 mt-3" th:if="${#fields.hasErrors('existingAccount')}">
+            <div class="row mb-3 mt-3" th:if="${#fields.hasErrors('editAccount')}">
                 <div class="col">
-                    <div class="alert alert-danger" th:errors="*{existingAccount}"></div>
+                    <div class="alert alert-danger" th:errors="*{editAccount}"></div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col">
-                    <form action="#" th:object="${existingAccount}" th:action="@{/accounts/update}" method="post">
+                    <form action="#" th:object="${editAccount}" th:action="@{/accounts/update}" method="post">
                         <fieldset>
                             <legend>Account Details</legend>
-                            <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'has-danger' : ''">
-                                <label for="name">Name:</label>
-                                <input type="hidden" th:field="*{id}"/>
-                                <input type="text"
-                                       class="form-control"
-                                       minlength="5"
-                                       maxlength="140"
-                                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
-                                       th:field="*{name}"
-                                       placeholder="Account name."
-                                       autofocus
-                                       required/>
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="description">Description:</label>
-                                <textarea class="form-control" th:field="*{description}" placeholder="Account's purpose brief description."></textarea>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-check">
-                                    <label class="form-check">
-                                        <input type="checkbox" class="form-check-input" th:field="*{showBalanceOnMainAccount}"/>
-                                        Show account balance as a main account record.
-                                    </label>
+                            <div class="form-row">
+                                <div class="form-group col" th:classappend="${#fields.hasErrors('name')} ? 'has-danger' : ''">
+                                    <label for="name">Name:</label>
+                                    <input type="hidden" th:field="*{id}"/>
+                                    <input type="text"
+                                           class="form-control"
+                                           minlength="5"
+                                           maxlength="140"
+                                           th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
+                                           th:field="*{name}"
+                                           placeholder="Account name."
+                                           autofocus
+                                           required/>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                                 </div>
                             </div>
-                            <div class="form-group" th:classappend="${#fields.hasErrors('monthStartingAt')} ? 'has-danger' : ''">
-                                <label for="monthStartingAt">Beginning of Month:</label>
-                                <input type="number"
-                                       class="form-control"
-                                       min="1"
-                                       max="31"
-                                       th:classappend="${#fields.hasErrors('monthStartingAt') ? 'is-invalid' : ''}"
-                                       th:field="*{monthStartingAt}"/>
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('monthStartingAt')}" th:errors="*{monthStartingAt}"></div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <label for="description">Description:</label>
+                                    <textarea class="form-control" th:field="*{description}" placeholder="Account's purpose brief description."></textarea>
+                                </div>
                             </div>
-                            <div class="form-group" th:classappend="${#fields.hasErrors('monthBillingDayAt')} ? 'has-danger' : ''">
-                                <label for="monthBillingDayAt">Monthly Billing Day:</label><br/>
-                                <input type="number"
-                                       class="form-control"
-                                       min="1"
-                                       max="31"
-                                       th:classappend="${#fields.hasErrors('monthBillingDayAt') ? 'is-invalid' : ''}"
-                                       th:field="*{monthBillingDayAt}"/>
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('monthBillingDayAt')}" th:errors="*{monthBillingDayAt}"></div>
+                            <div class="form-row">
+                                <div class="form-group col-xs-12 col-sm-6" th:classappend="${#fields.hasErrors('monthStartingAt')} ? 'has-danger' : ''">
+                                    <label for="monthStartingAt">Beginning of Month:</label>
+                                    <input type="number"
+                                           class="form-control"
+                                           min="1"
+                                           max="31"
+                                           th:classappend="${#fields.hasErrors('monthStartingAt') ? 'is-invalid' : ''}"
+                                    th:field="*{monthStartingAt}"/>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('monthStartingAt')}" th:errors="*{monthStartingAt}"></div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6" th:classappend="${#fields.hasErrors('monthBillingDayAt')} ? 'has-danger' : ''">
+                                    <label for="monthBillingDayAt">Monthly Billing Day:</label><br/>
+                                    <input type="number"
+                                           class="form-control"
+                                           min="1"
+                                           max="31"
+                                           th:classappend="${#fields.hasErrors('monthBillingDayAt') ? 'is-invalid' : ''}"
+                                    th:field="*{monthBillingDayAt}"/>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('monthBillingDayAt')}" th:errors="*{monthBillingDayAt}"></div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Update</button>&nbsp;
-                                <a th:href="@{/accounts}" title="Go back to available accounts page without save the changes." class="btn btn-default">Cancel</a>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <label for="currencyCode">Currency:</label>
+                                    <select th:field="*{currencyCode}" class="form-control" required>
+                                        <option th:each="currency: ${availableCurrencies}" th:value="${currency.currencyCode}" th:text="${currency.currencyName}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <div class="form-check">
+                                        <label class="form-check">
+                                            <input type="checkbox" class="form-check-input" th:field="*{showBalanceOnMainAccount}"/>
+                                            Show account balance as a main account record.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <button type="submit" class="btn btn-primary">Update</button>&nbsp;
+                                    <a th:href="@{/accounts}" title="Go back to available accounts page without save the changes." class="btn btn-default">Cancel</a>
+                                </div>
                             </div>
                         </fieldset>
                     </form>

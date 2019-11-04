@@ -1,6 +1,6 @@
 package io.geekmind.budgie.balance.commons;
 
-import io.geekmind.budgie.model.dto.ExistingAccount;
+import io.geekmind.budgie.model.dto.account.ExistingAccount;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;

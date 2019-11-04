@@ -1,5 +1,6 @@
 package io.geekmind.budgie.model.dto;
 
+import io.geekmind.budgie.model.dto.account.ExistingAccount;
 import lombok.Data;
 
 import java.time.LocalDate;

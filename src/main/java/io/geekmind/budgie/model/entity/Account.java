@@ -44,4 +44,8 @@ public class Account {
     @NotNull
     private Boolean showBalanceOnMainAccount;
 
+    @NotNull
+    @Type(type = "encryptedTextField")
+    private String currencyCode;
+
 }

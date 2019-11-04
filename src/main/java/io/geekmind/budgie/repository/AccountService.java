@@ -1,7 +1,8 @@
 package io.geekmind.budgie.repository;
 
-import io.geekmind.budgie.model.dto.ExistingAccount;
-import io.geekmind.budgie.model.dto.NewAccount;
+import io.geekmind.budgie.model.dto.account.EditAccount;
+import io.geekmind.budgie.model.dto.account.ExistingAccount;
+import io.geekmind.budgie.model.dto.account.NewAccount;
 import io.geekmind.budgie.model.entity.Account;
 import io.geekmind.budgie.validation.UniquenessValidationService;
 import ma.glasnost.orika.MapperFacade;
@@ -71,15 +72,15 @@ public class AccountService implements UniquenessValidationService {
 
     @Override
     public Boolean canValidate(Class<?> type) {
-        return type.equals(NewAccount.class) || type.equals(ExistingAccount.class);
+        return type.equals(NewAccount.class) || type.equals(EditAccount.class);
     }
 
     @Override
     public Boolean isValid(Object entity) {
         if (entity instanceof NewAccount) {
             return this.isValidToCreate((NewAccount) entity);
-        } else if (entity instanceof ExistingAccount) {
-            return this.isValidToUpdate((ExistingAccount) entity);
+        } else if (entity instanceof EditAccount) {
+            return this.isValidToUpdate((EditAccount) entity);
         } else {
             return false;
         }
@@ -92,7 +93,7 @@ public class AccountService implements UniquenessValidationService {
             .noneMatch(nAccount -> nAccount.getName().equals(entity.getName()));
     }
 
-    protected Boolean isValidToUpdate(ExistingAccount entity) {
+    protected Boolean isValidToUpdate(EditAccount entity) {
           return this.accountRepository
               .findAll()
               .stream()
@@ -108,13 +109,18 @@ public class AccountService implements UniquenessValidationService {
             .collect(Collectors.toList());
     }
 
-    public ExistingAccount update(ExistingAccount existingAccount) {
-        Optional<Account> accountToUpdate = this.accountRepository.findById(existingAccount.getId());
+    public EditAccount update(EditAccount editAccount) {
+        Optional<Account> accountToUpdate = this.accountRepository.findById(editAccount.getId());
         if (accountToUpdate.isPresent()) {
             Account account = accountToUpdate.get();
-            this.mapper.map(existingAccount, account);
+            this.mapper.map(editAccount, account);
             this.accountRepository.save(account);
         }
-        return existingAccount;
+        return editAccount;
+    }
+
+    public Optional<EditAccount> loadByIdForEdit(Integer id) {
+        return this.accountRepository.findById(id)
+            .map(account ->  this.mapper.map(account, EditAccount.class));
     }
 }
