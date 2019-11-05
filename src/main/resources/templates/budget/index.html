@@ -52,7 +52,7 @@
                     <h4 class="d-md-none d-block">Summary</h4>
                 </div>
             </div>
-            <div class="row" th:replace="fragments/balance_summary :: BudgetHorizontalLayout(${balance.summary})"></div>
+            <div class="row" th:replace="fragments/balance_summary :: BudgetHorizontalLayout(${balance.summary}, ${balance.account.currency.currencySymbol})"></div>
             <div class="row">
                 <div class="col-sm-12 col-md-3">
                     <h2 class="d-md-block d-sm-none d-none">Categories</h2>
@@ -61,7 +61,7 @@
                         <h3>No records found.</h3>
                         <p class="lead">No category summary for this account yet.</p>
                     </div>
-                    <div th:replace="fragments/category_summary :: CategorySummariesDeck(${balance.categoryBalanceSummaries})"/>
+                    <div th:replace="fragments/category_summary :: CategorySummariesDeck(${balance.categoryBalanceSummaries}, ${balance.account.currency.currencySymbol})"/>
                 </div>
 
                 <div class="col-sm-12 col-md-9">
@@ -101,7 +101,8 @@
                                 <tr>
                                     <td class="text-right">
                                         <strong>Balance:</strong>
-                                        <span th:text="|€ ${#numbers.formatDecimal(balance.summary.finalBalance, 1, 'POINT', 2, 'COMMA')}|" id="lblBalance"></span>
+                                        <span th:text="${balance.account.currency.currencySymbol}"></span>
+                                        <span th:text="${#numbers.formatDecimal(balance.summary.finalBalance, 1, 'POINT', 2, 'COMMA')}" id="lblBalance"></span>
                                     </td>
                                 </tr>
                             </tfoot>

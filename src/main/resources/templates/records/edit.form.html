@@ -49,7 +49,7 @@
                             <h4 th:text="|${balance.account.name} Summary|"></h4>
                         </div>
                     </div>
-                    <div class="row" th:replace="fragments/balance_summary :: HorizontalLayout(${balance.summary})"></div>
+                    <div class="row" th:replace="fragments/balance_summary :: HorizontalLayout(${balance.summary}, ${balance.account.currency.currencySymbol})"></div>
                 </div>
             </div>
 
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col" th:include="fragments/balance_summary.html :: VerticalLayout(${balance.summary})"></div>
+                        <div class="col" th:include="fragments/balance_summary.html :: VerticalLayout(${balance.summary}, ${balance.account.currency.currencySymbol})"></div>
                     </div>
                 </div>
             </div>

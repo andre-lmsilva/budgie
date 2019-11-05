@@ -94,7 +94,7 @@ function sumFilteredValues() {
 
     if ($('#lblBalance').length > 0) {
         $('#lblBalance').text(
-            '€ '+numeral(balance).format('0,0.00')
+            numeral(balance).format('0,0.00')
         );
 
         $('#lblBalance').removeClass('text-danger');

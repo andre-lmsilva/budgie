@@ -63,7 +63,7 @@
                                         </a>
                                         <small class="text-muted d-block" th:text="${category.description}" th:if="${category.description != null}"></small>
                                         <small class="text-warning" th:if="${category.maxExpenses != null and category.maxExpenses != 0}">
-                                            Monthly limited to <strong th:text="|€ ${#numbers.formatDecimal(category.maxExpenses, 1, 'POINT', 2, 'COMMA')}|"></strong>.
+                                            Monthly limited to <strong th:text="|$ ${#numbers.formatDecimal(category.maxExpenses, 1, 'POINT', 2, 'COMMA')}|"></strong>.
                                         </small>
                                         <small class="text-info" th:if="${category.maxExpenses == null or category.maxExpenses == 0}">
                                             No monthly limit defined.

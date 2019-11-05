@@ -1,4 +1,4 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="CategorySummaryCard(categorySummary)">
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="CategorySummaryCard(categorySummary, currencySymbol)">
     <div class="card bg-secondary mb-3">
         <div class="card-header">
             <span th:text="${categorySummary.category.name}"></span>
@@ -7,15 +7,15 @@
             </a>
         </div>
         <div class="card-body">
-            <h4 class="card-title" th:text="|€ ${#numbers.formatDecimal(categorySummary.balance, 1, 'POINT', 2, 'COMMA')}"></h4>
+            <h4 class="card-title" th:text="|${currencySymbol} ${#numbers.formatDecimal(categorySummary.balance, 1, 'POINT', 2, 'COMMA')}"></h4>
             <div class="card-text">
                 <small class="text-muted">
                     <strong th:text="${#numbers.formatDecimal(categorySummary.expensesConsumptionPercentage, 1, 'POINT', 2, 'COMMA')}"></strong>% of the total expenses.
                 </small>
                 <div th:if="${categorySummary.maxExpensesConsumption != 0}">
                     <small class="text-muted">
-                        <strong th:text="${#numbers.formatDecimal(categorySummary.maxExpensesConsumption, 1, 'POINT', 2, 'COMMA')}"></strong>% of €
-                        <strong th:text="${#numbers.formatDecimal(categorySummary.maxExpenses, 1, 'POINT', 2, 'COMMA')}"></strong> monthly limit.
+                        <strong th:text="${#numbers.formatDecimal(categorySummary.maxExpensesConsumption, 1, 'POINT', 2, 'COMMA')}"></strong>% of&nbsp;
+                        <strong th:text="|${currencySymbol} ${#numbers.formatDecimal(categorySummary.maxExpenses, 1, 'POINT', 2, 'COMMA')}|"></strong> monthly limit.
                     </small>
                     <div class="progress">
                         <div class="progress-bar progress-bar-striped"
@@ -33,12 +33,12 @@
         <ul class="list-group list-group-flush collapse" th:id="|breakdown-${categorySummary.category.id}|">
             <li class="list-group-item" th:each="entry :${categorySummary.balanceBreakDown}">
                 <span th:text="${entry.key}"></span>
-                <span class="float-right" th:text="|€ ${#numbers.formatDecimal(entry.value, 1, 'POINT', 2, 'COMMA')}|"></span>
+                <span class="float-right" th:text="|${currencySymbol} ${#numbers.formatDecimal(entry.value, 1, 'POINT', 2, 'COMMA')}|"></span>
             </li>
         </ul>
     </div>
 </div>
 
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="CategorySummariesDeck(categorySummaries)">
-    <div th:each="categorySummary: ${categorySummaries}" th:include="fragments/category_summary :: CategorySummaryCard(${categorySummary})"></div>
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="CategorySummariesDeck(categorySummaries, currencySymbol)">
+    <div th:each="categorySummary: ${categorySummaries}" th:include="fragments/category_summary :: CategorySummaryCard(${categorySummary}, ${currencySymbol})"></div>
 </div>

@@ -81,7 +81,7 @@
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('numberOfInstalments')}" th:errors="*{numberOfInstalment}"></div>
                             </div>
                             <div class="form-group">
-                                <label for="instalmentValue">Instalment Value (€):</label>
+                                <label for="instalmentValue">Instalment Value ($):</label>
                                 <input type="text" class="form-control" th:field="*{instalmentValue}" placeholder="0.000,00" th:appendclass="${#fields.hasErrors('instalmentValue')} ? 'is-invalid' : ''" required/>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('instalmentValue')}" th:errors="*{instalmentValue}"></div>
                             </div>

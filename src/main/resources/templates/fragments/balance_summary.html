@@ -1,51 +1,51 @@
-<div xmlns:th="http://www.thymeleaf.org" class="col-sm-12 col-md-3" th:fragment="BalanceCard(title, value)">
+<div xmlns:th="http://www.thymeleaf.org" class="col-sm-12 col-md-3" th:fragment="BalanceCard(title, value, currencySymbol)">
     <div class="card text-white bg-dark mb-3">
         <div class="card-header" th:text="${title}"></div>
         <div class="card-body text-right">
-            <h4 class="card-title" th:text="|€ ${value}|"></h4>
+            <h4 class="card-title" th:text="|${currencySymbol} ${value}|"></h4>
         </div>
     </div>
 </div>
 
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="HorizontalLayout(summary)">
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="HorizontalLayout(summary, currencySymbol)">
     <div class="row">
         <div class="col-sm-12 col-md-3"
-             th:include="fragments/balance_summary.html :: BalanceCard('Current Balance',${#numbers.formatDecimal(summary.balanceUpToDate, 1, 'POINT', 2, 'COMMA')})"></div>
+             th:include="fragments/balance_summary.html :: BalanceCard('Current Balance',${#numbers.formatDecimal(summary.balanceUpToDate, 1, 'POINT', 2, 'COMMA')}, ${currencySymbol})"></div>
         <div class="col-sm-12 col-md-3"
-             th:include="fragments/balance_summary.html :: BalanceCard('Final Balance',${#numbers.formatDecimal(summary.finalBalance, 1, 'POINT', 2, 'COMMA')})"></div>
+             th:include="fragments/balance_summary.html :: BalanceCard('Final Balance',${#numbers.formatDecimal(summary.finalBalance, 1, 'POINT', 2, 'COMMA')}, ${currencySymbol})"></div>
         <div class="col-sm-12 col-md-3"
-             th:include="fragments/balance_summary.html :: BalanceCard('Incomes',${#numbers.formatDecimal(summary.totalIncomes, 1, 'POINT', 2, 'COMMA')})"></div>
+             th:include="fragments/balance_summary.html :: BalanceCard('Incomes',${#numbers.formatDecimal(summary.totalIncomes, 1, 'POINT', 2, 'COMMA')}, ${currencySymbol})"></div>
         <div class="col-sm-12 col-md-3"
-             th:include="fragments/balance_summary.html :: BalanceCard('Expenses',${#numbers.formatDecimal(summary.totalExpenses, 1, 'POINT', 2, 'COMMA')})"></div>
+             th:include="fragments/balance_summary.html :: BalanceCard('Expenses',${#numbers.formatDecimal(summary.totalExpenses, 1, 'POINT', 2, 'COMMA')}, ${currencySymbol})"></div>
     </div>
 </div>
 
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="VerticalLayout(summary)">
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="VerticalLayout(summary, currencySymbol)">
     <div class="row">
          <div class="col"
-             th:include="fragments/balance_summary.html :: BalanceCard('Current Balance',${#numbers.formatDecimal(summary.balanceUpToDate, 1, 'POINT', 2, 'COMMA')})"></div>
+             th:include="fragments/balance_summary.html :: BalanceCard('Current Balance',${#numbers.formatDecimal(summary.balanceUpToDate, 1, 'POINT', 2, 'COMMA')}, ${currencySymbol})"></div>
     </div>
     <div class="row">
         <div class="col"
-             th:include="fragments/balance_summary.html :: BalanceCard('Final Balance',${#numbers.formatDecimal(summary.finalBalance, 1, 'POINT', 2, 'COMMA')})"></div>
+             th:include="fragments/balance_summary.html :: BalanceCard('Final Balance',${#numbers.formatDecimal(summary.finalBalance, 1, 'POINT', 2, 'COMMA')}, ${currencySymbol})"></div>
     </div>
     <div class="row">
         <div class="col"
-             th:include="fragments/balance_summary.html :: BalanceCard('Incomes',${#numbers.formatDecimal(summary.totalIncomes, 1, 'POINT', 2, 'COMMA')})"></div>
+             th:include="fragments/balance_summary.html :: BalanceCard('Incomes',${#numbers.formatDecimal(summary.totalIncomes, 1, 'POINT', 2, 'COMMA')}, ${currencySymbol})"></div>
     </div>
     <div class="row">
         <div class="col"
-             th:include="fragments/balance_summary.html :: BalanceCard('Expenses',${#numbers.formatDecimal(summary.totalExpenses, 1, 'POINT', 2, 'COMMA')})"></div>
+             th:include="fragments/balance_summary.html :: BalanceCard('Expenses',${#numbers.formatDecimal(summary.totalExpenses, 1, 'POINT', 2, 'COMMA')}, ${currencySymbol})"></div>
     </div>
 </div>
 
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="BudgetHorizontalLayout(summary)">
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="BudgetHorizontalLayout(summary, currencySymbol)">
     <div class="row">
         <div class="col-sm-12 col-md-4"
-             th:include="fragments/balance_summary.html :: BalanceCard('Final Balance',${#numbers.formatDecimal(summary.finalBalance, 1, 'POINT', 2, 'COMMA')})"></div>
+             th:include="fragments/balance_summary.html :: BalanceCard('Final Balance',${#numbers.formatDecimal(summary.finalBalance, 1, 'POINT', 2, 'COMMA')}, ${currencySymbol})"></div>
         <div class="col-sm-12 col-md-4"
-             th:include="fragments/balance_summary.html :: BalanceCard('Incomes',${#numbers.formatDecimal(summary.totalIncomes, 1, 'POINT', 2, 'COMMA')})"></div>
+             th:include="fragments/balance_summary.html :: BalanceCard('Incomes',${#numbers.formatDecimal(summary.totalIncomes, 1, 'POINT', 2, 'COMMA')}, ${currencySymbol})"></div>
         <div class="col-sm-12 col-md-4"
-             th:include="fragments/balance_summary.html :: BalanceCard('Expenses',${#numbers.formatDecimal(summary.totalExpenses, 1, 'POINT', 2, 'COMMA')})"></div>
+             th:include="fragments/balance_summary.html :: BalanceCard('Expenses',${#numbers.formatDecimal(summary.totalExpenses, 1, 'POINT', 2, 'COMMA')}, ${currencySymbol})"></div>
     </div>
 </div>

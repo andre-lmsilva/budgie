@@ -35,10 +35,12 @@ public class AccountMappingSettings implements OrikaMapperFactoryConfigurer {
                 @Override
                 public void mapAtoB(Account account, ExistingAccount existingAccount, MappingContext context) {
                     super.mapAtoB(account, existingAccount, context);
-                    AccountCurrency currency = currencyMapper.mapFrom(
-                        Currency.valueOf(account.getCurrencyCode())
-                    );
-                    existingAccount.setCurrency(currency);
+                    if (null != account.getCurrencyCode()) {
+                        AccountCurrency currency = currencyMapper.mapFrom(
+                                Currency.valueOf(account.getCurrencyCode())
+                        );
+                        existingAccount.setCurrency(currency);
+                    }
                 }
             })
             .register();
