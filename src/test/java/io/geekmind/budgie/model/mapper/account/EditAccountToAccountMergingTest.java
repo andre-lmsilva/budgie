@@ -33,8 +33,6 @@ public class EditAccountToAccountMergingTest {
     public void idAttribute_isNotUpdated() {
         assertThat(resultAccount)
             .hasFieldOrPropertyWithValue("id", this.sourceAccount.getId());
-        assertThat(resultAccount.getId())
-            .isNotEqualTo(this.sourceNewAccount.getId());
     }
 
     @Test

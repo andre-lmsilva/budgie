@@ -2,7 +2,7 @@ package io.geekmind.budgie.model.mapper;
 
 import io.geekmind.budgie.model.dto.Balance;
 import io.geekmind.budgie.model.dto.DependantAccountRecord;
-import io.geekmind.budgie.model.dto.ExistingCategory;
+import io.geekmind.budgie.model.dto.category.ExistingCategory;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
@@ -18,12 +18,11 @@ public class DependantAccountRecordMappingSettings implements OrikaMapperFactory
     private final ExistingCategory accountBalanceCategory;
 
     public DependantAccountRecordMappingSettings() {
-        this.accountBalanceCategory = new ExistingCategory(
-            -1,
-            "Account Balance",
-            "Dependant account balance result.",
-            BigDecimal.ZERO
-        );
+        this.accountBalanceCategory = new ExistingCategory();
+        this.accountBalanceCategory.setId(-1);
+        this.accountBalanceCategory.setName("Account Balance");
+        this.accountBalanceCategory.setDescription("Dependant account balance result.");
+        this.accountBalanceCategory.setMaxExpenses(BigDecimal.ZERO);
     }
 
     @Override

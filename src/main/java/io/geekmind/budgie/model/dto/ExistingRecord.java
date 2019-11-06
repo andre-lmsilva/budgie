@@ -1,6 +1,7 @@
 package io.geekmind.budgie.model.dto;
 
 import io.geekmind.budgie.model.dto.account.ExistingAccount;
+import io.geekmind.budgie.model.dto.category.ExistingCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

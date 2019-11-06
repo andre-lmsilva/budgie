@@ -29,7 +29,6 @@ public class AccountToNewAccountMappingTest {
     @Test
     public void allAttributes_isNotMapped() {
         assertThat(this.resultNewAccount)
-            .hasFieldOrPropertyWithValue("id", null)
             .hasFieldOrPropertyWithValue("name", null)
             .hasFieldOrPropertyWithValue("description", null)
             .hasFieldOrPropertyWithValue("monthStartingAt", null)

@@ -1,7 +1,8 @@
 package io.geekmind.budgie.repository;
 
-import io.geekmind.budgie.model.dto.ExistingCategory;
-import io.geekmind.budgie.model.dto.NewCategory;
+import io.geekmind.budgie.model.dto.category.ExistingCategory;
+import io.geekmind.budgie.model.dto.category.EditCategory;
+import io.geekmind.budgie.model.dto.category.NewCategory;
 import io.geekmind.budgie.model.entity.Category;
 import io.geekmind.budgie.validation.UniquenessValidationService;
 import ma.glasnost.orika.MapperFacade;
@@ -63,17 +64,22 @@ public class CategoryService implements UniquenessValidationService {
             .map(category -> this.mapper.map(category, ExistingCategory.class));
     }
 
+    public Optional<EditCategory> loadByIdForEdit(Integer id) {
+        return this.categoryRepository.findById(id)
+            .map(category -> this.mapper.map(category, EditCategory.class));
+    }
+
     @Override
     public Boolean canValidate(Class<?> type) {
-        return type.equals(NewCategory.class) || type.equals(ExistingCategory.class);
+        return type.equals(NewCategory.class) || type.equals(EditCategory.class);
     }
 
     @Override
     public Boolean isValid(Object entity) {
         if (entity instanceof NewCategory) {
             return this.isValidToCreate((NewCategory) entity);
-        } else if (entity instanceof ExistingCategory) {
-            return this.isValidToUpdate((ExistingCategory) entity);
+        } else if (entity instanceof EditCategory) {
+            return this.isValidToUpdate((EditCategory) entity);
         } else {
             return false;
         }
@@ -85,20 +91,20 @@ public class CategoryService implements UniquenessValidationService {
             .noneMatch(nCategory -> nCategory.getName().equals(entity.getName()));
     }
 
-    protected Boolean isValidToUpdate(ExistingCategory entity) {
+    protected Boolean isValidToUpdate(EditCategory entity) {
           return this.categoryRepository.findAll()
             .stream()
             .filter(nCategory -> !nCategory.getId().equals(entity.getId()))
             .noneMatch(nCategory -> nCategory.getName().equals(entity.getName()));
     }
 
-    public ExistingCategory update(ExistingCategory existingCategory) {
-        Optional<Category> categoryToUpdate = this.categoryRepository.findById(existingCategory.getId());
+    public EditCategory update(EditCategory editCategory) {
+        Optional<Category> categoryToUpdate = this.categoryRepository.findById(editCategory.getId());
         if (categoryToUpdate.isPresent()) {
             Category category = categoryToUpdate.get();
-            this.mapper.map(existingCategory, category);
+            this.mapper.map(editCategory, category);
             this.categoryRepository.save(category);
         }
-        return existingCategory;
+        return editCategory;
     }
 }

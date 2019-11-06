@@ -8,7 +8,7 @@ import io.geekmind.budgie.fixture.ExistingRecordFixture;
 import io.geekmind.budgie.model.dto.Balance;
 import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
 import io.geekmind.budgie.model.dto.CategoryBalanceSummary;
-import io.geekmind.budgie.model.dto.ExistingCategory;
+import io.geekmind.budgie.model.dto.category.ExistingCategory;
 import io.geekmind.budgie.model.dto.ExistingRecord;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,7 +1,7 @@
 package io.geekmind.budgie.controller;
 
-import io.geekmind.budgie.model.dto.ExistingCategory;
-import io.geekmind.budgie.model.dto.NewCategory;
+import io.geekmind.budgie.model.dto.category.EditCategory;
+import io.geekmind.budgie.model.dto.category.NewCategory;
 import io.geekmind.budgie.repository.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.util.Optional;
 
 @Controller
@@ -69,9 +68,9 @@ public class CategoryControllerImpl {
     public ModelAndView showEditForm(@PathVariable("id") Integer id,
                                       ModelAndView requestContext,
                                       RedirectAttributes redirectAttributes) {
-        Optional<ExistingCategory> existingCategory = this.categoryService.loadById(id);
-        if (existingCategory.isPresent()) {
-            requestContext.addObject("existingCategory", existingCategory.get());
+        Optional<EditCategory> editCategory = this.categoryService.loadByIdForEdit(id);
+        if (editCategory.isPresent()) {
+            requestContext.addObject("editCategory", editCategory.get());
             requestContext.setViewName("categories/edit.form");
         } else {
             redirectAttributes.addFlashAttribute("error", "Category not found.");
@@ -81,16 +80,16 @@ public class CategoryControllerImpl {
     }
 
     @PostMapping("/update")
-    public ModelAndView updateCategory(@Valid ExistingCategory existingCategory,
+    public ModelAndView updateCategory(@Valid EditCategory editCategory,
                                        BindingResult bindingResult,
                                        ModelAndView requestContext,
                                        RedirectAttributes redirectAttributes) {
         if (!bindingResult.hasErrors()) {
-            this.categoryService.update(existingCategory);
+            this.categoryService.update(editCategory);
             redirectAttributes.addFlashAttribute("message", "Category successfully updated.");
             requestContext.setViewName("redirect:/categories");
         } else {
-            requestContext.addObject("existingCategory", existingCategory);
+            requestContext.addObject("editCategory", editCategory);
             requestContext.setViewName("categories/edit.form");
         }
         return requestContext;

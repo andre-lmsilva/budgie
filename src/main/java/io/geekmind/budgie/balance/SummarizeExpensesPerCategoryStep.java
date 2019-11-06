@@ -1,17 +1,19 @@
 package io.geekmind.budgie.balance;
 
-import io.geekmind.budgie.model.dto.*;
-import io.geekmind.budgie.model.entity.Account;
+import io.geekmind.budgie.model.dto.Balance;
+import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
+import io.geekmind.budgie.model.dto.CategoryBalanceSummary;
+import io.geekmind.budgie.model.dto.DependantAccountRecord;
+import io.geekmind.budgie.model.dto.ExistingRecord;
+import io.geekmind.budgie.model.dto.category.ExistingCategory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
