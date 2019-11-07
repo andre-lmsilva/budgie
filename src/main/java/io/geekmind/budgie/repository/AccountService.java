@@ -69,14 +69,6 @@ public class AccountService implements UniquenessValidationService {
             .map(account -> this.mapper.map(account, ExistingAccount.class));
     }
 
-    public List<ExistingAccount> loadDependantAccounts() {
-        return this.accountRepository.findDependantAccounts()
-            .stream()
-            .map(account -> this.mapper.map(account, ExistingAccount.class))
-            .sorted(Comparator.comparing(ExistingAccount::getName))
-            .collect(Collectors.toList());
-    }
-
     @Override
     public Boolean canValidate(Class<?> type) {
         return type.equals(NewAccount.class) || type.equals(EditAccount.class);

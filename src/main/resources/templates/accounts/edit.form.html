@@ -57,7 +57,7 @@
                                 <div class="form-group col">
                                     <label for="parentId">Sub-account of:</label>
                                     <select th:field="*{parentId}" class="form-control">
-                                        <option th:value="null">No parent account.</optioni>
+                                        <option th:value="null">No parent account.</option>
                                         <option th:each="account: ${availableAccounts}" th:value="${account.id}" th:text="${account.name}"></option>
                                     </select>
                                 </div>
@@ -102,8 +102,8 @@
                                 <div class="form-group col">
                                     <div class="form-check">
                                         <label class="form-check">
-                                            <input type="checkbox" class="form-check-input" th:field="*{showBalanceOnMainAccount}"/>
-                                            Show account balance as a main account record.
+                                            <input type="checkbox" class="form-check-input" th:field="*{showBalanceOnParentAccount}"/>
+                                            Show account balance as a parent account record.
                                         </label>
                                     </div>
                                 </div>

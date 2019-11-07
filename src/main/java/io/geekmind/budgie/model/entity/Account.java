@@ -54,7 +54,7 @@ public class Account {
     private Boolean mainAccount = Boolean.FALSE;
 
     @NotNull
-    private Boolean showBalanceOnMainAccount;
+    private Boolean showBalanceOnParentAccount;
 
     @NotNull
     @Type(type = "encryptedTextField")

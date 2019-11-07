@@ -12,7 +12,7 @@ public class EditAccountFixture {
         editAccount.setDescription("Fake Savings Account Description.");
         editAccount.setMonthStartingAt(1);
         editAccount.setMonthBillingDayAt(1);
-        editAccount.setShowBalanceOnMainAccount(true);
+        editAccount.setShowBalanceOnParentAccount(true);
         return editAccount;
     }
 

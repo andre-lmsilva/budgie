@@ -55,7 +55,8 @@ public class StandardBalanceService {
                 requestBuilder.withBalanceType(balanceType)
                     .withAccount(account)
                     .withReferenceDate(refDate);
-                if (account.getMainAccount() && !balanceType.equals(BalanceType.BUDGET_TEMPLATE_BALANCE)) {
+
+                if (account.getDependants() != null && !account.getDependants().isEmpty() && !balanceType.equals(BalanceType.BUDGET_TEMPLATE_BALANCE)) {
                     this.calculateDependantAccountsBalancesFor(account, refDate)
                         .forEach(requestBuilder::addDependantAccountBalance);
                 }
@@ -67,21 +68,21 @@ public class StandardBalanceService {
     }
 
     /**
-     * Retrieves all accounts dependant from the main account, calculates its balance for the same period and returns
+     * Retrieves all accounts dependant from the received account, calculates its balance for the same period and returns
      * all of them as a list.
      *
-     * @param mainAccount       Main account.
+     * @param account           Main account.
      * @param referenceDate     Reference date of the period being calculated.
-     * @return List containing the balances of all the main account dependant accounts for the same period.
+     * @return List containing the balances of all the account dependant accounts for the same period.
      */
-    protected List<Balance> calculateDependantAccountsBalancesFor(ExistingAccount mainAccount, LocalDate referenceDate) {
-        LocalDate mainAccountPeriodEndDate = this.balanceDatesCalculator.calculatePeriodEndDate(referenceDate, mainAccount);
-        return this.accountService.loadDependantAccounts()
+    protected List<Balance> calculateDependantAccountsBalancesFor(ExistingAccount account, LocalDate referenceDate) {
+        LocalDate mainAccountPeriodEndDate = this.balanceDatesCalculator.calculatePeriodEndDate(referenceDate, account);
+        return account.getDependants()
             .stream()
-            .map(account -> {
-                LocalDate periodBillingDate = mainAccountPeriodEndDate.withDayOfMonth(account.getMonthBillingDayAt());
-                LocalDate accountPeriodEndDate = this.balanceDatesCalculator.calculatePeriodEndDateBasedOnBillingDate(periodBillingDate, account);
-                return this.generateBalance(account.getId(), accountPeriodEndDate, BalanceType.REGULAR_PERIOD_BALANCE);
+            .map(dependantAccount -> {
+                LocalDate periodBillingDate = mainAccountPeriodEndDate.withDayOfMonth(dependantAccount.getMonthBillingDayAt());
+                LocalDate accountPeriodEndDate = this.balanceDatesCalculator.calculatePeriodEndDateBasedOnBillingDate(periodBillingDate, dependantAccount);
+                return this.generateBalance(dependantAccount.getId(), accountPeriodEndDate, BalanceType.REGULAR_PERIOD_BALANCE);
             })
             .collect(Collectors.toList());
     }

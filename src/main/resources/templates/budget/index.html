@@ -93,7 +93,7 @@
                                         <span th:text="${record.description}"></span><br/>
                                         <span   class="text-right float-right"
                                                 th:text="${#numbers.formatDecimal(record.recordValue, 1, 'POINT', 2, 'COMMA')}"
-                                                th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></td>
+                                                th:classappend="${record.recordValue} > 0 ? text-info : text-danger">
                                     </td>
                                 </tr>
                             </tbody>

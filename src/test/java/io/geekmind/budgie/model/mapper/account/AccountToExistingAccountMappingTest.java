@@ -73,7 +73,7 @@ public class AccountToExistingAccountMappingTest {
     @Test
     public void showBalanceOnMainAccountAttribute_isMapped() {
         assertThat(this.resultExistingAccount)
-            .hasFieldOrPropertyWithValue("showBalanceOnMainAccount", sourceAccount.getShowBalanceOnMainAccount());
+            .hasFieldOrPropertyWithValue("showBalanceParentMainAccount", sourceAccount.getShowBalanceOnParentAccount());
     }
 
     @Test

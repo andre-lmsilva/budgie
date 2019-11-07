@@ -68,7 +68,7 @@ public class EditAccountToAccountMergingTest {
     @Test
     public void showBalanceOnMainAccountAttribute_isUpdated() {
         assertThat(resultAccount)
-            .hasFieldOrPropertyWithValue("showBalanceOnMainAccount", this.sourceNewAccount.getShowBalanceOnMainAccount());
+            .hasFieldOrPropertyWithValue("showBalanceOnParentAccount", this.sourceNewAccount.getShowBalanceOnParentAccount());
     }
 
     @Test

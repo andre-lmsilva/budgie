@@ -12,7 +12,7 @@ public class ExistingAccountFixture {
         account.setMonthStartingAt(1);
         account.setMonthBillingDayAt(5);
         account.setMainAccount(Boolean.TRUE);
-        account.setShowBalanceOnMainAccount(Boolean.FALSE);
+        account.setShowBalanceOnParentAccount(Boolean.FALSE);
         account.setCurrency(AccountCurrencyFixture.euro());
         return account;
     }
@@ -25,7 +25,7 @@ public class ExistingAccountFixture {
         account.setMonthStartingAt(1);
         account.setMonthBillingDayAt(5);
         account.setMainAccount(Boolean.FALSE);
-        account.setShowBalanceOnMainAccount(Boolean.TRUE);
+        account.setShowBalanceOnParentAccount(Boolean.TRUE);
         account.setCurrency(AccountCurrencyFixture.euro());
         return account;
     }

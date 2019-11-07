@@ -12,10 +12,10 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     @Query("FROM Account account WHERE account.mainAccount = true")
     Optional<Account> findMainAccount();
 
-    @Query("FROM Account account WHERE account.showBalanceOnMainAccount = true")
+    @Query("FROM Account account WHERE account.showBalanceOnParentAccount = true")
     List<Account> findDependantAccounts();
 
-    @Query("FROM Account account WHERE account.showBalanceOnMainAccount = false")
+    @Query("FROM Account account WHERE account.showBalanceOnParentAccount = false")
     List<Account> findNonDependantAccounts();
 
 }

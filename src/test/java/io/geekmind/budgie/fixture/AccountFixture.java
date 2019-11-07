@@ -12,7 +12,7 @@ public class AccountFixture {
         account.setName("Fake Main Account");
         account.setDescription("Main account used exclusively for test purposes.");
         account.setMainAccount(Boolean.TRUE);
-        account.setShowBalanceOnMainAccount(Boolean.FALSE);
+        account.setShowBalanceOnParentAccount(Boolean.FALSE);
         account.setMonthStartingAt(1);
         account.setMonthBillingDayAt(31);
         account.setCurrencyCode("EUR");
@@ -24,7 +24,7 @@ public class AccountFixture {
         account.setId(-2);
         account.setName("Fake Credit Card");
         account.setDescription("Fake credit card account used for test purposes.");
-        account.setShowBalanceOnMainAccount(Boolean.TRUE);
+        account.setShowBalanceOnParentAccount(Boolean.TRUE);
         account.setMonthStartingAt(1);
         account.setMonthBillingDayAt(1);
         account.setCurrencyCode("EUR");
@@ -42,7 +42,7 @@ public class AccountFixture {
         account.setParent(parent);
         account.setName("Credit Card International Expenses");
         account.setDescription("Fake credit card international expenses account.");
-        account.setShowBalanceOnMainAccount(Boolean.TRUE);
+        account.setShowBalanceOnParentAccount(Boolean.TRUE);
         account.setMonthStartingAt(1);
         account.setMonthBillingDayAt(1);
         account.setCurrencyCode("EUR");

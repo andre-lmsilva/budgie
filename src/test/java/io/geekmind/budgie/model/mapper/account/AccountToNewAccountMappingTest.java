@@ -33,7 +33,7 @@ public class AccountToNewAccountMappingTest {
             .hasFieldOrPropertyWithValue("description", null)
             .hasFieldOrPropertyWithValue("monthStartingAt", null)
             .hasFieldOrPropertyWithValue("monthBillingDayAt", null)
-            .hasFieldOrPropertyWithValue("showBalanceOnMainAccount", null)
+            .hasFieldOrPropertyWithValue("showBalanceOnParentAccount", null)
             .hasFieldOrPropertyWithValue("currencyCode", null);
     }
 

@@ -85,9 +85,8 @@ public class StandardBalanceServiceTest {
     @Test
     public void calculateDependantAccountsBalancesFor_withNoDependantAccount_ReturnsEmptyList() {
         ExistingAccount fakeMainAccount = ExistingAccountFixture.getMainAccount();
+        fakeMainAccount.setDependants(Collections.emptyList());
         LocalDate fakeReferenceDate = LocalDate.now();
-        doReturn(Collections.emptyList())
-            .when(this.accountService).loadDependantAccounts();
 
         LocalDate fakePeriodEndDate = LocalDate.now();
         doReturn(fakePeriodEndDate)
@@ -103,9 +102,9 @@ public class StandardBalanceServiceTest {
     public void calculateDependantAccountsBalanceFor_withDependantAccount_ReturnsNonEmptyList() {
         ExistingAccount fakeMainAccount = ExistingAccountFixture.getMainAccount();
         ExistingAccount fakeSavingsAccount = ExistingAccountFixture.getSavingsAccount();
+        fakeMainAccount.setDependants(Collections.singletonList(fakeSavingsAccount));
+
         LocalDate fakeReferenceDate = LocalDate.now();
-        doReturn(Collections.singletonList(fakeSavingsAccount))
-            .when(this.accountService).loadDependantAccounts();
 
         LocalDate fakePeriodEndDate = LocalDate.now();
         doReturn(fakePeriodEndDate)

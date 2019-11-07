@@ -63,7 +63,7 @@ public class NewAccountToAccountMappingTest {
     @Test
     public void showBalanceOnMainAccountAttribute_isMapped() {
         assertThat(this.resultEntity)
-            .hasFieldOrPropertyWithValue("showBalanceOnMainAccount", this.sourceNewAccount.getShowBalanceOnMainAccount());
+            .hasFieldOrPropertyWithValue("showBalanceOnParentAccount", this.sourceNewAccount.getShowBalanceOnParentAccount());
     }
 
     @Test

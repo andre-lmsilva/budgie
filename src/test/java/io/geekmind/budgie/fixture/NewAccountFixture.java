@@ -12,7 +12,7 @@ public class NewAccountFixture {
         account.setDescription("To be used exclusively for test update functionality purposes.");
         account.setMonthStartingAt(28);
         account.setMonthBillingDayAt(28);
-        account.setShowBalanceOnMainAccount(true);
+        account.setShowBalanceOnParentAccount(true);
         account.setCurrencyCode("BRL");
         return account;
     }

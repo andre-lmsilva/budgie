@@ -60,7 +60,7 @@
                                         <a th:href="@{/accounts/edit/{id}(id=${account.id})}" title="Edit account.">
                                             <h5 class="item-title d-inline" th:text="|${account.name} (${account.currency.currencyCode})|"></h5>
                                         </a>
-                                        <span th:if="${account.showBalanceOnMainAccount}" class="badge badge-pill badge-primary">Dependant Account</span>
+                                        <span th:if="${account.showBalanceOnParentAccount}" class="badge badge-pill badge-primary" th:title="|Dependant of ${account.parent.name}.|">Dependant Account</span>
                                         <span th:if="${account.mainAccount}" class="badge badge-pill badge-success">Main Account</span><br/>
                                         <small class="text-muted d-block" th:text="${account.description}" th:if="${account.description != null}"></small>
                                         <small class="text-muted">

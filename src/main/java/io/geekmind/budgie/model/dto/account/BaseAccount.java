@@ -33,6 +33,6 @@ public class BaseAccount implements Serializable {
     @Max(31)
     private Integer monthBillingDayAt;
 
-    private Boolean showBalanceOnMainAccount;
+    private Boolean showBalanceOnParentAccount;
 
 }
