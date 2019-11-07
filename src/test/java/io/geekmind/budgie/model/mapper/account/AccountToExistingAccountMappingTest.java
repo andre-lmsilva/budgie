@@ -36,7 +36,7 @@ public class AccountToExistingAccountMappingTest {
         MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
         new AccountMappingSettings(mockCurrencyMapper).configure(mapperFactory);
 
-        this.sourceAccount = AccountFixture.getMainAccount();
+        this.sourceAccount = AccountFixture.creditCard();
         this.resultExistingAccount = mapperFactory.getMapperFacade().map(this.sourceAccount, ExistingAccount.class);
     }
 
@@ -86,6 +86,20 @@ public class AccountToExistingAccountMappingTest {
     public void currencyAttribute_isMapped() {
         assertThat(this.resultExistingAccount.getCurrency())
             .isSameAs(this.resultAccountCurrency);
+    }
+
+    @Test
+    public void parentAttribute_isMapped() {
+        assertThat(this.resultExistingAccount.getParent())
+            .isNotNull()
+            .hasFieldOrPropertyWithValue("id", this.sourceAccount.getParent().getId());
+    }
+
+    @Test
+    public void dependantsAttribute_isMapped() {
+        assertThat(this.resultExistingAccount.getDependants())
+            .isNotEmpty().hasSize(1)
+            .element(0).hasFieldOrPropertyWithValue("id", this.sourceAccount.getDependants().get(0).getId());
     }
 
 }

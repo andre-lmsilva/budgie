@@ -59,11 +59,6 @@ public class CategoryService implements UniquenessValidationService {
         );
     }
 
-    public Optional<ExistingCategory> loadById(Integer id) {
-        return this.categoryRepository.findById(id)
-            .map(category -> this.mapper.map(category, ExistingCategory.class));
-    }
-
     public Optional<EditCategory> loadByIdForEdit(Integer id) {
         return this.categoryRepository.findById(id)
             .map(category -> this.mapper.map(category, EditCategory.class));

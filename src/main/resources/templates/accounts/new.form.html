@@ -54,6 +54,15 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col">
+                                    <label for="parentId">Sub-account of:</label>
+                                    <select th:field="*{parentId}" class="form-control">
+                                        <option th:value="null">No parent account.</optioni>
+                                        <option th:each="account: ${availableAccounts}" th:value="${account.id}" th:text="${account.name}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
                                     <label for="description">Description:</label>
                                     <textarea class="form-control" th:field="*{description}" placeholder="Account's purpose brief description."></textarea>
                                 </div>

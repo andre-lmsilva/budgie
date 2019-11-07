@@ -8,6 +8,7 @@ public class NewAccountFixture {
     public static NewAccount getMainAccount() {
         NewAccount account = new NewAccount();
         account.setName("Updated Fake Account");
+        account.setParentId(-999);
         account.setDescription("To be used exclusively for test update functionality purposes.");
         account.setMonthStartingAt(28);
         account.setMonthBillingDayAt(28);

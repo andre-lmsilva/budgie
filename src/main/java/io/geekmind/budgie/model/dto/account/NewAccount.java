@@ -21,4 +21,6 @@ public class NewAccount extends BaseAccount {
     @Size(min = 3, max = 3)
     private String currencyCode;
 
+    private Integer parentId;
+
 }

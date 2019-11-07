@@ -72,4 +72,10 @@ public class NewAccountToAccountMappingTest {
             .hasFieldOrPropertyWithValue("currencyCode", this.sourceNewAccount.getCurrencyCode());
     }
 
+    @Test
+    public void parentIdAttribute_isMappedToParentIdAttribute() {
+        assertThat(this.resultEntity)
+            .hasFieldOrPropertyWithValue("parent.id", this.sourceNewAccount.getParentId());
+    }
+
 }

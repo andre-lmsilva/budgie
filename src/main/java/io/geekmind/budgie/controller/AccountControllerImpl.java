@@ -1,7 +1,6 @@
 package io.geekmind.budgie.controller;
 
 import io.geekmind.budgie.model.dto.account.EditAccount;
-import io.geekmind.budgie.model.dto.account.ExistingAccount;
 import io.geekmind.budgie.model.dto.account.NewAccount;
 import io.geekmind.budgie.repository.AccountService;
 import io.geekmind.budgie.repository.CurrencyService;
@@ -41,6 +40,7 @@ public class AccountControllerImpl {
 
     @GetMapping("/new")
     public ModelAndView showNewAccountForm(ModelAndView requestContext) {
+        requestContext.addObject("availableAccounts", this.accountService.loadAll());
         requestContext.addObject("availableCurrencies", this.currencyService.loadAll());
         requestContext.addObject("newAccount", new NewAccount());
         requestContext.setViewName("accounts/new.form");
@@ -53,6 +53,7 @@ public class AccountControllerImpl {
                                          ModelAndView requestContext,
                                          RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
+            requestContext.addObject("availableAccounts", this.accountService.loadAll());
             requestContext.addObject("availableCurrencies", this.currencyService.loadAll());
             requestContext.addObject("newAccount", newAccount);
             requestContext.setViewName("accounts/new.form");
@@ -80,6 +81,7 @@ public class AccountControllerImpl {
                                      RedirectAttributes redirectAttributes) {
         Optional<EditAccount> editAccount = this.accountService.loadByIdForEdit(id);
         if (editAccount.isPresent()) {
+            requestContext.addObject("availableAccounts", this.accountService.loadAllExcept(id));
             requestContext.addObject("availableCurrencies", this.currencyService.loadAll());
             requestContext.addObject("editAccount", editAccount.get());
             requestContext.setViewName("accounts/edit.form");
@@ -100,6 +102,7 @@ public class AccountControllerImpl {
             redirectAttributes.addFlashAttribute("message", "Account successfully updated.");
             requestContext.setViewName("redirect:/accounts");
         } else {
+            requestContext.addObject("availableAccounts", this.accountService.loadAllExcept(editAccount.getId()));
             requestContext.addObject("availableCurrencies", this.currencyService.loadAll());
             requestContext.addObject("editAccount", editAccount);
             requestContext.setViewName("accounts/edit.form");

@@ -31,6 +31,8 @@ public class AccountMappingSettings implements OrikaMapperFactoryConfigurer {
             .fieldAToB("monthStartingAt", "monthStartingAt")
             .fieldAToB("monthBillingDayAt", "monthBillingDayAt")
             .fieldAToB("showBalanceOnMainAccount", "showBalanceOnMainAccount")
+            .fieldAToB("parent", "parent")
+            .fieldAToB("dependants", "dependants")
             .customize(new CustomMapper<Account, ExistingAccount>() {
                 @Override
                 public void mapAtoB(Account account, ExistingAccount existingAccount, MappingContext context) {
@@ -47,6 +49,7 @@ public class AccountMappingSettings implements OrikaMapperFactoryConfigurer {
 
         orikaMapperFactory.classMap(NewAccount.class, Account.class)
             .fieldAToB("name", "name")
+            .fieldAToB("parentId", "parent.id")
             .fieldAToB("description", "description")
             .fieldAToB("monthStartingAt", "monthStartingAt")
             .fieldAToB("monthBillingDayAt", "monthBillingDayAt")
@@ -56,7 +59,13 @@ public class AccountMappingSettings implements OrikaMapperFactoryConfigurer {
 
         orikaMapperFactory.classMap(EditAccount.class, Account.class)
             .fieldBToA("id", "id")
-            .byDefault()
+            .fieldBToA("parent.id", "parentId")
+            .field("name", "name")
+            .field("description", "description")
+            .field("monthStartingAt", "monthStartingAt")
+            .field("monthBillingDayAt", "monthBillingDayAt")
+            .field("showBalanceOnMainAccount", "showBalanceOnMainAccount")
+            .field("currencyCode", "currencyCode")
             .register();
     }
 }

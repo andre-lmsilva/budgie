@@ -1,8 +1,8 @@
 package io.geekmind.budgie.model.mapper.account;
 
 import io.geekmind.budgie.fixture.AccountFixture;
-import io.geekmind.budgie.fixture.NewAccountFixture;
-import io.geekmind.budgie.model.dto.account.NewAccount;
+import io.geekmind.budgie.fixture.EditAccountFixture;
+import io.geekmind.budgie.model.dto.account.EditAccount;
 import io.geekmind.budgie.model.entity.Account;
 import io.geekmind.budgie.model.mapper.AccountMappingSettings;
 import io.geekmind.budgie.model.mapper.DefaultCurrencyMapper;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class EditAccountToAccountMergingTest {
 
-    private NewAccount sourceNewAccount;
+    private EditAccount sourceNewAccount;
     private Account sourceAccount;
     private Account resultAccount;
 
@@ -23,9 +23,9 @@ public class EditAccountToAccountMergingTest {
     public void setUp() {
         MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
         new AccountMappingSettings(new DefaultCurrencyMapper()).configure(mapperFactory);
-        this.sourceNewAccount = NewAccountFixture.getMainAccount();
-        this.sourceAccount = AccountFixture.getMainAccount();
-        this.resultAccount = AccountFixture.getMainAccount();
+        this.sourceNewAccount = EditAccountFixture.savingsAccount();
+        this.sourceAccount = AccountFixture.creditCard();
+        this.resultAccount = AccountFixture.creditCard();
         mapperFactory.getMapperFacade().map(this.sourceNewAccount, this.resultAccount);
     }
 
@@ -75,6 +75,12 @@ public class EditAccountToAccountMergingTest {
     public void currencyCodeAttribute_isUpdated() {
         assertThat(resultAccount)
             .hasFieldOrPropertyWithValue("currencyCode", this.sourceNewAccount.getCurrencyCode());
+    }
+
+    @Test
+    public void parentIdAttribute_isNotUpdated() {
+        assertThat(resultAccount)
+            .hasFieldOrPropertyWithValue("parent.id", this.sourceAccount.getParent().getId());
     }
 
 }

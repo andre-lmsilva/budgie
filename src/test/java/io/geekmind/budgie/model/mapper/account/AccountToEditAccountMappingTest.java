@@ -22,7 +22,7 @@ public class AccountToEditAccountMappingTest {
         MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
         new AccountMappingSettings(new DefaultCurrencyMapper()).configure(mapperFactory);
 
-        this.sourceAccount = AccountFixture.getMainAccount();
+        this.sourceAccount = AccountFixture.creditCard();
         this.resultEditAccount = mapperFactory.getMapperFacade().map(this.sourceAccount, EditAccount.class);
     }
 
@@ -66,6 +66,12 @@ public class AccountToEditAccountMappingTest {
     public void currencyCodeAttribute_isMapped() {
         assertThat(this.resultEditAccount)
             .hasFieldOrPropertyWithValue("currencyCode", this.sourceAccount.getCurrencyCode());
+    }
+
+    @Test
+    public void parentIdAttribute_isMapped() {
+        assertThat(this.resultEditAccount)
+            .hasFieldOrPropertyWithValue("parentId", this.sourceAccount.getParent().getId());
     }
 
 }

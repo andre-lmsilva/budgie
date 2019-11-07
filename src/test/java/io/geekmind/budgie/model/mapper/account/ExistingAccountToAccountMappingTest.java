@@ -35,7 +35,9 @@ public class ExistingAccountToAccountMappingTest {
             .hasFieldOrPropertyWithValue("monthBillingDayAt", null)
             .hasFieldOrPropertyWithValue("showBalanceOnMainAccount", null)
             .hasFieldOrPropertyWithValue("mainAccount", Boolean.FALSE)
-            .hasFieldOrPropertyWithValue("currencyCode", null);
+            .hasFieldOrPropertyWithValue("currencyCode", null)
+            .hasFieldOrPropertyWithValue("parent", null)
+            .hasFieldOrPropertyWithValue("dependants", null);
     }
 
 }

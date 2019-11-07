@@ -43,6 +43,13 @@ public class AccountService implements UniquenessValidationService {
             .collect(Collectors.toList());
     }
 
+    public List<ExistingAccount> loadAllExcept(Integer id) {
+        return this.loadAll()
+            .stream()
+            .filter(account -> !account.getId().equals(id))
+            .collect(Collectors.toList());
+    }
+
     public Optional<ExistingAccount> remove(Integer id) {
         return this.accountRepository.findById(id)
             .map(account -> {
@@ -113,7 +120,14 @@ public class AccountService implements UniquenessValidationService {
         Optional<Account> accountToUpdate = this.accountRepository.findById(editAccount.getId());
         if (accountToUpdate.isPresent()) {
             Account account = accountToUpdate.get();
+            account.setParent(null);
             this.mapper.map(editAccount, account);
+
+            if (null != editAccount.getParentId()) {
+                account.setParent(
+                    this.accountRepository.findById(editAccount.getParentId()).orElse(null)
+                );
+            }
             this.accountRepository.save(account);
         }
         return editAccount;

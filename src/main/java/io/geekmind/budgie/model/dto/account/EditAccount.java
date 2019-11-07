@@ -16,8 +16,6 @@ import javax.validation.constraints.Size;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
-@NoArgsConstructor
 @ValidateUniqueness(message = "There is another account with this name.")
 public class EditAccount extends BaseAccount {
 
@@ -27,5 +25,7 @@ public class EditAccount extends BaseAccount {
     @NotNull
     @Size(min = 3, max = 3)
     private String currencyCode;
+
+    private Integer parentId;
 
 }
