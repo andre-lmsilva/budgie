@@ -1,12 +1,8 @@
 package io.geekmind.budgie.repository;
 
 import io.geekmind.budgie.model.dto.ExistingContainer;
-import io.geekmind.budgie.model.dto.ExistingRecord;
 import io.geekmind.budgie.model.dto.NewTransfer;
-import io.geekmind.budgie.model.entity.Account;
-import io.geekmind.budgie.model.entity.Category;
-import io.geekmind.budgie.model.entity.TransferContainer;
-import io.geekmind.budgie.model.entity.TransferRecord;
+import io.geekmind.budgie.model.entity.*;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +27,7 @@ public class TransferService {
         TransferContainer transfer = this.mapper.map(newTransfer, TransferContainer.class);
         TransferRecord sourceRecord = new TransferRecord();
         sourceRecord.setRecordDate(newTransfer.getTransferDate());
-        sourceRecord.setAccount(new Account());
+        sourceRecord.setAccount(new StandardAccount());
         sourceRecord.getAccount().setId(newTransfer.getSourceAccountId());
         sourceRecord.setCategory(new Category());
         sourceRecord.getCategory().setId(newTransfer.getCategoryId());
@@ -41,7 +37,7 @@ public class TransferService {
 
         TransferRecord destinationRecord = new TransferRecord();
         destinationRecord.setRecordDate(newTransfer.getTransferDate());
-        destinationRecord.setAccount(new Account());
+        destinationRecord.setAccount(new StandardAccount());
         destinationRecord.getAccount().setId(newTransfer.getDestinationAccountId());
         destinationRecord.setCategory(new Category());
         destinationRecord.getCategory().setId(newTransfer.getCategoryId());

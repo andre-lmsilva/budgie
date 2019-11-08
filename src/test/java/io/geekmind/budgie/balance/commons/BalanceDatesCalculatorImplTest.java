@@ -1,6 +1,6 @@
 package io.geekmind.budgie.balance.commons;
 
-import io.geekmind.budgie.model.dto.account.ExistingAccount;
+import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -13,7 +13,7 @@ public class BalanceDatesCalculatorImplTest {
 
     @Test
     public void calculatePeriodEndDate_withMonthStartingDayAsTheFirstDayOfMonth_ReturnsLastDayOfMonth() {
-        ExistingAccount account = new ExistingAccount();
+        ExistingStandardAccount account = new ExistingStandardAccount();
         account.setMonthStartingAt(1);
         LocalDate referenceDate = LocalDate.of(2019, 10, 10);
 
@@ -26,7 +26,7 @@ public class BalanceDatesCalculatorImplTest {
 
     @Test
     public void calculatePeriodEndDate_withMonthStartingDayAsTheLastDayOfMonth_ReturnsLastDayOfMonthMinusOne() {
-        ExistingAccount account = new ExistingAccount();
+        ExistingStandardAccount account = new ExistingStandardAccount();
         account.setMonthStartingAt(31);
         LocalDate referenceDate = LocalDate.of(2019, 10, 10);
 
@@ -39,7 +39,7 @@ public class BalanceDatesCalculatorImplTest {
 
     @Test
     public void calculatePeriodEndDate_withMonthStartingDayAsTheLastDayOfMonthWithShorterMonthAsReferenceDate_ReturnsLastDayOfMonthMinusOne() {
-        ExistingAccount account = new ExistingAccount();
+        ExistingStandardAccount account = new ExistingStandardAccount();
         account.setMonthStartingAt(31);
         LocalDate referenceDate = LocalDate.of(2019, 2, 10);
 
@@ -51,7 +51,7 @@ public class BalanceDatesCalculatorImplTest {
     }
     @Test
     public void calculatePeriodEndDate_withMonthStatingDaysInTheMiddleOfMonthAndReferenceDateInTheSameMonth_ReturnsEndDayInSameMonth() {
-        ExistingAccount account = new ExistingAccount();
+        ExistingStandardAccount account = new ExistingStandardAccount();
         account.setMonthStartingAt(28);
         LocalDate referenceDate = LocalDate.of(2019, 10, 10);
 
@@ -64,7 +64,7 @@ public class BalanceDatesCalculatorImplTest {
 
     @Test
     public void calculatePeriodEndDate_withMonthStatingDaysInTheMiddleOfMonthAndReferenceDateInThePreviousMonth_ReturnsEndDayOfNextMonth() {
-        ExistingAccount account = new ExistingAccount();
+        ExistingStandardAccount account = new ExistingStandardAccount();
         account.setMonthStartingAt(28);
         LocalDate referenceDate = LocalDate.of(2019, 9, 28);
 
@@ -111,7 +111,7 @@ public class BalanceDatesCalculatorImplTest {
     @Test
     public void calculatePeriodBillingDate_withMonthBillingDayBeforeThePeriodEndDateDay_ReturnsBillingDateOnNextMonth() {
         LocalDate periodEndDate = LocalDate.of(2019, 1, 5);
-        ExistingAccount account = new ExistingAccount();
+        ExistingStandardAccount account = new ExistingStandardAccount();
         account.setMonthBillingDayAt(3);
 
         LocalDate result = this.calculator.calculatePeriodBillingDate(periodEndDate, account);
@@ -124,7 +124,7 @@ public class BalanceDatesCalculatorImplTest {
     @Test
     public void calculatePeriodBillingDate_withMonthBillingDayEqualsToThePeriodEndDateDay_ReturnsBillingDateOnSameMonth() {
         LocalDate periodEndDate = LocalDate.of(2019, 1, 5);
-        ExistingAccount account = new ExistingAccount();
+        ExistingStandardAccount account = new ExistingStandardAccount();
         account.setMonthBillingDayAt(5);
 
         LocalDate result = this.calculator.calculatePeriodBillingDate(periodEndDate, account);
@@ -137,7 +137,7 @@ public class BalanceDatesCalculatorImplTest {
     @Test
     public void calculatePeriodBillingDate_withMonthBillingDayGreaterThenPeriodEndDateDay_ReturnsBillingDateOnSameMonth() {
         LocalDate periodEndDate = LocalDate.of(2019, 1, 5);
-        ExistingAccount account = new ExistingAccount();
+        ExistingStandardAccount account = new ExistingStandardAccount();
         account.setMonthBillingDayAt(10);
 
         LocalDate result = this.calculator.calculatePeriodBillingDate(periodEndDate, account);
@@ -150,7 +150,7 @@ public class BalanceDatesCalculatorImplTest {
     @Test
     public void calculatePeriodBillingDate_withMonthBillingDayAfterLastDayOfMonth_ReturnsBillingDateAsLastDayOfMonth() {
         LocalDate periodEndDate = LocalDate.of(2019, 2, 5);
-        ExistingAccount account = new ExistingAccount();
+        ExistingStandardAccount account = new ExistingStandardAccount();
         account.setMonthBillingDayAt(31);
 
         LocalDate result = this.calculator.calculatePeriodBillingDate(periodEndDate, account);
@@ -177,7 +177,7 @@ public class BalanceDatesCalculatorImplTest {
     @Test
     public void calculatePeriodEndDateBasedOnBillingDate_withRegularBillingDate_ReturnsPreviousMonthPeriodEndDate() {
         LocalDate billingDate = LocalDate.of(2019, 1, 5);
-        ExistingAccount account = new ExistingAccount();
+        ExistingStandardAccount account = new ExistingStandardAccount();
         account.setMonthStartingAt(10);
 
         LocalDate result = this.calculator.calculatePeriodEndDateBasedOnBillingDate(billingDate, account);
@@ -190,7 +190,7 @@ public class BalanceDatesCalculatorImplTest {
     @Test
     public void calculatePeriodEndDateBasedOnBillingDate_withMonthStatingDayAfterEndOfMonth_ReturnsPreviousMonthLastDayMinusOne() {
         LocalDate billingDate = LocalDate.of(2019, 3, 5);
-        ExistingAccount account = new ExistingAccount();
+        ExistingStandardAccount account = new ExistingStandardAccount();
         account.setMonthStartingAt(30);
 
         LocalDate result = this.calculator.calculatePeriodEndDateBasedOnBillingDate(billingDate, account);

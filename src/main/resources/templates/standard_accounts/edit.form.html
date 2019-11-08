@@ -8,15 +8,15 @@
                 <div class="col">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
-                        <li class="breadcrumb-item"><a th:href="@{'/accounts'}">Accounts</a></li>
-                        <li class="breadcrumb-item active">New Account</li>
+                        <li class="breadcrumb-item"><a th:href="@{'/standard_accounts'}">Accounts</a></li>
+                        <li class="breadcrumb-item active" th:text="${editAccount.name}"></li>
                     </ol>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col">
-                    <h1>New Account</h1>
+                    <h1>Edit Account</h1>
                 </div>
             </div>
 
@@ -26,29 +26,30 @@
                 </div>
             </div>
 
-            <div class="row mb-3 mt-3" th:if="${#fields.hasErrors('newAccount')}">
+            <div class="row mb-3 mt-3" th:if="${#fields.hasErrors('editAccount')}">
                 <div class="col">
-                    <div class="alert alert-danger" th:errors="*{newAccount}"></div>
+                    <div class="alert alert-danger" th:errors="*{editAccount}"></div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col">
-                    <form th:object="${newAccount}" th:action="@{/accounts/create}" method="post">
+                    <form action="#" th:object="${editAccount}" th:action="@{/standard_accounts/update}" method="post">
                         <fieldset>
                             <legend>Account Details</legend>
                             <div class="form-row">
                                 <div class="form-group col" th:classappend="${#fields.hasErrors('name')} ? 'has-danger' : ''">
                                     <label for="name">Name:</label>
+                                    <input type="hidden" th:field="*{id}"/>
                                     <input type="text"
                                            class="form-control"
+                                           minlength="5"
+                                           maxlength="140"
                                            th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
                                            th:field="*{name}"
                                            placeholder="Account name."
-                                           maxlength="140"
-                                           minlength="5"
                                            autofocus
-                                    required/>
+                                           required/>
                                     <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                                 </div>
                             </div>
@@ -56,7 +57,7 @@
                                 <div class="form-group col">
                                     <label for="parentId">Sub-account of:</label>
                                     <select th:field="*{parentId}" class="form-control">
-                                        <option th:value="null">No parent account.</optioni>
+                                        <option th:value="null">No parent account.</option>
                                         <option th:each="account: ${availableAccounts}" th:value="${account.id}" th:text="${account.name}"></option>
                                     </select>
                                 </div>
@@ -74,7 +75,7 @@
                                            class="form-control"
                                            min="1"
                                            max="31"
-                                           th:classappend="${#fields.hasErrors('monthStartingAt')} ? 'is-invalid' : ''"
+                                           th:classappend="${#fields.hasErrors('monthStartingAt') ? 'is-invalid' : ''}"
                                     th:field="*{monthStartingAt}"/>
                                     <div class="invalid-feedback" th:if="${#fields.hasErrors('monthStartingAt')}" th:errors="*{monthStartingAt}"></div>
                                 </div>
@@ -84,7 +85,7 @@
                                            class="form-control"
                                            min="1"
                                            max="31"
-                                           th:classappend="${#fields.hasErrors('monthBillingDayAt')} ? 'is-invalid' : ''"
+                                           th:classappend="${#fields.hasErrors('monthBillingDayAt') ? 'is-invalid' : ''}"
                                     th:field="*{monthBillingDayAt}"/>
                                     <div class="invalid-feedback" th:if="${#fields.hasErrors('monthBillingDayAt')}" th:errors="*{monthBillingDayAt}"></div>
                                 </div>
@@ -109,8 +110,8 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col">
-                                    <button type="submit" class="btn btn-primary">Create</button>&nbsp;
-                                    <a th:href="@{/accounts}" title="Go back to available accounts page without save the changes." class="btn btn-default">Cancel</a>
+                                    <button type="submit" class="btn btn-primary">Update</button>&nbsp;
+                                    <a th:href="@{/standard_accounts}" title="Go back to available accounts page without save the changes." class="btn btn-default">Cancel</a>
                                 </div>
                             </div>
                         </fieldset>

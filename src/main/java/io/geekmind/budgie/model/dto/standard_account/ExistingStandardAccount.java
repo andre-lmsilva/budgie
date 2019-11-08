@@ -1,4 +1,4 @@
-package io.geekmind.budgie.model.dto.account;
+package io.geekmind.budgie.model.dto.standard_account;
 
 import io.geekmind.budgie.model.dto.AccountCurrency;
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true, exclude = "dependants")
-public class ExistingAccount extends BaseAccount {
+public class ExistingStandardAccount extends BaseStandardAccount {
 
     private Integer id;
 
@@ -21,7 +21,7 @@ public class ExistingAccount extends BaseAccount {
 
     private AccountCurrency currency;
 
-    private ExistingAccount parent;
+    private ExistingStandardAccount parent;
 
-    private List<ExistingAccount> dependants;
+    private List<ExistingStandardAccount> dependants;
 }

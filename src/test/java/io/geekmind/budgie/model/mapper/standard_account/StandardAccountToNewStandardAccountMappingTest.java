@@ -1,10 +1,10 @@
-package io.geekmind.budgie.model.mapper.account;
+package io.geekmind.budgie.model.mapper.standard_account;
 
-import io.geekmind.budgie.fixture.AccountFixture;
-import io.geekmind.budgie.model.dto.account.NewAccount;
-import io.geekmind.budgie.model.entity.Account;
-import io.geekmind.budgie.model.mapper.AccountMappingSettings;
+import io.geekmind.budgie.fixture.StandardAccountFixture;
+import io.geekmind.budgie.model.dto.standard_account.NewStandardAccount;
+import io.geekmind.budgie.model.entity.StandardAccount;
 import io.geekmind.budgie.model.mapper.DefaultCurrencyMapper;
+import io.geekmind.budgie.model.mapper.StandardAccountMappingSettings;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.junit.Before;
@@ -13,17 +13,17 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class AccountToNewAccountMappingTest {
+public class StandardAccountToNewStandardAccountMappingTest {
 
-    private Account sourceAccount;
-    private NewAccount resultNewAccount;
+    private StandardAccount sourceAccount;
+    private NewStandardAccount resultNewAccount;
 
     @Before
     public void setUp() {
         MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
-        new AccountMappingSettings(new DefaultCurrencyMapper()).configure(mapperFactory);
-        this.sourceAccount = AccountFixture.getMainAccount();
-        this.resultNewAccount = mapperFactory.getMapperFacade().map(this.sourceAccount, NewAccount.class);
+        new StandardAccountMappingSettings(new DefaultCurrencyMapper()).configure(mapperFactory);
+        this.sourceAccount = StandardAccountFixture.getMainAccount();
+        this.resultNewAccount = mapperFactory.getMapperFacade().map(this.sourceAccount, NewStandardAccount.class);
     }
 
     @Test

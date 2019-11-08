@@ -1,6 +1,6 @@
 package io.geekmind.budgie.balance.commons;
 
-import io.geekmind.budgie.model.dto.account.ExistingAccount;
+import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -15,7 +15,7 @@ import java.time.temporal.ChronoUnit;
 public class BalanceDatesCalculatorImpl implements BalanceDatesCalculator {
 
     @Override
-    public LocalDate calculatePeriodEndDate(LocalDate referenceDate, ExistingAccount account) {
+    public LocalDate calculatePeriodEndDate(LocalDate referenceDate, ExistingStandardAccount account) {
         LocalDate periodEndDate = referenceDate.plusMonths(1);
         if (referenceDate.getDayOfMonth() < account.getMonthStartingAt()) {
             periodEndDate = periodEndDate.minusMonths(1);
@@ -35,7 +35,7 @@ public class BalanceDatesCalculatorImpl implements BalanceDatesCalculator {
     }
 
     @Override
-    public LocalDate calculatePeriodBillingDate(LocalDate periodEndDate, ExistingAccount account) {
+    public LocalDate calculatePeriodBillingDate(LocalDate periodEndDate, ExistingStandardAccount account) {
         LocalDate billingDate = periodEndDate;
         int billingDay = account.getMonthBillingDayAt();
 
@@ -58,7 +58,7 @@ public class BalanceDatesCalculatorImpl implements BalanceDatesCalculator {
     }
 
     @Override
-    public LocalDate calculatePeriodEndDateBasedOnBillingDate(LocalDate billingDate, ExistingAccount account) {
+    public LocalDate calculatePeriodEndDateBasedOnBillingDate(LocalDate billingDate, ExistingStandardAccount account) {
         LocalDate periodEndDate = billingDate.minusMonths(1L);
         periodEndDate = periodEndDate.withDayOfMonth(periodEndDate.lengthOfMonth());
         if (periodEndDate.lengthOfMonth() >= account.getMonthStartingAt()) {

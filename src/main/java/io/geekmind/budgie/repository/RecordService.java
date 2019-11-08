@@ -1,8 +1,6 @@
 package io.geekmind.budgie.repository;
 
 import io.geekmind.budgie.model.dto.ExistingRecord;
-import io.geekmind.budgie.model.entity.Account;
-import io.geekmind.budgie.model.entity.Category;
 import io.geekmind.budgie.model.entity.Record;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +15,17 @@ import java.util.stream.Collectors;
 public class RecordService {
 
     private final RecordRepository recordRepository;
-    private final AccountRepository accountRepository;
+    private final StandardAccountRepository standardAccountRepository;
     private final CategoryRepository categoryRepository;
     private final MapperFacade mapper;
 
     @Autowired
     public RecordService(RecordRepository recordRepository,
-                         AccountRepository accountRepository,
+                         StandardAccountRepository standardAccountRepository,
                          CategoryRepository categoryRepository,
                          MapperFacade mapper) {
         this.recordRepository = recordRepository;
-        this.accountRepository = accountRepository;
+        this.standardAccountRepository = standardAccountRepository;
         this.categoryRepository = categoryRepository;
         this.mapper = mapper;
     }
@@ -64,7 +62,7 @@ public class RecordService {
             record.setDescription(existingRecord.getDescription());
             record.setRecordValue(existingRecord.getRecordValue());
 
-            this.accountRepository.findById(existingRecord.getAccount().getId())
+            this.standardAccountRepository.findById(existingRecord.getAccount().getId())
                 .ifPresent(record::setAccount);
 
             this.categoryRepository.findById(existingRecord.getCategory().getId())

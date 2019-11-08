@@ -2,7 +2,7 @@ package io.geekmind.budgie.controller;
 
 import io.geekmind.budgie.model.dto.BalanceType;
 import io.geekmind.budgie.model.dto.ExistingRecord;
-import io.geekmind.budgie.repository.AccountService;
+import io.geekmind.budgie.repository.StandardAccountService;
 import io.geekmind.budgie.repository.CategoryService;
 import io.geekmind.budgie.repository.StandardBalanceService;
 import io.geekmind.budgie.repository.RecordService;
@@ -27,17 +27,17 @@ import java.util.Optional;
 public class RecordControllerImpl {
 
     private final StandardBalanceService balanceService;
-    private final AccountService accountService;
+    private final StandardAccountService standardAccountService;
     private final CategoryService categoryService;
     private final RecordService recordService;
 
     @Autowired
     public RecordControllerImpl(StandardBalanceService balanceService,
-                                AccountService accountService,
+                                StandardAccountService standardAccountService,
                                 CategoryService categoryService,
                                 RecordService recordService) {
         this.balanceService = balanceService;
-        this.accountService = accountService;
+        this.standardAccountService = standardAccountService;
         this.categoryService = categoryService;
         this.recordService = recordService;
     }
@@ -48,7 +48,7 @@ public class RecordControllerImpl {
                                     @RequestParam(name = "accountId", required = false) Integer accountId,
                                     ModelAndView requestContext) {
         requestContext.addObject("balance", this.balanceService.generateBalance(accountId, referenceDate, BalanceType.REGULAR_PERIOD_BALANCE));
-        requestContext.addObject("availableAccounts", this.accountService.loadAll());
+        requestContext.addObject("availableAccounts", this.standardAccountService.loadAll());
         requestContext.setViewName("records/index");
         return requestContext;
     }
@@ -78,7 +78,7 @@ public class RecordControllerImpl {
                 record.getAccount().getId(), record.getRecordDate(), BalanceType.REGULAR_PERIOD_BALANCE
             ));
             requestContext.addObject("existingRecord", record);
-            requestContext.addObject("availableAccounts", this.accountService.loadAll());
+            requestContext.addObject("availableAccounts", this.standardAccountService.loadAll());
             requestContext.addObject("availableCategories", this.categoryService.loadAll());
             requestContext.setViewName("records/edit.form");
         } else {
@@ -99,7 +99,7 @@ public class RecordControllerImpl {
             requestContext.setViewName("redirect:/records");
         } else {
             requestContext.addObject("existingRecord", existingRecord);
-            requestContext.addObject("availableAccounts", this.accountService.loadAll());
+            requestContext.addObject("availableAccounts", this.standardAccountService.loadAll());
             requestContext.addObject("availableCategories", this.categoryService.loadAll());
             requestContext.setViewName("records/edit.form");
         }

@@ -5,7 +5,7 @@ import io.geekmind.budgie.balance.commons.BalanceDatesCalculator;
 import io.geekmind.budgie.model.dto.Balance;
 import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
 import io.geekmind.budgie.model.dto.BalanceType;
-import io.geekmind.budgie.model.dto.account.ExistingAccount;
+import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -24,15 +24,15 @@ import java.util.stream.Collectors;
 @Service
 public class StandardBalanceService {
 
-    private final AccountService accountService;
+    private final StandardAccountService standardAccountService;
     private final BaseBalanceCalculationStep calculationChainEntryPoint;
     private final BalanceDatesCalculator balanceDatesCalculator;
 
     @Autowired
-    public StandardBalanceService(AccountService accountService,
+    public StandardBalanceService(StandardAccountService standardAccountService,
                                   @Qualifier("balanceCalculationChainEntryPoint") BaseBalanceCalculationStep calculationChainEntryPoint,
                                   BalanceDatesCalculator balanceDatesCalculator) {
-        this.accountService = accountService;
+        this.standardAccountService = standardAccountService;
         this.calculationChainEntryPoint = calculationChainEntryPoint;
         this.balanceDatesCalculator = balanceDatesCalculator;
     }
@@ -75,7 +75,7 @@ public class StandardBalanceService {
      * @param referenceDate     Reference date of the period being calculated.
      * @return List containing the balances of all the account dependant accounts for the same period.
      */
-    protected List<Balance> calculateDependantAccountsBalancesFor(ExistingAccount account, LocalDate referenceDate) {
+    protected List<Balance> calculateDependantAccountsBalancesFor(ExistingStandardAccount account, LocalDate referenceDate) {
         LocalDate mainAccountPeriodEndDate = this.balanceDatesCalculator.calculatePeriodEndDate(referenceDate, account);
         return account.getDependants()
             .stream()
@@ -93,11 +93,11 @@ public class StandardBalanceService {
      * @param accountId Id of the account which balance is being calculated.
      * @return The retrieved account or null when the received id does not exists.
      */
-    protected Optional<ExistingAccount> retrieveAccount(Integer accountId) {
+    protected Optional<ExistingStandardAccount> retrieveAccount(Integer accountId) {
         if (null == accountId) {
-            return this.accountService.getMainAccount();
+            return this.standardAccountService.getMainAccount();
         } else {
-            return this.accountService.loadById(accountId);
+            return this.standardAccountService.loadById(accountId);
         }
     }
 }

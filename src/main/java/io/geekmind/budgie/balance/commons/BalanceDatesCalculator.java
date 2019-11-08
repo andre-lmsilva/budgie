@@ -1,6 +1,6 @@
 package io.geekmind.budgie.balance.commons;
 
-import io.geekmind.budgie.model.dto.account.ExistingAccount;
+import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 
 import java.time.LocalDate;
 
@@ -12,7 +12,7 @@ public interface BalanceDatesCalculator {
      * @param account       Account to have the final date for the calculated period.
      * @return              The final date for the period.
      */
-    LocalDate calculatePeriodEndDate(LocalDate referenceDate, ExistingAccount account);
+    LocalDate calculatePeriodEndDate(LocalDate referenceDate, ExistingStandardAccount account);
 
     /**
      * Calculates the period start date based purely on the already calculated period end date and
@@ -31,7 +31,7 @@ public interface BalanceDatesCalculator {
      * @param account       Account which period is being calculated.
      * @return The calculated billing date for the account in the period.
      */
-    LocalDate calculatePeriodBillingDate(LocalDate periodEndDate, ExistingAccount account);
+    LocalDate calculatePeriodBillingDate(LocalDate periodEndDate, ExistingStandardAccount account);
 
     /**
      * Calculates how many days until the period end date, starting from current date.
@@ -49,6 +49,6 @@ public interface BalanceDatesCalculator {
      * @param account       Account having its end period date calculated.
      * @return Calculated period end date.
      */
-    LocalDate calculatePeriodEndDateBasedOnBillingDate(LocalDate billingDate, ExistingAccount account);
+    LocalDate calculatePeriodEndDateBasedOnBillingDate(LocalDate billingDate, ExistingStandardAccount account);
 
 }

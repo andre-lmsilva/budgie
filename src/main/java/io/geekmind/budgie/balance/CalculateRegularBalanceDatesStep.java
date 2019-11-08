@@ -2,7 +2,7 @@ package io.geekmind.budgie.balance;
 
 import io.geekmind.budgie.balance.commons.BalanceDatesCalculator;
 import io.geekmind.budgie.model.dto.*;
-import io.geekmind.budgie.model.dto.account.ExistingAccount;
+import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +38,7 @@ public class CalculateRegularBalanceDatesStep extends BaseBalanceCalculationStep
     @Override
     public void calculate(BalanceCalculationRequest balanceCalculationRequest) {
         LocalDate referenceDate = balanceCalculationRequest.getBalance().getBalanceDates().getReferenceDate();
-        ExistingAccount account = balanceCalculationRequest.getBalance().getAccount();
+        ExistingStandardAccount account = balanceCalculationRequest.getBalance().getAccount();
 
         LocalDate periodEndDate = this.dateCalculator.calculatePeriodEndDate(referenceDate, account);
         LocalDate periodStartDate = this.dateCalculator.calculatePeriodStartDate(periodEndDate);

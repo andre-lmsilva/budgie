@@ -1,6 +1,6 @@
 package io.geekmind.budgie.model.dto;
 
-import io.geekmind.budgie.model.dto.account.ExistingAccount;
+import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Balance {
 
-    private ExistingAccount account;
+    private ExistingStandardAccount account;
 
     private BalanceDates balanceDates;
 

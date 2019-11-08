@@ -1,13 +1,13 @@
 package io.geekmind.budgie.fixture;
 
-import io.geekmind.budgie.model.entity.Account;
+import io.geekmind.budgie.model.entity.StandardAccount;
 
 import java.util.ArrayList;
 
-public class AccountFixture {
+public class StandardAccountFixture {
 
-    public static Account getMainAccount() {
-        Account account = new Account();
+    public static StandardAccount getMainAccount() {
+        StandardAccount account = new StandardAccount();
         account.setId(-1);
         account.setName("Fake Main Account");
         account.setDescription("Main account used exclusively for test purposes.");
@@ -19,8 +19,8 @@ public class AccountFixture {
         return account;
     }
 
-    public static Account creditCard() {
-        Account account = new Account();
+    public static StandardAccount creditCard() {
+        StandardAccount account = new StandardAccount();
         account.setId(-2);
         account.setName("Fake Credit Card");
         account.setDescription("Fake credit card account used for test purposes.");
@@ -36,8 +36,8 @@ public class AccountFixture {
         return account;
     }
 
-    public static Account internationalCreditCardExpenses(Account parent) {
-        Account account = new Account();
+    public static StandardAccount internationalCreditCardExpenses(StandardAccount parent) {
+        StandardAccount account = new StandardAccount();
         account.setId(-3);
         account.setParent(parent);
         account.setName("Credit Card International Expenses");

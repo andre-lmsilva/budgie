@@ -1,11 +1,11 @@
 package io.geekmind.budgie.fixture;
 
-import io.geekmind.budgie.model.dto.account.EditAccount;
+import io.geekmind.budgie.model.dto.standard_account.EditStandardAccount;
 
 public class EditAccountFixture {
 
-    public static EditAccount savingsAccount() {
-        EditAccount editAccount = new EditAccount();
+    public static EditStandardAccount savingsAccount() {
+        EditStandardAccount editAccount = new EditStandardAccount();
         editAccount.setId(-321);
         editAccount.setParentId(-987);
         editAccount.setName("Fake Savings Account");

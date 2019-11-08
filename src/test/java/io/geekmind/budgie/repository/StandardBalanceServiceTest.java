@@ -7,7 +7,7 @@ import io.geekmind.budgie.fixture.ExistingAccountFixture;
 import io.geekmind.budgie.model.dto.Balance;
 import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
 import io.geekmind.budgie.model.dto.BalanceType;
-import io.geekmind.budgie.model.dto.account.ExistingAccount;
+import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -35,7 +35,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 public class StandardBalanceServiceTest {
 
     @Mock
-    private AccountService accountService;
+    private StandardAccountService standardAccountService;
 
     @Mock
     private BaseBalanceCalculationStep calculationsChainEntryStep;
@@ -49,42 +49,42 @@ public class StandardBalanceServiceTest {
 
     @Test
     public void retrieveAccount_withAccountIdAsNull_RetrievesMainAccount() {
-        ExistingAccount fakeMainAccount = ExistingAccountFixture.getMainAccount();
+        ExistingStandardAccount fakeMainAccount = ExistingAccountFixture.getMainAccount();
         doReturn(Optional.of(fakeMainAccount))
-            .when(this.accountService).getMainAccount();
+            .when(this.standardAccountService).getMainAccount();
 
-        Optional<ExistingAccount> result = this.service.retrieveAccount(null);
+        Optional<ExistingStandardAccount> result = this.service.retrieveAccount(null);
 
         assertThat(result).isNotNull().isNotEmpty().containsSame(fakeMainAccount);
-        verify(this.accountService, Mockito.never()).loadById(Mockito.anyInt());
+        verify(this.standardAccountService, Mockito.never()).loadById(Mockito.anyInt());
     }
 
     @Test
     public void retrieveAccount_withExistingAccountId_RetrievesAccount() {
-        ExistingAccount fakeAccount = ExistingAccountFixture.getSavingsAccount();
+        ExistingStandardAccount fakeAccount = ExistingAccountFixture.getSavingsAccount();
         doReturn(Optional.of(fakeAccount))
-            .when(this.accountService).loadById(eq(-1));
+            .when(this.standardAccountService).loadById(eq(-1));
 
-        Optional<ExistingAccount> result = this.service.retrieveAccount(-1);
+        Optional<ExistingStandardAccount> result = this.service.retrieveAccount(-1);
 
         assertThat(result).isNotNull().isNotEmpty().containsSame(fakeAccount);
-        verify(this.accountService, Mockito.never()).getMainAccount();
+        verify(this.standardAccountService, Mockito.never()).getMainAccount();
     }
 
     @Test
     public void retrieveAccount_withNonExistingAccountId_ReturnsEmptyOptional() {
         doReturn(Optional.empty())
-            .when(this.accountService).loadById(eq(0));
+            .when(this.standardAccountService).loadById(eq(0));
 
-        Optional<ExistingAccount> result = this.service.retrieveAccount(0);
+        Optional<ExistingStandardAccount> result = this.service.retrieveAccount(0);
 
         assertThat(result).isNotNull().isEmpty();
-        verify(this.accountService, Mockito.never()).getMainAccount();
+        verify(this.standardAccountService, Mockito.never()).getMainAccount();
     }
 
     @Test
     public void calculateDependantAccountsBalancesFor_withNoDependantAccount_ReturnsEmptyList() {
-        ExistingAccount fakeMainAccount = ExistingAccountFixture.getMainAccount();
+        ExistingStandardAccount fakeMainAccount = ExistingAccountFixture.getMainAccount();
         fakeMainAccount.setDependants(Collections.emptyList());
         LocalDate fakeReferenceDate = LocalDate.now();
 
@@ -100,8 +100,8 @@ public class StandardBalanceServiceTest {
 
     @Test
     public void calculateDependantAccountsBalanceFor_withDependantAccount_ReturnsNonEmptyList() {
-        ExistingAccount fakeMainAccount = ExistingAccountFixture.getMainAccount();
-        ExistingAccount fakeSavingsAccount = ExistingAccountFixture.getSavingsAccount();
+        ExistingStandardAccount fakeMainAccount = ExistingAccountFixture.getMainAccount();
+        ExistingStandardAccount fakeSavingsAccount = ExistingAccountFixture.getSavingsAccount();
         fakeMainAccount.setDependants(Collections.singletonList(fakeSavingsAccount));
 
         LocalDate fakeReferenceDate = LocalDate.now();
@@ -155,7 +155,7 @@ public class StandardBalanceServiceTest {
 
     @Test
     public void generateBalance_withMainAccount_CalculatesDependantAccountBalance() {
-        ExistingAccount fakeAccount = ExistingAccountFixture.getMainAccount();
+        ExistingStandardAccount fakeAccount = ExistingAccountFixture.getMainAccount();
         doReturn(Optional.of(fakeAccount))
             .when(this.service).retrieveAccount(eq(-1));
         doReturn(Collections.emptyList())

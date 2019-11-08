@@ -1,6 +1,6 @@
 package io.geekmind.budgie.model.dto;
 
-import io.geekmind.budgie.model.dto.account.ExistingAccount;
+import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import io.geekmind.budgie.model.dto.category.ExistingCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +25,7 @@ public class ExistingRecord implements Serializable {
     private ExistingCategory category;
 
     @NotNull
-    private ExistingAccount account;
+    private ExistingStandardAccount account;
 
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

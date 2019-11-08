@@ -1,11 +1,11 @@
 package io.geekmind.budgie.controller;
 
 import io.geekmind.budgie.model.dto.BalanceType;
-import io.geekmind.budgie.model.dto.account.ExistingAccount;
 import io.geekmind.budgie.model.dto.NewBudgetTemplateRecord;
-import io.geekmind.budgie.repository.AccountService;
+import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import io.geekmind.budgie.repository.BudgetTemplateRecordService;
 import io.geekmind.budgie.repository.CategoryService;
+import io.geekmind.budgie.repository.StandardAccountService;
 import io.geekmind.budgie.repository.StandardBalanceService;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -24,12 +24,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/budget")
 public class BudgetController {
 
-    private final AccountService accountService;
+    private final StandardAccountService accountService;
     private final CategoryService categoryService;
     private final BudgetTemplateRecordService budgetTemplateRecordService;
     private final StandardBalanceService balanceService;
 
-    public BudgetController(AccountService accountService,
+    public BudgetController(StandardAccountService accountService,
                             CategoryService categoryService,
                             BudgetTemplateRecordService budgetTemplateRecordService,
                             StandardBalanceService balanceService) {
@@ -43,7 +43,7 @@ public class BudgetController {
     public ModelAndView loadRecordsFor(@RequestParam(name = "accountId", required = false) Integer accountId,
                                        ModelAndView requestContext) {
 
-        ExistingAccount selectedAccount;
+        ExistingStandardAccount selectedAccount;
         if (null == accountId) {
             selectedAccount = this.accountService.getMainAccount().orElse(null);
         } else {

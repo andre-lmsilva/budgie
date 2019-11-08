@@ -1,11 +1,14 @@
 package io.geekmind.budgie.fixture;
 
-import io.geekmind.budgie.model.dto.account.ExistingAccount;
+
+import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
+
+import java.util.Collections;
 
 public class ExistingAccountFixture {
 
-    public static ExistingAccount getMainAccount() {
-        ExistingAccount account = new ExistingAccount();
+    public static ExistingStandardAccount getMainAccount() {
+        ExistingStandardAccount account = new ExistingStandardAccount();
         account.setId(-1);
         account.setName("Fake Existing Account");
         account.setDescription("Used only for test purposes.");
@@ -14,11 +17,12 @@ public class ExistingAccountFixture {
         account.setMainAccount(Boolean.TRUE);
         account.setShowBalanceOnParentAccount(Boolean.FALSE);
         account.setCurrency(AccountCurrencyFixture.euro());
+        account.setDependants(Collections.singletonList(getSavingsAccount()));
         return account;
     }
 
-    public static ExistingAccount getSavingsAccount() {
-        ExistingAccount account = new ExistingAccount();
+    public static ExistingStandardAccount getSavingsAccount() {
+        ExistingStandardAccount account = new ExistingStandardAccount();
         account.setId(-9);
         account.setName("Fake Savings Account");
         account.setDescription("Used only for test purposes.");

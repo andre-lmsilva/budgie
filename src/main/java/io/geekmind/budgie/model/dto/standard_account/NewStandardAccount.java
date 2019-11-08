@@ -1,4 +1,4 @@
-package io.geekmind.budgie.model.dto.account;
+package io.geekmind.budgie.model.dto.standard_account;
 
 import io.geekmind.budgie.validation.ValidateUniqueness;
 import lombok.Data;
@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ValidateUniqueness(message = "There is another account with this name already.")
-public class NewAccount extends BaseAccount {
+public class NewStandardAccount extends BaseStandardAccount {
 
     @NotNull
     @Size(min = 3, max = 3)

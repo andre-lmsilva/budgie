@@ -1,7 +1,7 @@
 package io.geekmind.budgie.controller;
 
 import io.geekmind.budgie.model.dto.NewTransfer;
-import io.geekmind.budgie.repository.AccountService;
+import io.geekmind.budgie.repository.StandardAccountService;
 import io.geekmind.budgie.repository.CategoryService;
 import io.geekmind.budgie.repository.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,22 +19,22 @@ import java.time.LocalDate;
 public class TransferControllerImpl {
 
     private final CategoryService categoryService;
-    private final AccountService accountService;
+    private final StandardAccountService standardAccountService;
     private final TransferService transferService;
 
     @Autowired
     public TransferControllerImpl(CategoryService categoryService,
-                                  AccountService accountService,
+                                  StandardAccountService standardAccountService,
                                   TransferService transferService) {
         this.categoryService = categoryService;
-        this.accountService = accountService;
+        this.standardAccountService = standardAccountService;
         this.transferService = transferService;
     }
 
     @GetMapping("/new")
     public ModelAndView showNewForm(ModelAndView requestContext) {
         requestContext.addObject("availableCategories", this.categoryService.loadAll());
-        requestContext.addObject("availableAccounts", this.accountService.loadNonDependantAccounts());
+        requestContext.addObject("availableAccounts", this.standardAccountService.loadNonDependantAccounts());
 
         NewTransfer newTransfer = new NewTransfer();
         newTransfer.setTransferDate(LocalDate.now());
@@ -51,7 +51,7 @@ public class TransferControllerImpl {
                                           RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             requestContext.addObject("availableCategories", this.categoryService.loadAll());
-            requestContext.addObject("availableAccounts", this.accountService.loadNonDependantAccounts());
+            requestContext.addObject("availableAccounts", this.standardAccountService.loadNonDependantAccounts());
             requestContext.addObject("newTransfer", newTransfer);
             requestContext.setViewName("transfers/new.form");
         } else {

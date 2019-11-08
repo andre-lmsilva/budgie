@@ -1,11 +1,11 @@
-package io.geekmind.budgie.model.mapper.account;
+package io.geekmind.budgie.model.mapper.standard_account;
 
 import io.geekmind.budgie.fixture.AccountCurrencyFixture;
-import io.geekmind.budgie.fixture.AccountFixture;
+import io.geekmind.budgie.fixture.StandardAccountFixture;
 import io.geekmind.budgie.model.dto.AccountCurrency;
-import io.geekmind.budgie.model.dto.account.ExistingAccount;
+import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import io.geekmind.budgie.model.entity.Account;
-import io.geekmind.budgie.model.mapper.AccountMappingSettings;
+import io.geekmind.budgie.model.mapper.StandardAccountMappingSettings;
 import io.geekmind.budgie.model.mapper.CurrencyMapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -20,11 +20,11 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AccountToExistingAccountMappingTest {
+public class StandardAccountToExistingStandardAccountMappingTest {
 
     private Account sourceAccount;
     private AccountCurrency resultAccountCurrency;
-    private ExistingAccount resultExistingAccount;
+    private ExistingStandardAccount resultExistingAccount;
 
     @Before
     public void setUp() {
@@ -34,10 +34,10 @@ public class AccountToExistingAccountMappingTest {
             .when(mockCurrencyMapper).mapFrom(any());
 
         MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
-        new AccountMappingSettings(mockCurrencyMapper).configure(mapperFactory);
+        new StandardAccountMappingSettings(mockCurrencyMapper).configure(mapperFactory);
 
-        this.sourceAccount = AccountFixture.creditCard();
-        this.resultExistingAccount = mapperFactory.getMapperFacade().map(this.sourceAccount, ExistingAccount.class);
+        this.sourceAccount = StandardAccountFixture.creditCard();
+        this.resultExistingAccount = mapperFactory.getMapperFacade().map(this.sourceAccount, ExistingStandardAccount.class);
     }
 
     @Test
@@ -71,9 +71,9 @@ public class AccountToExistingAccountMappingTest {
     }
 
     @Test
-    public void showBalanceOnMainAccountAttribute_isMapped() {
+    public void showBalanceOnParentAccountAttribute_isMapped() {
         assertThat(this.resultExistingAccount)
-            .hasFieldOrPropertyWithValue("showBalanceParentMainAccount", sourceAccount.getShowBalanceOnParentAccount());
+            .hasFieldOrPropertyWithValue("showBalanceOnParentAccount", sourceAccount.getShowBalanceOnParentAccount());
     }
 
     @Test

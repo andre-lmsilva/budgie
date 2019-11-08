@@ -1,4 +1,4 @@
-package io.geekmind.budgie.model.dto.account;
+package io.geekmind.budgie.model.dto.standard_account;
 
 import lombok.Data;
 
@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @author Andre Silva
  */
 @Data
-public class BaseAccount implements Serializable {
+public class BaseStandardAccount implements Serializable {
 
     @NotNull
     @Size(min = 5, max = 140)

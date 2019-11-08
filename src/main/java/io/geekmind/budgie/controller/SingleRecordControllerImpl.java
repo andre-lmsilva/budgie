@@ -2,16 +2,14 @@ package io.geekmind.budgie.controller;
 
 import io.geekmind.budgie.model.dto.BalanceType;
 import io.geekmind.budgie.model.dto.NewSingleRecord;
-import io.geekmind.budgie.repository.AccountService;
+import io.geekmind.budgie.repository.StandardAccountService;
 import io.geekmind.budgie.repository.CategoryService;
 import io.geekmind.budgie.repository.SingleRecordService;
 import io.geekmind.budgie.repository.StandardBalanceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -19,17 +17,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/single_records")
 public class SingleRecordControllerImpl {
 
-    private final AccountService accountService;
+    private final StandardAccountService standardAccountService;
     private final CategoryService categoryService;
     private final SingleRecordService singleRecordService;
     private final StandardBalanceService balanceService;
@@ -37,11 +33,11 @@ public class SingleRecordControllerImpl {
     private DateTimeFormatter dateFormatter;
 
     @Autowired
-    public SingleRecordControllerImpl(AccountService accountService,
+    public SingleRecordControllerImpl(StandardAccountService standardAccountService,
                                       CategoryService categoryService,
                                       SingleRecordService singleRecordService,
                                       StandardBalanceService balanceService) {
-        this.accountService = accountService;
+        this.standardAccountService = standardAccountService;
         this.categoryService = categoryService;
         this.singleRecordService = singleRecordService;
         this.balanceService = balanceService;
@@ -68,7 +64,7 @@ public class SingleRecordControllerImpl {
         );
         requestContext.addObject("newSingleRecord", newSingleRecord);
         requestContext.addObject("balance", this.balanceService.generateBalance(accountId, recordDate, BalanceType.REGULAR_PERIOD_BALANCE));
-        requestContext.addObject("availableAccounts", this.accountService.loadAll());
+        requestContext.addObject("availableAccounts", this.standardAccountService.loadAll());
         requestContext.addObject("availableCategories", this.categoryService.loadAll());
         requestContext.setViewName("single_records/new.form");
         return requestContext;
@@ -81,7 +77,7 @@ public class SingleRecordControllerImpl {
                                               RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             requestContext.addObject("newSingleRecord", newSingleRecord);
-            requestContext.addObject("availableAccounts", this.accountService.loadAll());
+            requestContext.addObject("availableAccounts", this.standardAccountService.loadAll());
             requestContext.addObject("availableCategories", this.categoryService.loadAll());
             requestContext.setViewName("single_records/new.form");
         } else {

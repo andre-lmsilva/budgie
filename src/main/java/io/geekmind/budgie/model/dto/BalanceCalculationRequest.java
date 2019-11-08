@@ -1,6 +1,6 @@
 package io.geekmind.budgie.model.dto;
 
-import io.geekmind.budgie.model.dto.account.ExistingAccount;
+import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -18,13 +18,13 @@ public class BalanceCalculationRequest {
 
     private Balance balance;
 
-    private Map<ExistingAccount, Balance> dependantAccountBalances;
+    private Map<ExistingStandardAccount, Balance> dependantAccountBalances;
 
     public static class BalanceCalculationRequestBuilder {
 
-        private ExistingAccount existingAccount;
+        private ExistingStandardAccount existingAccount;
         private LocalDate referenceDate;
-        private Map<ExistingAccount, Balance> dependantAccountBalances;
+        private Map<ExistingStandardAccount, Balance> dependantAccountBalances;
         private BalanceType balanceType = BalanceType.REGULAR_PERIOD_BALANCE;
 
         public BalanceCalculationRequestBuilder withBalanceType(BalanceType balanceType) {
@@ -32,7 +32,7 @@ public class BalanceCalculationRequest {
             return this;
         }
 
-        public BalanceCalculationRequestBuilder withAccount(ExistingAccount existingAccount) {
+        public BalanceCalculationRequestBuilder withAccount(ExistingStandardAccount existingAccount) {
             this.existingAccount = existingAccount;
             return this;
         }
