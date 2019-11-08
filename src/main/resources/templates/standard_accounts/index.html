@@ -68,8 +68,8 @@
                                             billing on <strong th:text="${T(io.geekmind.budgie.ui.TextHelper).formatOrdinal(account.monthBillingDayAt)}">.</strong>
                                         </small><br/>
                                         <a  th:href="@{/standard_accounts/delete/{accountId}(accountId=${account.id})}"
-                                            title="Remove account and all of its records."
-                                            onclick="return confirm('Do you really want to remove this account and all of its records?');"
+                                            title="Archive the account."
+                                            onclick="return confirm('Do you really want to archive this account?');"
                                             th:if="${not account.mainAccount}"
                                             class="float-right text-danger">
                                             <span class="fa fa-trash-alt fa-lg"></span>

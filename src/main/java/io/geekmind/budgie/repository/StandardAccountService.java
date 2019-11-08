@@ -36,7 +36,7 @@ public class StandardAccountService implements UniquenessValidationService {
     }
 
     public List<ExistingStandardAccount> loadAll() {
-        return this.standardAccountRepository.findAll()
+        return this.standardAccountRepository.findByArchivedFalse()
             .stream()
             .map(account -> this.mapper.map(account, ExistingStandardAccount.class))
             .sorted(Comparator.comparing(ExistingStandardAccount::getName))
@@ -54,7 +54,8 @@ public class StandardAccountService implements UniquenessValidationService {
     public Optional<ExistingStandardAccount> remove(Integer id) {
         return this.standardAccountRepository.findById(id)
             .map(account -> {
-                this.standardAccountRepository.delete(account);
+                account.setArchived(Boolean.TRUE);
+                this.standardAccountRepository.save(account);
                 return this.mapper.map(account, ExistingStandardAccount.class);
             });
     }

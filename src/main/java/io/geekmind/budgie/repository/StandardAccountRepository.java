@@ -10,6 +10,8 @@ import java.util.Optional;
 
 public interface StandardAccountRepository extends JpaRepository<StandardAccount, Integer> {
 
+    List<Account> findByArchivedFalse();
+
     @Query("FROM Account account WHERE account.mainAccount = true")
     Optional<Account> findMainAccount();
 

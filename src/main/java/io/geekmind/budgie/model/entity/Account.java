@@ -55,5 +55,7 @@ public class Account {
     @Type(type = "encryptedTextField")
     private String currencyCode;
 
+    private Boolean archived;
+
 }
 
