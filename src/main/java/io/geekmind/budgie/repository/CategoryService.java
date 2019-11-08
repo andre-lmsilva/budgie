@@ -30,7 +30,7 @@ public class CategoryService implements UniquenessValidationService {
     }
 
     public List<ExistingCategory> loadAll() {
-        return this.categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "name"))
+        return this.categoryRepository.findByArchivedFalse()
             .stream()
             .map(category -> this.mapper.map(category, ExistingCategory.class))
             .sorted(Comparator.comparing(ExistingCategory::getName))
@@ -40,7 +40,8 @@ public class CategoryService implements UniquenessValidationService {
     public Optional<ExistingCategory> remove(Integer id) {
         return this.categoryRepository.findById(id)
             .map(category -> {
-                this.categoryRepository.delete(category);
+                category.setArchived(Boolean.TRUE);
+                this.categoryRepository.save(category);
                 return this.mapper.map(category, ExistingCategory.class);
             });
     }

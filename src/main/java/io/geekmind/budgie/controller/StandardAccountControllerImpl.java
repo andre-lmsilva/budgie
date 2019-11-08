@@ -70,7 +70,7 @@ public class StandardAccountControllerImpl {
                                       ModelAndView requestContext,
                                       RedirectAttributes redirectAttributes) {
         this.standardAccountService.remove(id);
-        redirectAttributes.addFlashAttribute("message", "Account record successfully removed.");
+        redirectAttributes.addFlashAttribute("message", "Account record successfully archived.");
         requestContext.setViewName("redirect:/standard_accounts");
         return requestContext;
     }

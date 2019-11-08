@@ -59,7 +59,7 @@ public class CategoryControllerImpl {
                                        ModelAndView requestContext,
                                        RedirectAttributes redirectAttributes) {
         this.categoryService.remove(id);
-        redirectAttributes.addFlashAttribute("message", "Category successfully removed.");
+        redirectAttributes.addFlashAttribute("message", "Category successfully archived.");
         requestContext.setViewName("redirect:/categories");
         return requestContext;
     }

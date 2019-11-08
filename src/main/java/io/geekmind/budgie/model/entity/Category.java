@@ -30,4 +30,6 @@ public class Category {
     @Type(type = "encryptedDecimalField")
     private BigDecimal maxExpenses;
 
+    private Boolean archived;
+
 }
