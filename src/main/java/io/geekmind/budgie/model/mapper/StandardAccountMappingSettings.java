@@ -39,10 +39,11 @@ public class StandardAccountMappingSettings implements OrikaMapperFactoryConfigu
                 public void mapAtoB(StandardAccount account, ExistingStandardAccount existingAccount, MappingContext context) {
                     super.mapAtoB(account, existingAccount, context);
                     if (null != account.getCurrencyCode()) {
-                        AccountCurrency currency = currencyMapper.mapFrom(
+                        existingAccount.setCurrency(
+                            currencyMapper.mapFrom(
                                 Currency.valueOf(account.getCurrencyCode())
+                            )
                         );
-                        existingAccount.setCurrency(currency);
                     }
                 }
             })

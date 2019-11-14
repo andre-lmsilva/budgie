@@ -19,7 +19,7 @@ public class EditProjectAccountToProjectAccountMappingTest {
     @Before
     public void setUp() {
         MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
-        new ProjectAccountMappingSettings().configure(mapperFactory);
+        new ProjectAccountMappingSettings(null).configure(mapperFactory);
         this.sourceEditProjectAccount = EditProjectAccountFixture.macBookPro();
         this.resultProjectAccount = mapperFactory.getMapperFacade().map(this.sourceEditProjectAccount, ProjectAccount.class);
     }

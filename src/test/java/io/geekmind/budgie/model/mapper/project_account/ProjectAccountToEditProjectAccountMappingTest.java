@@ -19,7 +19,7 @@ public class ProjectAccountToEditProjectAccountMappingTest {
     @Before
     public void setUp() {
         MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
-        new ProjectAccountMappingSettings().configure(mapperFactory);
+        new ProjectAccountMappingSettings(null).configure(mapperFactory);
         this.sourceProjectAccount = ProjectAccountFixture.travelToBahamas();
         this.resultEditProjectAccount = mapperFactory.getMapperFacade().map(this.sourceProjectAccount, EditProjectAccount.class);
     }

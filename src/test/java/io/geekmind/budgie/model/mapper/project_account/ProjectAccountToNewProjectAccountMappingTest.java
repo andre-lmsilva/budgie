@@ -18,7 +18,7 @@ public class ProjectAccountToNewProjectAccountMappingTest {
     @Before
     public void setUp() {
         MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
-        new ProjectAccountMappingSettings().configure(mapperFactory);
+        new ProjectAccountMappingSettings(null).configure(mapperFactory);
         ProjectAccount sourceProjectAccount = ProjectAccountFixture.travelToBahamas();
         this.resultNewProjectAccount = mapperFactory.getMapperFacade().map(sourceProjectAccount, NewProjectAccount.class);
     }

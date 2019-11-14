@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -18,6 +20,10 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ProjectAccount extends Account {
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private StandardAccount parent;
 
     @NotNull
     @Min(1)

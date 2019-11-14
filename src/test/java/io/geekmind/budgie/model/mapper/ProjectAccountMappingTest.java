@@ -11,7 +11,9 @@ import org.junit.runners.Suite;
         ExistingStandardAccountToProjectAccountMappingTest.class,
         ProjectAccountToExistingStandardAccountMappingTest.class,
         ProjectAccountToEditProjectAccountMappingTest.class,
-        EditProjectAccountToProjectAccountMappingTest.class
+        EditProjectAccountToProjectAccountMappingTest.class,
+        ProjectAccountToExistingProjectAccountMappingTest.class,
+        ExistingProjectAccountToProjectAccountMappingTest.class
 })
 public class ProjectAccountMappingTest {
 }

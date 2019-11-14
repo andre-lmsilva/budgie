@@ -4,6 +4,7 @@ import io.geekmind.budgie.fixture.StandardAccountFixture;
 import io.geekmind.budgie.fixture.EditAccountFixture;
 import io.geekmind.budgie.model.dto.standard_account.EditStandardAccount;
 import io.geekmind.budgie.model.entity.Account;
+import io.geekmind.budgie.model.entity.StandardAccount;
 import io.geekmind.budgie.model.mapper.StandardAccountMappingSettings;
 import io.geekmind.budgie.model.mapper.DefaultCurrencyMapper;
 import ma.glasnost.orika.MapperFactory;
@@ -16,8 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EditStandardAccountToStandardAccountMergingTest {
 
     private EditStandardAccount sourceNewAccount;
-    private Account sourceAccount;
-    private Account resultAccount;
+    private StandardAccount sourceAccount;
+    private StandardAccount resultAccount;
 
     @Before
     public void setUp() {

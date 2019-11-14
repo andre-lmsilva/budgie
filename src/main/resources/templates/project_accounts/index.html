@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+    <body style="padding-top: 120px;">
+        <div th:replace="fragments/navbar :: navbar"></div>
+        <div class="container-fluid">
+             <div class="row mb-3">
+                <div class="col">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
+                        <li class="breadcrumb-item active">Projects</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col">
+                    <h2 class="d-md-block d-sm-none d-none">Available Projects</h2>
+                    <h4 class="d-md-none d-block">Available Projects</h4>
+                </div>
+            </div>
+
+            <div class="row mt-3 mb-3" th:if="${null != message}">
+                <div class="col">
+                    <div class="alert alert-success" th:text="${message}"></div>
+                </div>
+            </div>
+
+            <div class="row mt-3 mb-3" th:if="${null != error}">
+                <div class="col">
+                    <div class="alert alert-danger" th:text="${error}"></div>
+                </div>
+            </div>
+
+            <div class="row" th:if="${#lists.isEmpty(availableProjectAccounts)}">
+                <div class="col">
+                    <div class="jumbotron">
+                        <h2>No project found.</h2>
+                        <p class="lead">There is no project created yet.
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" th:if="${not #lists.isEmpty(availableProjectAccounts)}">
+                <div class="col">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover filterable">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Project</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td th:include="fragments/filter_form_table_row :: FilterTableRow"></td>
+                                </tr>
+                                <tr th:each="account: ${availableProjectAccounts}">
+                                    <td>
+                                        <h2 class="initial-letter d-inline float-left text-monospace" th:text="${#strings.substring(account.name, 0, 1)}"></h2>
+                                        <a th:href="@{/project_accounts/edit/{id}(id=${account.id})}" title="Edit project.">
+                                            <h5 class="item-title d-inline" th:text="|${account.name} (${account.currency.currencyCode})|"></h5>
+                                        </a>
+                                        <small class="text-muted d-block" th:text="${account.description}" th:if="${account.description != null}"></small><br/>
+                                        <a  th:href="@{/project_accounts/delete/{accountId}(accountId=${account.id})}"
+                                            title="Archive the project."
+                                            onclick="return confirm('Do you really want to archive this project?');"
+                                            class="float-right text-danger">
+                                            <span class="fa fa-trash-alt fa-lg"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fab-btn">
+            <a th:href="@{/project_accounts/new}" class="btn btn-primary btn-lg" title="Shows the form to create a new project.">
+                <i class="fa fa-lg fa-plus"></i>
+            </a>
+        </div>
+        <div th:replace="fragments/footer :: footer"></div>
+    </body>
+</html>

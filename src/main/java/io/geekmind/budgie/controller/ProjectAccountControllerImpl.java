@@ -30,6 +30,13 @@ public class ProjectAccountControllerImpl {
         this.projectAccountService = projectAccountService;
     }
 
+    @GetMapping
+    public ModelAndView loadAll(ModelAndView requestContext) {
+        requestContext.addObject("availableProjectAccounts", this.projectAccountService.loadAll());
+        requestContext.setViewName("project_accounts/index");
+        return requestContext;
+    }
+
     @GetMapping("/new")
     public ModelAndView showNewForm(ModelAndView requestContext) {
         requestContext.addObject("availableAccounts", standardAccountService.loadAll());
