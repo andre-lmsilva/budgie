@@ -4,7 +4,7 @@ import io.geekmind.budgie.fixture.AccountCurrencyFixture;
 import io.geekmind.budgie.fixture.StandardAccountFixture;
 import io.geekmind.budgie.model.dto.AccountCurrency;
 import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
-import io.geekmind.budgie.model.entity.Account;
+import io.geekmind.budgie.model.entity.StandardAccount;
 import io.geekmind.budgie.model.mapper.StandardAccountMappingSettings;
 import io.geekmind.budgie.model.mapper.CurrencyMapper;
 import ma.glasnost.orika.MapperFactory;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.mock;
 @RunWith(MockitoJUnitRunner.class)
 public class StandardAccountToExistingStandardAccountMappingTest {
 
-    private Account sourceAccount;
+    private StandardAccount sourceAccount;
     private AccountCurrency resultAccountCurrency;
     private ExistingStandardAccount resultExistingAccount;
 

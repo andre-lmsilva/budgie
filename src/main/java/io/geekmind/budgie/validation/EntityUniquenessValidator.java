@@ -19,7 +19,7 @@ public class EntityUniquenessValidator implements ConstraintValidator<ValidateUn
             .map(service -> service.isValid(value))
             .orElseThrow(() -> {
                 String message = String.format("No suitable service found to validate the uniqueness of %s.", value.getClass().getName());
-                return new RuntimeException(message);
+                return new IllegalArgumentException(message);
             });
     }
 }

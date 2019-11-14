@@ -10,6 +10,10 @@
                         An unexpected error occurred while the application was trying to process your request.<br/>
                         Please, try to go back and sign in to access the system again.
                     </p>
+                    <p class="text-monospace" th:if="${status} == 400">
+                        Your request contains some data that we were not expecting.<br/>
+                        Please, try to go back and sign in to access the system again.
+                    </p>
                     <p class="text-monospace" th:if="${status} == 404">
                         The page that you are looking for could not be found.<br/>
                         Please, go back and sign in to access the system again.

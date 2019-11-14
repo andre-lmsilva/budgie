@@ -24,9 +24,6 @@ public class Account {
     @JoinColumn(name = "parent_id")
     private Account parent;
 
-    @OneToMany(mappedBy = "parent", cascade = {CascadeType.ALL}, orphanRemoval = true)
-    private List<Account> dependants;
-
     @NotNull
     @Size(min = 5, max = 255)
     @Type(type = "encryptedTextField")
@@ -55,7 +52,8 @@ public class Account {
     @Type(type = "encryptedTextField")
     private String currencyCode;
 
-    private Boolean archived;
+    @NotNull
+    private Boolean archived = Boolean.FALSE;
 
 }
 

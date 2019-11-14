@@ -88,15 +88,13 @@ public class StandardAccountService implements UniquenessValidationService {
     }
 
     protected Boolean isValidToCreate(NewStandardAccount entity) {
-         return this.standardAccountRepository
-            .findAll()
+         return this.loadAll()
             .stream()
             .noneMatch(nAccount -> nAccount.getName().equals(entity.getName()));
     }
 
     protected Boolean isValidToUpdate(EditStandardAccount entity) {
-          return this.standardAccountRepository
-              .findAll()
+          return this.loadAll()
               .stream()
               .filter(account -> !account.getId().equals(entity.getId()))
               .noneMatch(nAccount -> nAccount.getName().equals(entity.getName()));

@@ -9,7 +9,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
                         <li class="breadcrumb-item"><a th:href="@{'/standard_accounts'}">Accounts</a></li>
-                        <li class="breadcrumb-item active" th:text="${editAccount.name}"></li>
+                        <li class="breadcrumb-item active" th:text="${editStandardAccount.name}"></li>
                     </ol>
                 </div>
             </div>
@@ -26,15 +26,15 @@
                 </div>
             </div>
 
-            <div class="row mb-3 mt-3" th:if="${#fields.hasErrors('editAccount')}">
+            <div class="row mb-3 mt-3" th:if="${#fields.hasErrors('editStandardAccount')}">
                 <div class="col">
-                    <div class="alert alert-danger" th:errors="*{editAccount}"></div>
+                    <div class="alert alert-danger" th:errors="*{editStandardAccount}"></div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col">
-                    <form action="#" th:object="${editAccount}" th:action="@{/standard_accounts/update}" method="post">
+                    <form action="#" th:object="${editStandardAccount}" th:action="@{/standard_accounts/update}" method="post">
                         <fieldset>
                             <legend>Account Details</legend>
                             <div class="form-row">

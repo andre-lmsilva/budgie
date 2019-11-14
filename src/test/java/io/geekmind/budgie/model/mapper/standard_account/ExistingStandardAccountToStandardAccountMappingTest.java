@@ -1,6 +1,6 @@
 package io.geekmind.budgie.model.mapper.standard_account;
 
-import io.geekmind.budgie.fixture.ExistingAccountFixture;
+import io.geekmind.budgie.fixture.ExistingStandardAccountFixture;
 import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import io.geekmind.budgie.model.entity.Account;
 import io.geekmind.budgie.model.mapper.StandardAccountMappingSettings;
@@ -14,15 +14,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExistingStandardAccountToStandardAccountMappingTest {
 
-    private ExistingStandardAccount sourceExistingAccount;
     private Account resultAccount;
 
     @Before
     public void setUp() {
         MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
         new StandardAccountMappingSettings(new DefaultCurrencyMapper()).configure(mapperFactory);
-        this.sourceExistingAccount = ExistingAccountFixture.getMainAccount();
-        this.resultAccount = mapperFactory.getMapperFacade().map(this.sourceExistingAccount, Account.class);
+        ExistingStandardAccount sourceExistingAccount = ExistingStandardAccountFixture.getMainAccount();
+        this.resultAccount = mapperFactory.getMapperFacade().map(sourceExistingAccount, Account.class);
     }
 
     @Test

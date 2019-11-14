@@ -3,7 +3,7 @@ package io.geekmind.budgie.repository;
 import io.geekmind.budgie.balance.BaseBalanceCalculationStep;
 import io.geekmind.budgie.balance.commons.BalanceDatesCalculator;
 import io.geekmind.budgie.fixture.BalanceFixture;
-import io.geekmind.budgie.fixture.ExistingAccountFixture;
+import io.geekmind.budgie.fixture.ExistingStandardAccountFixture;
 import io.geekmind.budgie.model.dto.Balance;
 import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
 import io.geekmind.budgie.model.dto.BalanceType;
@@ -49,7 +49,7 @@ public class StandardBalanceServiceTest {
 
     @Test
     public void retrieveAccount_withAccountIdAsNull_RetrievesMainAccount() {
-        ExistingStandardAccount fakeMainAccount = ExistingAccountFixture.getMainAccount();
+        ExistingStandardAccount fakeMainAccount = ExistingStandardAccountFixture.getMainAccount();
         doReturn(Optional.of(fakeMainAccount))
             .when(this.standardAccountService).getMainAccount();
 
@@ -61,7 +61,7 @@ public class StandardBalanceServiceTest {
 
     @Test
     public void retrieveAccount_withExistingAccountId_RetrievesAccount() {
-        ExistingStandardAccount fakeAccount = ExistingAccountFixture.getSavingsAccount();
+        ExistingStandardAccount fakeAccount = ExistingStandardAccountFixture.getSavingsAccount();
         doReturn(Optional.of(fakeAccount))
             .when(this.standardAccountService).loadById(eq(-1));
 
@@ -84,7 +84,7 @@ public class StandardBalanceServiceTest {
 
     @Test
     public void calculateDependantAccountsBalancesFor_withNoDependantAccount_ReturnsEmptyList() {
-        ExistingStandardAccount fakeMainAccount = ExistingAccountFixture.getMainAccount();
+        ExistingStandardAccount fakeMainAccount = ExistingStandardAccountFixture.getMainAccount();
         fakeMainAccount.setDependants(Collections.emptyList());
         LocalDate fakeReferenceDate = LocalDate.now();
 
@@ -100,8 +100,8 @@ public class StandardBalanceServiceTest {
 
     @Test
     public void calculateDependantAccountsBalanceFor_withDependantAccount_ReturnsNonEmptyList() {
-        ExistingStandardAccount fakeMainAccount = ExistingAccountFixture.getMainAccount();
-        ExistingStandardAccount fakeSavingsAccount = ExistingAccountFixture.getSavingsAccount();
+        ExistingStandardAccount fakeMainAccount = ExistingStandardAccountFixture.getMainAccount();
+        ExistingStandardAccount fakeSavingsAccount = ExistingStandardAccountFixture.getSavingsAccount();
         fakeMainAccount.setDependants(Collections.singletonList(fakeSavingsAccount));
 
         LocalDate fakeReferenceDate = LocalDate.now();
@@ -136,7 +136,7 @@ public class StandardBalanceServiceTest {
 
     @Test
     public void generateBalance_withNonMainAccount_CalculatesAccountBalance() {
-        doReturn(Optional.of(ExistingAccountFixture.getSavingsAccount()))
+        doReturn(Optional.of(ExistingStandardAccountFixture.getSavingsAccount()))
             .when(this.service).retrieveAccount(eq(-1));
 
         Balance fakeBalance = BalanceFixture.getCurrentPeriodBalance();
@@ -155,7 +155,7 @@ public class StandardBalanceServiceTest {
 
     @Test
     public void generateBalance_withMainAccount_CalculatesDependantAccountBalance() {
-        ExistingStandardAccount fakeAccount = ExistingAccountFixture.getMainAccount();
+        ExistingStandardAccount fakeAccount = ExistingStandardAccountFixture.getMainAccount();
         doReturn(Optional.of(fakeAccount))
             .when(this.service).retrieveAccount(eq(-1));
         doReturn(Collections.emptyList())

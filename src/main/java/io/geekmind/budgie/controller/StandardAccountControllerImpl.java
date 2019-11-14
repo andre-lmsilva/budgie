@@ -24,7 +24,6 @@ public class StandardAccountControllerImpl {
     private final StandardAccountService standardAccountService;
     private final CurrencyService currencyService;
 
-    @Autowired
     public StandardAccountControllerImpl(StandardAccountService standardAccountService,
                                          CurrencyService currencyService) {
         this.standardAccountService = standardAccountService;
@@ -42,7 +41,7 @@ public class StandardAccountControllerImpl {
     public ModelAndView showNewAccountForm(ModelAndView requestContext) {
         requestContext.addObject("availableAccounts", this.standardAccountService.loadAll());
         requestContext.addObject("availableCurrencies", this.currencyService.loadAll());
-        requestContext.addObject("newAccount", new NewStandardAccount());
+        requestContext.addObject("newStandardAccount", new NewStandardAccount());
         requestContext.setViewName("standard_accounts/new.form");
         return requestContext;
     }
@@ -55,7 +54,7 @@ public class StandardAccountControllerImpl {
         if (bindingResult.hasErrors()) {
             requestContext.addObject("availableAccounts", this.standardAccountService.loadAll());
             requestContext.addObject("availableCurrencies", this.currencyService.loadAll());
-            requestContext.addObject("newAccount", newAccount);
+            requestContext.addObject("newStandardAccount", newAccount);
             requestContext.setViewName("standard_accounts/new.form");
         } else {
             this.standardAccountService.create(newAccount);
@@ -83,7 +82,7 @@ public class StandardAccountControllerImpl {
         if (editAccount.isPresent()) {
             requestContext.addObject("availableAccounts", this.standardAccountService.loadAllExcept(id));
             requestContext.addObject("availableCurrencies", this.currencyService.loadAll());
-            requestContext.addObject("editAccount", editAccount.get());
+            requestContext.addObject("editStandardAccount", editAccount.get());
             requestContext.setViewName("standard_accounts/edit.form");
         } else {
             redirectAttributes.addFlashAttribute("error", "Account not found.");
@@ -93,18 +92,18 @@ public class StandardAccountControllerImpl {
     }
 
     @PostMapping("/update")
-    public ModelAndView updateAccount(@Valid EditStandardAccount editAccount,
+    public ModelAndView updateAccount(@Valid EditStandardAccount editStandardAccount,
                                BindingResult bindingResult,
                                ModelAndView requestContext,
                                RedirectAttributes redirectAttributes) {
         if (!bindingResult.hasErrors()) {
-            this.standardAccountService.update(editAccount);
+            this.standardAccountService.update(editStandardAccount);
             redirectAttributes.addFlashAttribute("message", "Account successfully updated.");
             requestContext.setViewName("redirect:/standard_accounts");
         } else {
-            requestContext.addObject("availableAccounts", this.standardAccountService.loadAllExcept(editAccount.getId()));
+            requestContext.addObject("availableAccounts", this.standardAccountService.loadAllExcept(editStandardAccount.getId()));
             requestContext.addObject("availableCurrencies", this.currencyService.loadAll());
-            requestContext.addObject("editAccount", editAccount);
+            requestContext.addObject("editStandardAccount", editStandardAccount);
             requestContext.setViewName("standard_accounts/edit.form");
         }
         return requestContext;

@@ -26,15 +26,15 @@
                 </div>
             </div>
 
-            <div class="row mb-3 mt-3" th:if="${#fields.hasErrors('newAccount')}">
+            <div class="row mb-3 mt-3" th:if="${#fields.hasErrors('newStandardAccount')}">
                 <div class="col">
-                    <div class="alert alert-danger" th:errors="*{newAccount}"></div>
+                    <div class="alert alert-danger" th:errors="*{newStandardAccount}"></div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col">
-                    <form th:object="${newAccount}" th:action="@{/standard_accounts/create}" method="post">
+                    <form th:object="${newStandardAccount}" th:action="@{/standard_accounts/create}" method="post">
                         <fieldset>
                             <legend>Account Details</legend>
                             <div class="form-row">

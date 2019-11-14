@@ -11,7 +11,7 @@ public class BalanceFixture {
         Balance balance = new Balance();
         balance.setBalanceDates(BalanceDatesFixture.getBalanceDatesForCurrentPeriod());
         balance.setSummary(BalanceSummaryFixture.get());
-        balance.setAccount(ExistingAccountFixture.getMainAccount());
+        balance.setAccount(ExistingStandardAccountFixture.getMainAccount());
         balance.setRecords(new ArrayList<>());
         balance.setApplicableBudgetTemplateRecords(new ArrayList<>());
         balance.setBalanceType(BalanceType.REGULAR_PERIOD_BALANCE);

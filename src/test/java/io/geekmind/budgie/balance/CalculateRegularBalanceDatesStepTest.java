@@ -3,7 +3,7 @@ package io.geekmind.budgie.balance;
 import io.geekmind.budgie.balance.commons.BalanceDatesCalculator;
 import io.geekmind.budgie.fixture.BalanceCalculationRequestFixture;
 import io.geekmind.budgie.fixture.BalanceFixture;
-import io.geekmind.budgie.fixture.ExistingAccountFixture;
+import io.geekmind.budgie.fixture.ExistingStandardAccountFixture;
 import io.geekmind.budgie.model.dto.Balance;
 import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
 import io.geekmind.budgie.model.dto.BalanceDates;
@@ -47,7 +47,7 @@ public class CalculateRegularBalanceDatesStepTest {
         balanceDates.setReferenceDate(LocalDate.now());
         this.balance = BalanceFixture.getCurrentPeriodBalance();
         balance.setBalanceDates(balanceDates);
-        balance.setAccount(ExistingAccountFixture.getMainAccount());
+        balance.setAccount(ExistingStandardAccountFixture.getMainAccount());
 
         doReturn(this.periodEndDate)
             .when(this.datesCalculator).calculatePeriodEndDate(eq(balanceDates.getReferenceDate()), eq(balance.getAccount()));

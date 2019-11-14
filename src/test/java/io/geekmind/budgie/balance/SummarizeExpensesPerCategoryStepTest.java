@@ -2,7 +2,7 @@ package io.geekmind.budgie.balance;
 
 import io.geekmind.budgie.fixture.BalanceCalculationRequestFixture;
 import io.geekmind.budgie.fixture.BalanceFixture;
-import io.geekmind.budgie.fixture.ExistingAccountFixture;
+import io.geekmind.budgie.fixture.ExistingStandardAccountFixture;
 import io.geekmind.budgie.fixture.ExistingCategoryFixture;
 import io.geekmind.budgie.fixture.ExistingRecordFixture;
 import io.geekmind.budgie.model.dto.Balance;
@@ -113,7 +113,7 @@ public class SummarizeExpensesPerCategoryStepTest {
 
         ExistingRecord mainAccountRecord = ExistingRecordFixture.getWithValue(BigDecimal.valueOf(100D).negate());
         ExistingRecord savingsAccountRecord = ExistingRecordFixture.getWithValue(BigDecimal.valueOf(200D).negate());
-        savingsAccountRecord.setAccount(ExistingAccountFixture.getSavingsAccount());
+        savingsAccountRecord.setAccount(ExistingStandardAccountFixture.getSavingsAccount());
 
         List<ExistingRecord> records = Arrays.asList(mainAccountRecord, savingsAccountRecord);
 

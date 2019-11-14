@@ -5,7 +5,7 @@ import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 
 import java.util.Collections;
 
-public class ExistingAccountFixture {
+public class ExistingStandardAccountFixture {
 
     public static ExistingStandardAccount getMainAccount() {
         ExistingStandardAccount account = new ExistingStandardAccount();

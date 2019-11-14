@@ -82,13 +82,13 @@ public class CategoryService implements UniquenessValidationService {
     }
 
     protected Boolean isValidToCreate(NewCategory entity) {
-         return this.categoryRepository.findAll()
+         return this.loadAll()
             .stream()
             .noneMatch(nCategory -> nCategory.getName().equals(entity.getName()));
     }
 
     protected Boolean isValidToUpdate(EditCategory entity) {
-          return this.categoryRepository.findAll()
+        return this.loadAll()
             .stream()
             .filter(nCategory -> !nCategory.getId().equals(entity.getId()))
             .noneMatch(nCategory -> nCategory.getName().equals(entity.getName()));

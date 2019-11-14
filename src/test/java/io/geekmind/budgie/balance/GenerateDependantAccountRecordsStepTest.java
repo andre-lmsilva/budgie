@@ -2,7 +2,7 @@ package io.geekmind.budgie.balance;
 
 import io.geekmind.budgie.fixture.BalanceCalculationRequestFixture;
 import io.geekmind.budgie.fixture.BalanceFixture;
-import io.geekmind.budgie.fixture.ExistingAccountFixture;
+import io.geekmind.budgie.fixture.ExistingStandardAccountFixture;
 import io.geekmind.budgie.model.dto.Balance;
 import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
 import io.geekmind.budgie.model.dto.BalanceType;
@@ -92,7 +92,7 @@ public class GenerateDependantAccountRecordsStepTest {
         BalanceCalculationRequest request = BalanceCalculationRequestFixture.get();
         request.getBalance().getAccount().setMainAccount(true);
         request.setDependantAccountBalances(new HashMap<>());
-        request.getDependantAccountBalances().put(ExistingAccountFixture.getMainAccount(), BalanceFixture.getCurrentPeriodBalance());
+        request.getDependantAccountBalances().put(ExistingStandardAccountFixture.getMainAccount(), BalanceFixture.getCurrentPeriodBalance());
         assertThat(this.step.shouldExecute(request)).isTrue();
     }
 

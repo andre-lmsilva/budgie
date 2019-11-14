@@ -10,7 +10,7 @@ public class ExistingRecordFixture {
     public static ExistingRecord getWithValue(BigDecimal value) {
         ExistingRecord existingRecord = new ExistingRecord();
         existingRecord.setRecordDate(LocalDate.now());
-        existingRecord.setAccount(ExistingAccountFixture.getMainAccount());
+        existingRecord.setAccount(ExistingStandardAccountFixture.getMainAccount());
         existingRecord.setCategory(ExistingCategoryFixture.get());
         existingRecord.setDescription("Fake record.");
         existingRecord.setId(-1);
