@@ -101,4 +101,15 @@ public class ProjectAccountService implements UniquenessValidationService {
             });
     }
 
+    public Optional<ExistingProjectAccount> delete(Integer id) {
+        return this.projectAccountRepository.findById(id)
+            .map(project -> {
+                project.setArchived(Boolean.TRUE);
+                return this.mapperFacade.map(
+                    this.projectAccountRepository.save(project),
+                    ExistingProjectAccount.class
+                );
+            });
+    }
+
 }

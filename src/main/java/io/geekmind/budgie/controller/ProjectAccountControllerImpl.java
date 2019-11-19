@@ -2,7 +2,6 @@ package io.geekmind.budgie.controller;
 
 import io.geekmind.budgie.model.dto.project_account.EditProjectAccount;
 import io.geekmind.budgie.model.dto.project_account.NewProjectAccount;
-import io.geekmind.budgie.repository.CurrencyService;
 import io.geekmind.budgie.repository.ProjectAccountService;
 import io.geekmind.budgie.repository.StandardAccountService;
 import org.springframework.stereotype.Controller;
@@ -93,6 +92,19 @@ public class ProjectAccountControllerImpl {
             redirectAttributes.addFlashAttribute("message", "The project was successfully updated.");
             requestContext.setViewName("redirect:/project_accounts");
         }
+        return requestContext;
+    }
+
+    @GetMapping("/delete/{id}")
+    public ModelAndView deleteProjectAccount(@PathVariable("id") Integer id,
+                                             ModelAndView requestContext,
+                                             RedirectAttributes redirectAttributes) {
+        if (this.projectAccountService.delete(id).isPresent()) {
+            redirectAttributes.addFlashAttribute("message", "Project successfully archived.");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Project not found.");
+        }
+        requestContext.setViewName("redirect:/project_accounts");
         return requestContext;
     }
 
