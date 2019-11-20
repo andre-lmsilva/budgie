@@ -33,6 +33,7 @@ public class StandardAccountMappingSettings implements OrikaMapperFactoryConfigu
             .fieldAToB("monthBillingDayAt", "monthBillingDayAt")
             .fieldAToB("showBalanceOnParentAccount", "showBalanceOnParentAccount")
             .fieldAToB("parent", "parent")
+            .fieldAToB("archived", "archived")
             .fieldAToB("dependants", "dependants")
             .customize(new CustomMapper<StandardAccount, ExistingStandardAccount>() {
                 @Override

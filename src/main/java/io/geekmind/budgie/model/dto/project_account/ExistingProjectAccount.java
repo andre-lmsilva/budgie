@@ -1,22 +1,15 @@
 package io.geekmind.budgie.model.dto.project_account;
 
-import io.geekmind.budgie.model.dto.AccountCurrency;
-import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
+import io.geekmind.budgie.model.dto.account.ExistingAccount;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ExistingProjectAccount extends BaseProjectAccount {
+public class ExistingProjectAccount extends ExistingAccount {
 
-    private Integer id;
-
-    private Integer monthStartingAt;
-
-    private Integer monthBillingDayAt;
-
-    private ExistingStandardAccount parent;
-
-    private AccountCurrency currency;
+    private BigDecimal targetValue;
 
 }

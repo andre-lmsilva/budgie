@@ -79,9 +79,11 @@ public class StandardBalanceService {
         LocalDate mainAccountPeriodEndDate = this.balanceDatesCalculator.calculatePeriodEndDate(referenceDate, account);
         return account.getDependants()
             .stream()
+            .filter(dependantAccount -> !dependantAccount.getArchived())
+            .filter(dependantAccount -> dependantAccount instanceof ExistingStandardAccount)
             .map(dependantAccount -> {
                 LocalDate periodBillingDate = mainAccountPeriodEndDate.withDayOfMonth(dependantAccount.getMonthBillingDayAt());
-                LocalDate accountPeriodEndDate = this.balanceDatesCalculator.calculatePeriodEndDateBasedOnBillingDate(periodBillingDate, dependantAccount);
+                LocalDate accountPeriodEndDate = this.balanceDatesCalculator.calculatePeriodEndDateBasedOnBillingDate(periodBillingDate, (ExistingStandardAccount)dependantAccount);
                 return this.generateBalance(dependantAccount.getId(), accountPeriodEndDate, BalanceType.REGULAR_PERIOD_BALANCE);
             })
             .collect(Collectors.toList());

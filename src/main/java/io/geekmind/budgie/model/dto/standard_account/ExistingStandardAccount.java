@@ -1,6 +1,6 @@
 package io.geekmind.budgie.model.dto.standard_account;
 
-import io.geekmind.budgie.model.dto.AccountCurrency;
+import io.geekmind.budgie.model.dto.account.ExistingAccount;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,16 +12,13 @@ import java.util.List;
  * @author Andre Silva
  */
 @Data
-@EqualsAndHashCode(callSuper = true, exclude = "dependants")
-public class ExistingStandardAccount extends BaseStandardAccount {
-
-    private Integer id;
+@EqualsAndHashCode(callSuper = true, exclude = {"dependants"})
+public class ExistingStandardAccount extends ExistingAccount {
 
     private Boolean mainAccount;
 
-    private AccountCurrency currency;
+    private Boolean showBalanceOnParentAccount;
 
-    private ExistingStandardAccount parent;
+    private List<ExistingAccount> dependants;
 
-    private List<ExistingStandardAccount> dependants;
 }
