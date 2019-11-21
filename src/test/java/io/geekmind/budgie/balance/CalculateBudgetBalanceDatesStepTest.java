@@ -58,7 +58,8 @@ public class CalculateBudgetBalanceDatesStepTest {
             .hasFieldOrPropertyWithValue("periodBillingDate", CalculateBudgetBalanceDatesStep.BEGINNING_OF_PERIOD)
             .hasFieldOrPropertyWithValue("previousPeriodStartDate", CalculateBudgetBalanceDatesStep.BEGINNING_OF_PERIOD)
             .hasFieldOrPropertyWithValue("nextPeriodStartDate", CalculateBudgetBalanceDatesStep.BEGINNING_OF_PERIOD)
-            .hasFieldOrPropertyWithValue("periodRemainingDays", CalculateBudgetBalanceDatesStep.PERIOD_REMAINING_DAYS);
+            .hasFieldOrPropertyWithValue("periodRemainingDays", CalculateBudgetBalanceDatesStep.PERIOD_REMAINING_DAYS)
+            .hasFieldOrPropertyWithValue("periodCompletion", CalculateBudgetBalanceDatesStep.PERIOD_COMPLETION);
     }
 
 }

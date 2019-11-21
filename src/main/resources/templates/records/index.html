@@ -5,26 +5,33 @@
         <div th:replace="fragments/navbar :: navbar"></div>
         <div class="container-fluid">
             <div class="row">
-                <div class="col">
+                <div class="col-sm-12 col-md-6 col-lg-4">
                     <h1 th:text="${#temporals.format(balance.balanceDates.periodStartDate, 'MMM yyyy')}"></h1>
-                    <p>
-                        <small>
-                            From&nbsp;<strong th:text="${#temporals.format(balance.balanceDates.periodStartDate,'dd/MM/yyyy')}"></strong>&nbsp;to&nbsp;
-                            <strong th:text="${#temporals.format(balance.balanceDates.periodEndDate,'dd/MM/yyyy')}"></strong><br/>
-                            <span th:if="${balance.balanceDates.periodRemainingDays >=0 AND balance.balanceDates.periodRemainingDays <= 31}">
-                                <strong>
-                                    <span th:text="${balance.balanceDates.periodRemainingDays}"></span>&nbsp;day(s)
-                                </strong>until the end of this period.<br/>
-                            </span>
-                            <span th:if="${balance.account.showBalanceOnParentAccount}">
-                                Billing date <strong th:text="${#temporals.format(balance.balanceDates.periodBillingDate,'dd/MM/yyyy')}"></strong><br/>
-                                <span class="badge badge-warning" th:text="|Show balance as a ${balance.account.parent.name} record.|"></span><br/>
-                            </span>
-                            <a th:href="@{'/records'(referenceDate=${balance.balanceDates.previousPeriodStartDate},accountId=${balance.account.id})}">Previous Period</a>
-                            &nbsp;|&nbsp;
-                            <a th:href="@{'/records'(referenceDate=${balance.balanceDates.nextPeriodStartDate},accountId=${balance.account.id})}">Next Period</a><br/>
-                        </small>
-                    </p>
+                    <div class="text-mutted">
+                        From&nbsp;<strong th:text="${#temporals.format(balance.balanceDates.periodStartDate,'dd/MM/yyyy')}"></strong>&nbsp;to&nbsp;
+                        <strong th:text="${#temporals.format(balance.balanceDates.periodEndDate,'dd/MM/yyyy')}"></strong><br/>
+                        <span th:if="${balance.balanceDates.periodRemainingDays >=0 AND balance.balanceDates.periodRemainingDays <= 31}">
+                            <strong>
+                                <span th:text="${balance.balanceDates.periodRemainingDays}"></span>&nbsp;day(s)
+                            </strong>until the end of this period. (<span th:text="|${#numbers.formatDecimal(balance.balanceDates.periodCompletion, 1, 'POINT', 0, 'COMMA')}% completed.|"></span>)<br/>
+                        </span>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped bg-success"
+                                 role="progressbar"
+                                 th:style="|width: ${#numbers.formatDecimal(balance.balanceDates.periodCompletion, 1, 'POINT', 0, 'COMMA')}%|"
+                                 th:aria-valuenow="${#numbers.formatDecimal(balance.balanceDates.periodCompletion, 1, 'POINT', 0, 'COMMA')}"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100">
+                            </div>
+                        </div>
+                        <span th:if="${balance.account.showBalanceOnParentAccount}">
+                            Billing date <strong th:text="${#temporals.format(balance.balanceDates.periodBillingDate,'dd/MM/yyyy')}"></strong><br/>
+                            <span class="badge badge-warning" th:text="|Show balance as a ${balance.account.parent.name} record.|"></span><br/>
+                        </span>
+                        <a th:href="@{'/records'(referenceDate=${balance.balanceDates.previousPeriodStartDate},accountId=${balance.account.id})}">Previous Period</a>
+                        &nbsp;|&nbsp;
+                        <a th:href="@{'/records'(referenceDate=${balance.balanceDates.nextPeriodStartDate},accountId=${balance.account.id})}">Next Period</a><br/>
+                    </div>
                 </div>
             </div>
 

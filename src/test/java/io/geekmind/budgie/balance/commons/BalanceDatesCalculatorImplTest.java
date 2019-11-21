@@ -3,6 +3,8 @@ package io.geekmind.budgie.balance.commons;
 import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import org.junit.Test;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -198,6 +200,39 @@ public class BalanceDatesCalculatorImplTest {
         assertThat(result).isEqualTo(
             LocalDate.of(2019, 2, 27)
         );
+    }
+
+    @Test
+    public void calculatePeriodCompletion_withDaysUntilEndOfPeriodEqualsToZero_ReturnsOneHundred() {
+        BigDecimal result = this.calculator.calculatePeriodCompletion(
+            LocalDate.now(),
+            LocalDate.now().plusDays(30L),
+            0
+        );
+
+        assertThat(result).isEqualTo(BigDecimal.valueOf(100D));
+    }
+
+    @Test
+    public void calculatePeriodCompletion_withDaysUntilEndOfPeriodGreaterThantThirtyOne_ReturnsZero() {
+        BigDecimal result = this.calculator.calculatePeriodCompletion(
+                LocalDate.now(),
+                LocalDate.now().plusDays(30L),
+                32
+        );
+
+        assertThat(result).isEqualTo(BigDecimal.ZERO);
+    }
+
+    @Test
+    public void calculatePeriodCompletion_withTwentySevenDaysUntilTheEndOfPeriodWithThirtyDaysOfDuration_ReturnsTen() {
+        BigDecimal result = this.calculator.calculatePeriodCompletion(
+                LocalDate.now(),
+                LocalDate.now().plusDays(30L),
+                27
+        );
+
+        assertThat(result).isEqualTo(BigDecimal.valueOf(10D).setScale(2, RoundingMode.CEILING));
     }
 
 }

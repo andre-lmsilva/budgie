@@ -6,6 +6,7 @@ import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -18,6 +19,7 @@ import java.time.LocalDate;
  *     <li>Previous period start date.</li>
  *     <li>Next period start date.</li>
  *     <li>Number of days remaining until the end of period.</li>
+ *     <li>Period completion percentage.</li>
  * </ul>
  *
  * Those dates are filled into a {@link BalanceDates} instance and set on the balance being calculated.
@@ -46,6 +48,11 @@ public class CalculateRegularBalanceDatesStep extends BaseBalanceCalculationStep
         LocalDate nextPeriodStartDate = periodStartDate.plusMonths(1);
         LocalDate periodBillingDate = this.dateCalculator.calculatePeriodBillingDate(periodEndDate, account);
         Integer daysUntilEndOfPeriod = this.dateCalculator.calculateDaysUntilEndOfPeriod(periodEndDate);
+        BigDecimal periodCompletion = this.dateCalculator.calculatePeriodCompletion(
+            periodStartDate,
+            periodEndDate,
+            daysUntilEndOfPeriod
+        );
 
         balanceCalculationRequest.getBalance().setBalanceDates(
             new BalanceDates(
@@ -55,7 +62,8 @@ public class CalculateRegularBalanceDatesStep extends BaseBalanceCalculationStep
                 periodBillingDate,
                 previousPeriodStartDate,
                 nextPeriodStartDate,
-                daysUntilEndOfPeriod
+                daysUntilEndOfPeriod,
+                periodCompletion
             )
         );
     }

@@ -2,6 +2,7 @@ package io.geekmind.budgie.balance.commons;
 
 import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public interface BalanceDatesCalculator {
@@ -51,4 +52,15 @@ public interface BalanceDatesCalculator {
      */
     LocalDate calculatePeriodEndDateBasedOnBillingDate(LocalDate billingDate, ExistingStandardAccount account);
 
+    /**
+     * Calculates, in terms of percentage, how much of the period is already past. If the <i>daysUntilEndOfPeriod</i>
+     * is equal to zero, this method will returns one hundred. If the <i>daysUntilEndOfPeriod</i> is greater than thirty
+     * one, this method will returns zero. Otherwise, it will (1) calculate how many days is comprehended between the
+     * 
+     * @param periodStartDate       Start date of the period being calculated.
+     * @param periodEndDate         End date of the period being calculated.
+     * @param daysUntilEndOfPeriod  Number of days between today and the end of the period.
+     * @return Percentage of completion for the period being calculated.
+     */
+    BigDecimal calculatePeriodCompletion(LocalDate periodStartDate, LocalDate periodEndDate, Integer daysUntilEndOfPeriod);
 }

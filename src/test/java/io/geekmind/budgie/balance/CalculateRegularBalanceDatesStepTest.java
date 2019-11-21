@@ -15,10 +15,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -35,6 +38,7 @@ public class CalculateRegularBalanceDatesStepTest {
     private LocalDate periodEndDate;
     private LocalDate periodBillingDate;
     private int daysUntilEndOfPeriod;
+    private BigDecimal periodCompletion;
 
     @Before
     public void setUp() {
@@ -42,6 +46,12 @@ public class CalculateRegularBalanceDatesStepTest {
         this.periodEndDate = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
         this.periodBillingDate = this.periodEndDate.plusDays(5);
         this.daysUntilEndOfPeriod = this.periodEndDate.getDayOfMonth() - LocalDate.now().getDayOfMonth();
+
+        double totalDaysInThePeriod = (double) ChronoUnit.DAYS.between(this.periodStartDate, this.periodEndDate);
+        double totalPastDaysInThePeriod = totalDaysInThePeriod - this.daysUntilEndOfPeriod;
+        this.periodCompletion = BigDecimal.valueOf(totalPastDaysInThePeriod)
+            .divide(BigDecimal.valueOf(totalDaysInThePeriod), RoundingMode.CEILING)
+            .multiply(BigDecimal.valueOf(100D));
 
         BalanceDates balanceDates = new BalanceDates();
         balanceDates.setReferenceDate(LocalDate.now());
@@ -57,6 +67,8 @@ public class CalculateRegularBalanceDatesStepTest {
             .when(this.datesCalculator).calculatePeriodBillingDate(eq(this.periodEndDate), eq(balance.getAccount()));
         doReturn(this.daysUntilEndOfPeriod)
             .when(this.datesCalculator).calculateDaysUntilEndOfPeriod(eq(this.periodEndDate));
+        doReturn(this.periodCompletion)
+            .when(this.datesCalculator).calculatePeriodCompletion(eq(this.periodStartDate), eq(this.periodEndDate), eq(this.daysUntilEndOfPeriod));
 
         BalanceCalculationRequest request = new BalanceCalculationRequest();
         request.setBalance(this.balance);
@@ -103,6 +115,12 @@ public class CalculateRegularBalanceDatesStepTest {
     public void balanceDatesFilledWithPeriodRemainingDays() {
          assertThat(this.balance.getBalanceDates())
             .hasFieldOrPropertyWithValue("periodRemainingDays", this.daysUntilEndOfPeriod);
+    }
+
+    @Test
+    public void balanceDatesFilledWithPeriodCompletion() {
+        assertThat(this.balance.getBalanceDates())
+            .hasFieldOrPropertyWithValue("periodCompletion", this.periodCompletion);
     }
 
     @Test

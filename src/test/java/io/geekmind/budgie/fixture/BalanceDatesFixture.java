@@ -2,6 +2,7 @@ package io.geekmind.budgie.fixture;
 
 import io.geekmind.budgie.model.dto.BalanceDates;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class BalanceDatesFixture {
@@ -14,7 +15,8 @@ public class BalanceDatesFixture {
             LocalDate.now().plusMonths(1L).plusDays(5L),
             LocalDate.now().minusMonths(1L),
             LocalDate.now().plusMonths(1L),
-            30
+            30,
+            BigDecimal.ZERO
         );
     }
 

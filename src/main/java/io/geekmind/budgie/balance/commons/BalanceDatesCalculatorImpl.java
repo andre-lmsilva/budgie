@@ -3,6 +3,8 @@ package io.geekmind.budgie.balance.commons;
 import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -66,4 +68,21 @@ public class BalanceDatesCalculatorImpl implements BalanceDatesCalculator {
         }
         return periodEndDate.minusDays(1);
     }
+
+    @Override
+    public BigDecimal calculatePeriodCompletion(LocalDate periodStartDate, LocalDate periodEndDate, Integer daysUntilEndOfPeriod) {
+        if (daysUntilEndOfPeriod.equals(0)) {
+            return BigDecimal.valueOf(100D);
+        } else if (daysUntilEndOfPeriod > 31) {
+            return BigDecimal.ZERO;
+        }
+
+        double totalDaysInThePeriod = Long.valueOf(ChronoUnit.DAYS.between(periodStartDate, periodEndDate)).doubleValue();
+        double totalPastDaysInThePeriod = totalDaysInThePeriod - daysUntilEndOfPeriod.doubleValue();
+
+        return BigDecimal.valueOf(totalPastDaysInThePeriod)
+            .divide(BigDecimal.valueOf(totalDaysInThePeriod), RoundingMode.CEILING)
+            .multiply(BigDecimal.valueOf(100D));
+    }
+
 }
