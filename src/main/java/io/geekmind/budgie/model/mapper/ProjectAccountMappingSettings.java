@@ -1,6 +1,5 @@
 package io.geekmind.budgie.model.mapper;
 
-import io.geekmind.budgie.model.dto.AccountCurrency;
 import io.geekmind.budgie.model.dto.project_account.EditProjectAccount;
 import io.geekmind.budgie.model.dto.project_account.ExistingProjectAccount;
 import io.geekmind.budgie.model.dto.project_account.NewProjectAccount;

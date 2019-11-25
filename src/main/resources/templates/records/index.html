@@ -1,37 +1,39 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="fragments/header :: header"></head>
-    <body style="padding-top: 120px;">
+    <body>
         <div th:replace="fragments/navbar :: navbar"></div>
         <div class="container-fluid">
-            <div class="row">
+            <div class="row page-header">
                 <div class="col-sm-12 col-md-6 col-lg-4">
                     <h1 th:text="${#temporals.format(balance.balanceDates.periodStartDate, 'MMM yyyy')}"></h1>
-                    <div class="text-mutted">
-                        From&nbsp;<strong th:text="${#temporals.format(balance.balanceDates.periodStartDate,'dd/MM/yyyy')}"></strong>&nbsp;to&nbsp;
-                        <strong th:text="${#temporals.format(balance.balanceDates.periodEndDate,'dd/MM/yyyy')}"></strong><br/>
-                        <span th:if="${balance.balanceDates.periodRemainingDays >=0 AND balance.balanceDates.periodRemainingDays <= 31}">
-                            <strong>
-                                <span th:text="${balance.balanceDates.periodRemainingDays}"></span>&nbsp;day(s)
-                            </strong>until the end of this period. (<span th:text="|${#numbers.formatDecimal(balance.balanceDates.periodCompletion, 1, 'POINT', 0, 'COMMA')}% completed.|"></span>)<br/>
-                        </span>
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped bg-success"
-                                 role="progressbar"
-                                 th:style="|width: ${#numbers.formatDecimal(balance.balanceDates.periodCompletion, 1, 'POINT', 0, 'COMMA')}%|"
-                                 th:aria-valuenow="${#numbers.formatDecimal(balance.balanceDates.periodCompletion, 1, 'POINT', 0, 'COMMA')}"
-                                 aria-valuemin="0"
-                                 aria-valuemax="100">
-                            </div>
+                    <span th:if="${balance.account.showBalanceOnParentAccount}" class="badge badge-pill badge-info mb-3" th:text="|Show balance as a ${balance.account.parent.name} record.|"></span>
+                    <small class="d-block">
+                        From&nbsp;<span th:text="${#temporals.format(balance.balanceDates.periodStartDate,'dd/MM/yyyy')}"></span>&nbsp;to&nbsp;<span th:text="${#temporals.format(balance.balanceDates.periodEndDate,'dd/MM/yyyy')}"></span>
+                    </small>
+                    <small th:if="${balance.account.showBalanceOnParentAccount}" class="d-block">Billing date on <span th:text="${#temporals.format(balance.balanceDates.periodBillingDate,'dd/MM/yyyy')}"></span></small>
+                    <small th:if="${balance.balanceDates.periodRemainingDays >=0 AND balance.balanceDates.periodRemainingDays <= 31}" class="d-block">
+                        <span th:text="${balance.balanceDates.periodRemainingDays}"></span>&nbsp;day(s) until the end of this period. (<span th:text="|${#numbers.formatDecimal(balance.balanceDates.periodCompletion, 1, 'POINT', 0, 'COMMA')}% completed|"></span>)
+                    </small>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped bg-success"
+                             role="progressbar"
+                             th:style="|width: ${#numbers.formatDecimal(balance.balanceDates.periodCompletion, 1, 'POINT', 0, 'COMMA')}%|"
+                             th:aria-valuenow="${#numbers.formatDecimal(balance.balanceDates.periodCompletion, 1, 'POINT', 0, 'COMMA')}"
+                             aria-valuemin="0"
+                             aria-valuemax="100">
                         </div>
-                        <span th:if="${balance.account.showBalanceOnParentAccount}">
-                            Billing date <strong th:text="${#temporals.format(balance.balanceDates.periodBillingDate,'dd/MM/yyyy')}"></strong><br/>
-                            <span class="badge badge-warning" th:text="|Show balance as a ${balance.account.parent.name} record.|"></span><br/>
-                        </span>
-                        <a th:href="@{'/records'(referenceDate=${balance.balanceDates.previousPeriodStartDate},accountId=${balance.account.id})}">Previous Period</a>
-                        &nbsp;|&nbsp;
-                        <a th:href="@{'/records'(referenceDate=${balance.balanceDates.nextPeriodStartDate},accountId=${balance.account.id})}">Next Period</a><br/>
                     </div>
+                    <div class="d-block mt-3">
+                        <small>
+                            <a th:href="@{'/records'(referenceDate=${balance.balanceDates.previousPeriodStartDate},accountId=${balance.account.id})}"><i class="fa fa-chevron-left"></i>&nbsp;Previous Period</a>&nbsp;|&nbsp;
+                            <a th:href="@{'/records'(referenceDate=${balance.balanceDates.nextPeriodStartDate},accountId=${balance.account.id})}">Next Period<i class="fa fa-chevron-right"></i></a>
+                        </small>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 offset-lg-4 col-lg-4">
+                    <h5>Balance Summary</h5>
+                    <div th:replace="fragments/balance_summary.html :: VerticalLayout(${balance.summary}, ${balance.account.currency.currencySymbol})"></div>
                 </div>
             </div>
 
@@ -68,18 +70,6 @@
                         <h3>No records found.</h3>
                         <p class="lead">There is no balance record for this account in this period yet.</p>
                     </div>
-                </div>
-            </div>
-
-            <div class="row" th:if="${not #lists.isEmpty(balance.records)} or ${not #lists.isEmpty(balance.applicableBudgetTemplateRecords)}">
-                <div class="col">
-                    <div class="row">
-                        <div class="col">
-                            <h2 class="d-md-block d-sm-none d-none">Summary</h2>
-                            <h4 class="d-md-none d-block">Summary</h4>
-                        </div>
-                    </div>
-                    <div class="row" th:replace="fragments/balance_summary :: HorizontalLayout(${balance.summary}, ${balance.account.currency.currencySymbol})"></div>
                 </div>
             </div>
 
@@ -147,12 +137,7 @@
                                 <p class="lead">There is no balance record for this account in this period yet.
                             </div>
                             <div class="table-responsive" th:if="${not #lists.isEmpty(balance.records)}">
-                                <table class="table table-bordered table-hover table-striped filterable">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th>Record</th>
-                                        </tr>
-                                    </thead>
+                                <table class="table table-bordered table-hover table-striped table-sm filterable">
                                     <tbody>
                                         <tr>
                                             <td th:include="fragments/filter_form_table_row :: FilterTableRow"></td>

@@ -1,6 +1,6 @@
 package io.geekmind.budgie.controller;
 
-import io.geekmind.budgie.model.dto.BalanceType;
+import io.geekmind.budgie.model.dto.balance.BalanceType;
 import io.geekmind.budgie.model.dto.NewSingleRecord;
 import io.geekmind.budgie.repository.StandardAccountService;
 import io.geekmind.budgie.repository.CategoryService;

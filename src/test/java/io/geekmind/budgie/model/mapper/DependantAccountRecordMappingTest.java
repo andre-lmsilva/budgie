@@ -1,7 +1,7 @@
 package io.geekmind.budgie.model.mapper;
 
 import io.geekmind.budgie.fixture.BalanceFixture;
-import io.geekmind.budgie.model.dto.Balance;
+import io.geekmind.budgie.model.dto.balance.Balance;
 import io.geekmind.budgie.model.dto.DependantAccountRecord;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;

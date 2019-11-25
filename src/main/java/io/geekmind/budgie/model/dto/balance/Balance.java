@@ -1,5 +1,6 @@
-package io.geekmind.budgie.model.dto;
+package io.geekmind.budgie.model.dto.balance;
 
+import io.geekmind.budgie.model.dto.ExistingRecord;
 import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,5 +31,7 @@ public class Balance {
     private List<ExistingRecord> applicableBudgetTemplateRecords;
 
     private BalanceType balanceType = BalanceType.REGULAR_PERIOD_BALANCE;
+
+    private List<ProjectBalanceSummary> projectBalanceSummaries;
 
 }

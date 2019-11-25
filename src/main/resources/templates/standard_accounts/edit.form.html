@@ -1,22 +1,19 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="fragments/header :: header"></head>
-    <body style="padding-top:120px;">
+    <body>
         <div th:replace="fragments/navbar :: navbar"></div>
         <div class="container-fluid">
-            <div class="row mb-3">
-                <div class="col">
+            <div class="row mb-5 page-header">
+                <div class="col-lg-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
                         <li class="breadcrumb-item"><a th:href="@{'/standard_accounts'}">Accounts</a></li>
                         <li class="breadcrumb-item active" th:text="${editStandardAccount.name}"></li>
                     </ol>
                 </div>
-            </div>
-
-            <div class="row">
-                <div class="col">
-                    <h1>Edit Account</h1>
+                <div class="col-lg-12">
+                    <h2><i class="fa fa-folder"></i>&nbsp;Edit Account</h2>
                 </div>
             </div>
 

@@ -1,8 +1,8 @@
 package io.geekmind.budgie.balance;
 
-import io.geekmind.budgie.model.dto.Balance;
-import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
-import io.geekmind.budgie.model.dto.CategoryBalanceSummary;
+import io.geekmind.budgie.model.dto.balance.Balance;
+import io.geekmind.budgie.model.dto.balance.BalanceCalculationRequest;
+import io.geekmind.budgie.model.dto.balance.CategoryBalanceSummary;
 import io.geekmind.budgie.model.dto.DependantAccountRecord;
 import io.geekmind.budgie.model.dto.ExistingRecord;
 import io.geekmind.budgie.model.dto.category.ExistingCategory;

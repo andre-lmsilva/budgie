@@ -1,9 +1,8 @@
 package io.geekmind.budgie.repository;
 
-import io.geekmind.budgie.model.dto.AccountCurrency;
+import io.geekmind.budgie.model.dto.account.AccountCurrency;
 import io.geekmind.budgie.model.entity.Currency;
 import io.geekmind.budgie.model.mapper.CurrencyMapper;
-import io.geekmind.budgie.model.mapper.DefaultCurrencyMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;

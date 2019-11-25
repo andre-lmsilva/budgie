@@ -1,6 +1,5 @@
 package io.geekmind.budgie.model.dto.account;
 
-import io.geekmind.budgie.model.dto.AccountCurrency;
 import lombok.Data;
 
 @Data

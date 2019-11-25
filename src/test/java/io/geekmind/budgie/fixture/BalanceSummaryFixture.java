@@ -1,6 +1,6 @@
 package io.geekmind.budgie.fixture;
 
-import io.geekmind.budgie.model.dto.BalanceSummary;
+import io.geekmind.budgie.model.dto.balance.BalanceSummary;
 
 import java.math.BigDecimal;
 

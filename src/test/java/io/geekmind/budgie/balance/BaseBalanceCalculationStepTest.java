@@ -1,6 +1,6 @@
 package io.geekmind.budgie.balance;
 
-import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
+import io.geekmind.budgie.model.dto.balance.BalanceCalculationRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;

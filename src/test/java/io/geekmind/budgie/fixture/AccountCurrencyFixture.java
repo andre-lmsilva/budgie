@@ -1,6 +1,6 @@
 package io.geekmind.budgie.fixture;
 
-import io.geekmind.budgie.model.dto.AccountCurrency;
+import io.geekmind.budgie.model.dto.account.AccountCurrency;
 
 public class AccountCurrencyFixture {
 

@@ -1,9 +1,9 @@
 package io.geekmind.budgie.balance;
 
 import io.geekmind.budgie.fixture.BalanceCalculationRequestFixture;
-import io.geekmind.budgie.model.dto.Balance;
-import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
-import io.geekmind.budgie.model.dto.BalanceType;
+import io.geekmind.budgie.model.dto.balance.Balance;
+import io.geekmind.budgie.model.dto.balance.BalanceCalculationRequest;
+import io.geekmind.budgie.model.dto.balance.BalanceType;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -1,7 +1,6 @@
 package io.geekmind.budgie.balance;
 
-import io.geekmind.budgie.model.dto.Balance;
-import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
+import io.geekmind.budgie.model.dto.balance.BalanceCalculationRequest;
 
 import java.util.Optional;
 

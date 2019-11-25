@@ -2,8 +2,8 @@ package io.geekmind.budgie.balance;
 
 import io.geekmind.budgie.fixture.BalanceCalculationRequestFixture;
 import io.geekmind.budgie.fixture.ExistingRecordFixture;
-import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
-import io.geekmind.budgie.model.dto.BalanceType;
+import io.geekmind.budgie.model.dto.balance.BalanceCalculationRequest;
+import io.geekmind.budgie.model.dto.balance.BalanceType;
 import io.geekmind.budgie.model.dto.ExistingRecord;
 import io.geekmind.budgie.repository.BudgetTemplateRecordService;
 import org.junit.Test;

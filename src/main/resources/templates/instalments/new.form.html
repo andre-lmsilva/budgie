@@ -1,21 +1,18 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="fragments/header :: header"></head>
-    <body style="padding-top:120px;">
+    <body>
         <div th:replace="fragments/navbar :: navbar"></div>
         <div class="container-fluid">
-            <div class="row mb-3">
-                <div class="col">
+            <div class="row page-header mb-5">
+                <div class="col-lg-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
                         <li class="breadcrumb-item active">New Instalments</li>
                     </ol>
                 </div>
-            </div>
-
-            <div class="row">
-                <div class="col">
-                    <h1>New Instalments</h1>
+                <div class="col-lg-12">
+                    <h2><i class="fa fa-calendar"></i>&nbsp;New Instalments</h2>
                 </div>
             </div>
 

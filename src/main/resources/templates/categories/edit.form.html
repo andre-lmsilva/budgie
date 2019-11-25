@@ -1,22 +1,19 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="fragments/header :: header"></head>
-    <body style="padding-top:120px;">
+    <body>
         <div th:replace="fragments/navbar :: navbar"></div>
         <div class="container-fluid">
-            <div class="row mb-3">
-                <div class="col">
+            <div class="row mb-5 page-header">
+                <div class="col-lg-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
                         <li class="breadcrumb-item"><a th:href="@{'/categories'}">Categories</a></li>
                         <li class="breadcrumb-item active" th:text="${editCategory.name}"></li>
                     </ol>
                 </div>
-            </div>
-
-            <div class="row">
-                <div class="col">
-                    <h1>Edit Category</h1>
+                <div class="col-lg-12">
+                    <h2><i class="fa fa-tags"></i>&nbsp;Edit Category</h2>
                 </div>
             </div>
 
@@ -62,7 +59,7 @@
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Update</button>&nbsp;
-                                <a th:href="@{/accounts}" title="Go back to available categories page without save the changes." class="btn btn-default">Cancel</a>
+                                <a th:href="@{/categories}" title="Go back to available categories page without save the changes." class="btn btn-default">Cancel</a>
                             </div>
                         </fieldset>
                     </form>

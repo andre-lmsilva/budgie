@@ -2,11 +2,10 @@ package io.geekmind.budgie.balance;
 
 import io.geekmind.budgie.fixture.BalanceCalculationRequestFixture;
 import io.geekmind.budgie.fixture.ExistingRecordFixture;
-import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
+import io.geekmind.budgie.model.dto.balance.BalanceCalculationRequest;
 import io.geekmind.budgie.model.dto.ExistingRecord;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;

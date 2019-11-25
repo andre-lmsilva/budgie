@@ -1,4 +1,4 @@
-package io.geekmind.budgie.model.dto;
+package io.geekmind.budgie.model.dto.balance;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

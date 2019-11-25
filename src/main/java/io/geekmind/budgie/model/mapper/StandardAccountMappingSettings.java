@@ -1,10 +1,8 @@
 package io.geekmind.budgie.model.mapper;
 
-import io.geekmind.budgie.model.dto.AccountCurrency;
 import io.geekmind.budgie.model.dto.standard_account.EditStandardAccount;
 import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import io.geekmind.budgie.model.dto.standard_account.NewStandardAccount;
-import io.geekmind.budgie.model.entity.Account;
 import io.geekmind.budgie.model.entity.Currency;
 import io.geekmind.budgie.model.entity.StandardAccount;
 import ma.glasnost.orika.CustomMapper;

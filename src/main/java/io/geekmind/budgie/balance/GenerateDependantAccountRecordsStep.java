@@ -1,7 +1,7 @@
 package io.geekmind.budgie.balance;
 
-import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
-import io.geekmind.budgie.model.dto.BalanceType;
+import io.geekmind.budgie.model.dto.balance.BalanceCalculationRequest;
+import io.geekmind.budgie.model.dto.balance.BalanceType;
 import io.geekmind.budgie.model.dto.DependantAccountRecord;
 import io.geekmind.budgie.model.dto.ExistingRecord;
 import ma.glasnost.orika.MapperFacade;

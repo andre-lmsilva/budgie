@@ -1,4 +1,4 @@
-package io.geekmind.budgie.model.dto;
+package io.geekmind.budgie.model.dto.account;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

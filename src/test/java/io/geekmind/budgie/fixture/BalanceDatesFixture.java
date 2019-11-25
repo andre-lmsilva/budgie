@@ -1,6 +1,6 @@
 package io.geekmind.budgie.fixture;
 
-import io.geekmind.budgie.model.dto.BalanceDates;
+import io.geekmind.budgie.model.dto.balance.BalanceDates;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

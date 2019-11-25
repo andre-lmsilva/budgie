@@ -1,4 +1,4 @@
-package io.geekmind.budgie.model.dto;
+package io.geekmind.budgie.model.dto.balance;
 
 import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import lombok.Data;

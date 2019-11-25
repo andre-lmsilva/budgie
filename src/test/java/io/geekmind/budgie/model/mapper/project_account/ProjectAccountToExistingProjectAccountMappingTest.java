@@ -2,7 +2,7 @@ package io.geekmind.budgie.model.mapper.project_account;
 
 import io.geekmind.budgie.fixture.AccountCurrencyFixture;
 import io.geekmind.budgie.fixture.ProjectAccountFixture;
-import io.geekmind.budgie.model.dto.AccountCurrency;
+import io.geekmind.budgie.model.dto.account.AccountCurrency;
 import io.geekmind.budgie.model.dto.project_account.ExistingProjectAccount;
 import io.geekmind.budgie.model.entity.ProjectAccount;
 import io.geekmind.budgie.model.mapper.CurrencyMapper;

@@ -1,7 +1,9 @@
 package io.geekmind.budgie.balance;
 
 import io.geekmind.budgie.balance.commons.BalanceDatesCalculator;
-import io.geekmind.budgie.model.dto.*;
+import io.geekmind.budgie.model.dto.balance.BalanceCalculationRequest;
+import io.geekmind.budgie.model.dto.balance.BalanceDates;
+import io.geekmind.budgie.model.dto.balance.BalanceType;
 import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;

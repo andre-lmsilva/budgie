@@ -1,6 +1,6 @@
 package io.geekmind.budgie.model.mapper;
 
-import io.geekmind.budgie.model.dto.Balance;
+import io.geekmind.budgie.model.dto.balance.Balance;
 import io.geekmind.budgie.model.dto.DependantAccountRecord;
 import io.geekmind.budgie.model.dto.category.ExistingCategory;
 import ma.glasnost.orika.CustomMapper;

@@ -2,9 +2,9 @@ package io.geekmind.budgie.repository;
 
 import io.geekmind.budgie.balance.BaseBalanceCalculationStep;
 import io.geekmind.budgie.balance.commons.BalanceDatesCalculator;
-import io.geekmind.budgie.model.dto.Balance;
-import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
-import io.geekmind.budgie.model.dto.BalanceType;
+import io.geekmind.budgie.model.dto.balance.Balance;
+import io.geekmind.budgie.model.dto.balance.BalanceCalculationRequest;
+import io.geekmind.budgie.model.dto.balance.BalanceType;
 import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -77,13 +77,11 @@ public class StandardBalanceService {
      */
     protected List<Balance> calculateDependantAccountsBalancesFor(ExistingStandardAccount account, LocalDate referenceDate) {
         LocalDate mainAccountPeriodEndDate = this.balanceDatesCalculator.calculatePeriodEndDate(referenceDate, account);
-        return account.getDependants()
+        return account.getActiveDependantAccounts()
             .stream()
-            .filter(dependantAccount -> !dependantAccount.getArchived())
-            .filter(dependantAccount -> dependantAccount instanceof ExistingStandardAccount)
             .map(dependantAccount -> {
                 LocalDate periodBillingDate = mainAccountPeriodEndDate.withDayOfMonth(dependantAccount.getMonthBillingDayAt());
-                LocalDate accountPeriodEndDate = this.balanceDatesCalculator.calculatePeriodEndDateBasedOnBillingDate(periodBillingDate, (ExistingStandardAccount)dependantAccount);
+                LocalDate accountPeriodEndDate = this.balanceDatesCalculator.calculatePeriodEndDateBasedOnBillingDate(periodBillingDate, dependantAccount);
                 return this.generateBalance(dependantAccount.getId(), accountPeriodEndDate, BalanceType.REGULAR_PERIOD_BALANCE);
             })
             .collect(Collectors.toList());

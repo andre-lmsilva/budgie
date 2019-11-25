@@ -1,22 +1,19 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header"></head>
-    <body style="padding-top: 120px;">
+    <body>
         <div th:replace="fragments/navbar :: navbar"></div>
         <div class="container-fluid">
-             <div class="row mb-3">
-                <div class="col">
+             <div class="row page-header mb-5">
+                <div class="col-lg-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
                         <li class="breadcrumb-item active">Categories</li>
                     </ol>
                 </div>
-            </div>
-
-            <div class="row mb-4">
-                <div class="col">
-                    <h2 class="d-md-block d-sm-none d-none">Available Categories</h2>
-                    <h4 class="d-md-none d-block">Available Categories</h4>
+                <div class="col-lg-12">
+                    <h2 class="d-md-block d-sm-none d-none"><i class="fa fa-tags"></i>&nbsp;Available Categories</h2>
+                    <h4 class="d-md-none d-block"><i class="fa fa-tags"></i>&nbsp;Available Categories</h4>
                 </div>
             </div>
 
@@ -44,12 +41,7 @@
             <div class="row" th:if="${not #lists.isEmpty(availableCategories)}">
                 <div class="col">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-hover filterable">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Category</th>
-                                </tr>
-                            </thead>
+                        <table class="table table-bordered table-striped table-hover filterable table-sm">
                             <tbody th:if="${not #lists.isEmpty(availableCategories)}">
                                 <tr>
                                     <td th:include="fragments/filter_form_table_row :: FilterTableRow"></td>
@@ -69,7 +61,7 @@
                                             No monthly limit defined.
                                         </small>
                                         <a  th:href="@{/categories/delete/{categoryId}(categoryId=${category.id})}"
-                                            title="Archived category."
+                                            title="Archive category."
                                             onclick="return confirm('Do you really want to archive this category?');"
                                             class="float-right text-danger">
                                             <span class="fa fa-trash-alt fa-lg"></span>

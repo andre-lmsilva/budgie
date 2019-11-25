@@ -1,9 +1,10 @@
 package io.geekmind.budgie.balance;
 
-import io.geekmind.budgie.model.dto.BalanceCalculationRequest;
-import io.geekmind.budgie.model.dto.BalanceType;
+import io.geekmind.budgie.model.dto.balance.BalanceCalculationRequest;
+import io.geekmind.budgie.model.dto.balance.BalanceType;
 import io.geekmind.budgie.model.dto.ExistingRecord;
 import io.geekmind.budgie.repository.BudgetTemplateRecordService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -20,8 +21,9 @@ public class LoadBudgetRecordsStep extends BaseBalanceCalculationStep {
 
     private final BudgetTemplateRecordService budgetTemplateRecordService;
 
-    public LoadBudgetRecordsStep(BudgetTemplateRecordService budgetTemplateRecordService) {
-        super(null);
+    public LoadBudgetRecordsStep(BudgetTemplateRecordService budgetTemplateRecordService,
+                                 @Qualifier("calculateProjectSummariesStep") BaseBalanceCalculationStep nextChainedStep) {
+        super(nextChainedStep);
         this.budgetTemplateRecordService = budgetTemplateRecordService;
     }
 
