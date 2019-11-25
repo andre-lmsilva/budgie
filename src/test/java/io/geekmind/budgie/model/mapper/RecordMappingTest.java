@@ -4,6 +4,7 @@ import io.geekmind.budgie.fixture.ExistingRecordFixture;
 import io.geekmind.budgie.fixture.SingleRecordFixture;
 import io.geekmind.budgie.fixture.TransferRecordFixture;
 import io.geekmind.budgie.model.dto.ExistingRecord;
+import io.geekmind.budgie.model.entity.Record;
 import io.geekmind.budgie.model.entity.SingleRecord;
 import io.geekmind.budgie.model.entity.TransferRecord;
 import ma.glasnost.orika.MapperFacade;
@@ -39,7 +40,8 @@ public class RecordMappingTest {
             .hasFieldOrPropertyWithValue("account.id", fakeSingleRecord.getAccount().getId())
             .hasFieldOrPropertyWithValue("recordValue", fakeSingleRecord.getRecordValue())
             .hasFieldOrPropertyWithValue("recordType", "SingleRecord")
-            .hasFieldOrPropertyWithValue("containerId", null);
+            .hasFieldOrPropertyWithValue("containerId", null)
+            .hasFieldOrPropertyWithValue("upcoming", Boolean.TRUE);
     }
 
     @Test
@@ -66,5 +68,35 @@ public class RecordMappingTest {
             .hasFieldOrPropertyWithValue("recordValue", fakeExistingRecord.getRecordValue());
 
         assertThat(fakeSingleRecord.getDescription()).isNotNull();
+    }
+
+    @Test
+    public void mapping_fromRecordToExistingRecordWhenRecordIsInThePast_ReturnsUpcomingFalse() {
+        Record record = SingleRecordFixture.getIncomeRecord();
+        record.setRecordDate(record.getRecordDate().minusDays(2L));
+
+        ExistingRecord result = this.mapper.map(record, ExistingRecord.class);
+
+        assertThat(result).hasFieldOrPropertyWithValue("upcoming", Boolean.FALSE);
+    }
+
+    @Test
+    public void mapping_fromRecordToExistingRecordWhenRecordIsMoreThan7DaysAhead_ReturnsUpcomingFalse() {
+        Record record = SingleRecordFixture.getIncomeRecord();
+        record.setRecordDate(record.getRecordDate().plusDays(8L));
+
+        ExistingRecord result = this.mapper.map(record, ExistingRecord.class);
+
+        assertThat(result).hasFieldOrPropertyWithValue("upcoming", Boolean.FALSE);
+    }
+
+    @Test
+    public void mapping_fromRecordToExistingRecordWhenRecordIs7DaysOrLessAhead_ReturnsUpcomingTrue() {
+        Record record = SingleRecordFixture.getIncomeRecord();
+        record.setRecordDate(record.getRecordDate().plusDays(7L));
+
+        ExistingRecord result = this.mapper.map(record, ExistingRecord.class);
+
+        assertThat(result).hasFieldOrPropertyWithValue("upcoming", Boolean.TRUE);
     }
 }

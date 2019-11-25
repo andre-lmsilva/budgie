@@ -18,6 +18,7 @@ public class ExistingStandardAccountFixture {
         account.setShowBalanceOnParentAccount(Boolean.FALSE);
         account.setCurrency(AccountCurrencyFixture.euro());
         account.setDependants(Collections.singletonList(getSavingsAccount()));
+        account.setArchived(Boolean.FALSE);
         return account;
     }
 
@@ -31,6 +32,7 @@ public class ExistingStandardAccountFixture {
         account.setMainAccount(Boolean.FALSE);
         account.setShowBalanceOnParentAccount(Boolean.TRUE);
         account.setCurrency(AccountCurrencyFixture.euro());
+        account.setArchived(Boolean.FALSE);
         return account;
     }
 }

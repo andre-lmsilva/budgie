@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -24,5 +25,7 @@ public class CategoryBalanceSummary {
     private BigDecimal maxExpenses;
 
     private Map<String, BigDecimal> balanceBreakDown;
+
+    private List<ExistingRecord> records;
 
 }

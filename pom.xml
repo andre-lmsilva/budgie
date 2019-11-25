@@ -199,14 +199,14 @@
                 <version>0.8.4</version>
                 <executions>
                     <execution>
-                        <id>jacoco-initialize</id>
+                        <id>default-jacoco-prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
                     <execution>
-                        <id>jacoco-site</id>
-                        <phase>package</phase>
+                        <id>default-jacoco-report</id>
+                        <phase>test</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>

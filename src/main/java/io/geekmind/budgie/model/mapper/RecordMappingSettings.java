@@ -10,10 +10,16 @@ import ma.glasnost.orika.MappingContext;
 import net.rakugakibox.spring.boot.orika.OrikaMapperFactoryConfigurer;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 public class RecordMappingSettings implements OrikaMapperFactoryConfigurer {
     @Override
     public void configure(MapperFactory orikaMapperFactory) {
+
+        LocalDate today = LocalDate.now();
+        LocalDate oneWeekTime = today.plusWeeks(1L);
+
         orikaMapperFactory.classMap(Record.class, ExistingRecord.class)
             .mapNulls(false)
             .mapNullsInReverse(false)
@@ -24,11 +30,17 @@ public class RecordMappingSettings implements OrikaMapperFactoryConfigurer {
                     existingRecord.setRecordType(record.getClass().getSimpleName());
 
                     if (record instanceof ContainerRecord) {
-                        RecordContainer container = ((ContainerRecord)record).getRecordContainer();
+                        RecordContainer container = ((ContainerRecord) record).getRecordContainer();
                         if (null != container) {
                             existingRecord.setContainerId(container.getId());
                         }
                     }
+
+                    if (record.getRecordDate().compareTo(today) >= 0 &&
+                        record.getRecordDate().compareTo(oneWeekTime) <= 0) {
+                        existingRecord.setUpcoming(Boolean.TRUE);
+                    }
+
                 }
             }).byDefault().register();
 

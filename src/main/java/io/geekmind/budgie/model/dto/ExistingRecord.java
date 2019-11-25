@@ -44,4 +44,7 @@ public class ExistingRecord implements Serializable {
 
     @Size(max = 140)
     private String bankStatementId;
+
+    private Boolean upcoming = Boolean.FALSE;
+
 }
