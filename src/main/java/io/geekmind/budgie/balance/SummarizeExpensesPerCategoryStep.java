@@ -121,7 +121,8 @@ public class SummarizeExpensesPerCategoryStep extends BaseBalanceCalculationStep
             expensesConsumptionPercentage,
             maxExpensesConsumption,
             maxExpenses,
-            balanceBreakDown
+            balanceBreakDown,
+            records.stream().sorted(Comparator.comparing(ExistingRecord::getRecordDate)).collect(Collectors.toList())
         );
     }
 

@@ -78,7 +78,8 @@ public class SummarizeExpensesPerCategoryStepTest {
             .hasFieldOrPropertyWithValue("balance", balance)
             .hasFieldOrPropertyWithValue("expensesConsumptionPercentage", balance.divide(totalExpenses, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100D)))
             .hasFieldOrPropertyWithValue("maxExpensesConsumption", BigDecimal.ZERO)
-            .hasFieldOrPropertyWithValue("maxExpenses", BigDecimal.ZERO);
+            .hasFieldOrPropertyWithValue("maxExpenses", BigDecimal.ZERO)
+            .hasFieldOrPropertyWithValue("records", records);
 
         assertThat(result.getBalanceBreakDown())
             .containsEntry(singleRecord.getAccount().getName(), singleRecord.getRecordValue());
@@ -102,7 +103,8 @@ public class SummarizeExpensesPerCategoryStepTest {
             .hasFieldOrPropertyWithValue("balance", balance)
             .hasFieldOrPropertyWithValue("expensesConsumptionPercentage", balance.divide(totalExpenses, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100D)))
             .hasFieldOrPropertyWithValue("maxExpensesConsumption", balance.divide(category.getMaxExpenses(), RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100D)))
-            .hasFieldOrPropertyWithValue("maxExpenses", category.getMaxExpenses());
+            .hasFieldOrPropertyWithValue("maxExpenses", category.getMaxExpenses())
+            .hasFieldOrPropertyWithValue("records", records);
     }
 
     @Test
