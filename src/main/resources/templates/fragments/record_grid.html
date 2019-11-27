@@ -1,0 +1,119 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="RecordGrid(records, balance, filterable)">
+    <table class="table table-bordered table-hover table-stripped table-sm"
+           th:classapped="${filterable} ? filterable : ''">
+        <tbody>
+            <tr>
+                <td th:include="fragments/filter_form_table_row :: FilterTableRow" th:if="${filterable}"></td>
+            </tr>
+            <tr th:each="record: ${records}" th:class="${record.recordType} == 'BudgetRecord' ? table-info : ''">
+                <td>
+                    <input type="hidden" class="record-value" th:value="${record.recordValue}" th:if="${filterable}"/>
+                    <h4 class="day-of-month d-inline float-left text-monospace" th:text="${#temporals.format(record.recordDate,'dd')}"></h4>
+                    <h5 class="item-title d-inline" th:text="${record.category.name}"></h5>
+
+                    <span th:if="${record.recordType == 'SingleRecord'}" class="float-right">
+                        <div th:replace="fragments/record_delete_button :: SingleRecord(${record.id}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
+                    </span>
+                    <span th:if="${record.recordType == 'TransferRecord'}" class="float-right">
+                        <div th:replace="fragments/record_delete_button :: TransferRecord(${record.containerId}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
+                    </span>
+                    <span th:if="${record.recordType == 'InstalmentRecord'}" class="float-right">
+                        <div th:replace="fragments/record_delete_button :: InstalmentRecord(${record.id}, ${record.containerId}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
+                    </span>
+                    <span th:if="${record.recordType == 'BudgetRecord'}" class="float-right">
+                        <div th:replace="fragments/record_delete_button :: BudgetRecord(${record.id}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
+                    </span>
+
+                    <a  th:if="${!#strings.equals(record.recordType, 'TransferRecord') && !#strings.equals(record.recordType, 'DependantAccountRecord') && !#strings.equals(recordType, 'BudgetTemplateRecord')}"
+                        th:href="@{/records/edit/{id}(id=${record.id})}"
+                        title="Edit record.">
+                        <span class="text-small" th:if="${record.bankStatementId != null}" th:title="${record.bankStatementId}"><i class="fas fa-info-circle"></i></span>
+                        <span class="text-muted d-block" th:text="${record.description}"></span>
+                    </a>
+
+                    <span th:if="${#strings.equals(record.recordType, 'TransferRecord')}"
+                          class="text-small"
+                          title="Transfer between accounts">
+                        <i class="fas fa-exchange-alt"></i>
+                    </span>
+                    <span th:if="${#strings.equals(record.recordType, 'TransferRecord')}"
+                          class="text-muted d-block"
+                          th:text="${record.description}">
+                    </span>
+
+                    <a  th:if="${#strings.equals(record.recordType, 'DependantAccountRecord')}"
+                        th:href="@{'/records'(accountId=${record.account.id},referenceDate=${record.periodStartDate})}"
+                        title="Show account balance."
+                        target="_blank">
+                        <span class="text-muted d-block" th:text="${record.description}"></span>
+                    </a>
+                    <span class="text-right float-right"
+                        th:text="|${record.account.currency.currencySymbol} ${#numbers.formatDecimal(record.recordValue, 1, 'POINT', 2, 'COMMA')}|"
+                        th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></span>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot th:if="${filterable}">
+            <tr>
+                <td class="text-right">
+                    <strong>Balance:</strong>
+                    <a  th:href="@{'/single_records/new'(recordDate=${balance.balanceDates.nextPeriodStartDate},recordDescription='Previous period balance.', accountId=${balance.account.id}, recordValue=${balance.summary.finalBalance})}"
+                        title="Copy final balance to the next period."
+                        th:class="${balance.summary.finalBalance} > 0 ? text-success : text-danger">
+                        <span th:text="|${balance.account.currency.currencySymbol} ${#numbers.formatDecimal(balance.summary.finalBalance, 1, 'POINT', 2, 'COMMA')}|" id="lblBalance"></span>
+                    </a>
+                </td>
+            </tr>
+        </tfoot>
+        <tfoot th:if="${not filterable}">
+            <tr>
+                <td class="text-right">
+                    <strong>Balance:</strong>
+                    <span   th:text="|${records[0].account.currency.currencySymbol} ${#aggregates.sum(records.![recordValue])}|"
+                            th:class="${#aggregates.sum(records.![recordValue])} > 0 ? text-success : text-danger"></span>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="BudgetTemplateRecordsGrid(records)">
+    <table class="table table-bordered table-hover table-stripped table-sm">
+        <tbody>
+            <tr>
+                <td class="text-right">
+                    <a  th:href="@{'/budgetRecords/applyAll/{accountId}'(accountId=${balance.account.id},periodStartDate=${balance.balanceDates.periodStartDate},periodEndDate=${balance.balanceDates.periodEndDate})}"
+                        class="btn btn-info btn-sm"
+                        title="Apply all available budget records for this period.">
+                        <i class="fa fa-check"></i>
+                    </a>
+                </td>
+            </tr>
+            <tr th:each="budgetTemplateRecord: ${records}">
+                <td>
+                    <h4 class="day-of-month d-inline float-left text-monospace"
+                        th:text="${#temporals.format(budgetTemplateRecord.recordDate,'dd')}"></h4>
+                    <h5 class="item-title d-inline" th:text="${budgetTemplateRecord.category.name}"></h5>
+                    <a  th:href="@{'/budgetRecords/apply/{id}'(id=${budgetTemplateRecord.id},periodStartDate=${balance.balanceDates.periodStartDate},periodEndDate=${balance.balanceDates.periodEndDate})}"
+                        title="Create a new balance record in this account and period based on this budget template record."
+                        class="text-info float-right">
+                        <span class="fa fa-check fa-lg"></span>
+                    </a>
+                    <span   class="text-muted d-block" th:text="${budgetTemplateRecord.description}"></span>
+                    <span   class="float-right"
+                            th:text="|${balance.account.currency.currencySymbol} ${#numbers.formatDecimal(budgetTemplateRecord.recordValue, 1, 'POINT', 2, 'COMMA')}|"
+                            th:classappend="${budgetTemplateRecord.recordValue} > 0 ? text-info : text-danger"></span>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="text-right">
+                    <strong>Balance:</strong>
+                    <span   th:text="|${records[0].account.currency.currencySymbol} ${#aggregates.sum(records.![recordValue])}|"
+                            th:class="${#aggregates.sum(records.![recordValue])} > 0 ? text-success : text-danger"></span>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

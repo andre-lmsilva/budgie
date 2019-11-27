@@ -1,5 +1,6 @@
 package io.geekmind.budgie.model.dto.balance;
 
+import io.geekmind.budgie.model.dto.ExistingRecord;
 import io.geekmind.budgie.model.dto.category.ExistingCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;

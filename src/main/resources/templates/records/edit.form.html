@@ -6,7 +6,7 @@
 
         <div class="container-fluid">
               <div class="row page-header mb-5">
-                  <div class="col-lg-12">
+                  <div class="col-sm-12 col-md-6 col-lg-4">
                       <ol class="breadcrumb">
                           <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
                           <li class="breadcrumb-item active">
@@ -14,9 +14,11 @@
                               <span th:text="${existingRecord.description}"></span>
                           </li>
                       </ol>
-                  </div>
-                  <div class="col-lg-12">
                       <h2><i class="fa fa-dollar-sign"></i>&nbsp;Edit Record</h2>
+                  </div>
+                  <div class="col-sm-12 col-md-6 offset-lg-4 col-lg-4">
+                      <h5 th:text="|${balance.account.name} Summary|"></h5>
+                      <div th:replace="fragments/balance_summary.html :: VerticalLayout(${balance.summary}, ${balance.account.currency.currencySymbol})"></div>
                   </div>
             </div>
 
@@ -36,17 +38,6 @@
                     <div class="alert alert-info" role="alert">
                         <strong>Attention:</strong>&nbsp;This record is a instalment and only this instalment will be updated.
                     </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col">
-                    <div class="row">
-                        <div class="col">
-                            <h4 th:text="|${balance.account.name} Summary|"></h4>
-                        </div>
-                    </div>
-                    <div class="row" th:replace="fragments/balance_summary :: HorizontalLayout(${balance.summary}, ${balance.account.currency.currencySymbol})"></div>
                 </div>
             </div>
 
