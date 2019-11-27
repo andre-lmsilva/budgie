@@ -75,8 +75,7 @@
 
             <div class="row mb-3" th:if="${not #lists.isEmpty(balance.records)} or ${not #lists.isEmpty(balance.applicableBudgetTemplateRecords)}">
                 <div class="col-sm-12 col-md-3">
-                    <h2 class="d-md-block d-sm-none d-none">Categories</h2>
-                    <h4 class="d-md-none d-block">Categories</h4>
+                    <h4 class="mb-4">Categories Summary</h4>
                     <div class="jumbotron" th:if="${#lists.isEmpty(balance.categoryBalanceSummaries)}">
                         <h3>No records found.</h3>
                         <p class="lead">No category balance for this account and period yet.</p>
