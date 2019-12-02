@@ -1,6 +1,6 @@
 package io.geekmind.budgie.model.mapper;
 
-import io.geekmind.budgie.model.dto.NewBudgetTemplateRecord;
+import io.geekmind.budgie.model.dto.budget_template_record.NewBudgetTemplateRecord;
 import io.geekmind.budgie.model.entity.BudgetTemplateRecordContainer;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;

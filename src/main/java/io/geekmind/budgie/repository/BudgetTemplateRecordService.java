@@ -1,7 +1,7 @@
 package io.geekmind.budgie.repository;
 
 import io.geekmind.budgie.model.dto.ExistingRecord;
-import io.geekmind.budgie.model.dto.NewBudgetTemplateRecord;
+import io.geekmind.budgie.model.dto.budget_template_record.NewBudgetTemplateRecord;
 import io.geekmind.budgie.model.entity.BudgetTemplateRecord;
 import io.geekmind.budgie.model.entity.BudgetTemplateRecordContainer;
 import ma.glasnost.orika.MapperFacade;

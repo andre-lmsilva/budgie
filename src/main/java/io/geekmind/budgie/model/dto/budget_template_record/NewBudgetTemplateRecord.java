@@ -1,8 +1,7 @@
-package io.geekmind.budgie.model.dto;
+package io.geekmind.budgie.model.dto.budget_template_record;
 
 import lombok.Data;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -19,7 +18,7 @@ public class NewBudgetTemplateRecord {
 
     @NotNull
     @Min(1)
-    @Max(28)
+    @Max(31)
     private Integer dayOfMonth;
 
     @NotNull

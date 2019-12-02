@@ -2,6 +2,7 @@ package io.geekmind.budgie.repository;
 
 import io.geekmind.budgie.model.dto.ExistingRecord;
 import io.geekmind.budgie.model.entity.BudgetRecord;
+import io.geekmind.budgie.model.entity.BudgetTemplateRecord;
 import io.geekmind.budgie.model.entity.BudgetTemplateRecordContainer;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
@@ -48,10 +49,9 @@ public class BudgetRecordService {
                 budgetRecord.setRecordContainer(new BudgetTemplateRecordContainer());
                 budgetRecord.getRecordContainer().setId(record.getContainerId());
 
-                return this.mapper.map(
-                    this.budgetRecordRepository.save(budgetRecord),
-                    ExistingRecord.class
-                );
+                BudgetRecord persistedRecord = this.budgetRecordRepository.save(budgetRecord);
+
+                return this.mapper.map(persistedRecord, ExistingRecord.class);
             });
     }
 
