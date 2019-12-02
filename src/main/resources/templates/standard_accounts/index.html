@@ -46,7 +46,9 @@
                                 </tr>
                                 <tr th:each="account: ${availableAccounts}">
                                     <td>
-                                        <h2 class="initial-letter d-inline float-left text-monospace" th:text="${#strings.substring(account.name, 0, 1)}"></h2>
+                                        <div class="initial-letter d-inline float-left text-monospace">
+                                            <h2 th:text="${#strings.substring(account.name, 0, 1)}"></h2>
+                                        </div>
                                         <a th:href="@{/standard_accounts/edit/{id}(id=${account.id})}" title="Edit account.">
                                             <h5 class="item-title d-inline" th:text="|${account.name} (${account.currency.currencyCode})|"></h5>
                                         </a>
