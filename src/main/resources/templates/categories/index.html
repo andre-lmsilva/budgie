@@ -46,7 +46,9 @@
                                 </tr>
                                 <tr th:each="category: ${availableCategories}">
                                     <td>
-                                        <h2 class="d-inline float-left initial-letter text-monospace" th:text="${#strings.substring(category.name, 0, 1)}"></h2>
+                                        <div class="initial-letter d-inline float-left text-monospace">
+                                            <h2 th:text="${#strings.substring(category.name, 0, 1)}"></h2>
+                                        </div>
                                         <a th:href="@{/categories/edit/{categoryId}(categoryId=${category.id})}"
                                            title="Edit category">
                                             <h5 class="item-title" th:text="${category.name}"></h5>
