@@ -96,7 +96,6 @@
                 <td>
                      <div class="day-of-month d-inline float-left text-monospace">
                         <h4 th:text="${#temporals.format(budgetTemplateRecord.recordDate,'dd')}"></h4>
-                        <span th:text="${#temporals.format(budgetTemplateRecord.recordDate, 'MMM')}"></span>
                     </div>
                     <h5 class="item-title d-inline" th:text="${budgetTemplateRecord.category.name}"></h5>
                     <a  th:href="@{'/budgetRecords/apply/{id}'(id=${budgetTemplateRecord.id},periodStartDate=${balance.balanceDates.periodStartDate},periodEndDate=${balance.balanceDates.periodEndDate})}"

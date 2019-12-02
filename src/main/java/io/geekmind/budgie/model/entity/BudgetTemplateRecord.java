@@ -1,5 +1,6 @@
 package io.geekmind.budgie.model.entity;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
@@ -13,10 +14,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @EqualsAndHashCode(callSuper = true)
+@Data
 public class BudgetTemplateRecord extends ContainerRecord {
-
-    @NotNull
-    @ManyToOne
-    private StandardAccount account;
 
 }

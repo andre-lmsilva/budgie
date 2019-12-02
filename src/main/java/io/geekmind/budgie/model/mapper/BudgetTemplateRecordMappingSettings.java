@@ -32,9 +32,20 @@ public class BudgetTemplateRecordMappingSettings implements OrikaMapperFactoryCo
 
 
         orikaMapperFactory.classMap(BudgetTemplateRecord.class, ExistingRecord.class)
-                .mapNulls(false)
-                .mapNullsInReverse(false)
-                .byDefault()
+                .fieldAToB("id", "id")
+                .fieldAToB("account", "account")
+                .fieldAToB("category", "category")
+                .fieldAToB("recordDate", "recordDate")
+                .fieldAToB("description", "description")
+                .fieldAToB("recordValue", "recordValue")
+                .fieldAToB("recordContainer.id", "containerId")
+                .customize(new CustomMapper<BudgetTemplateRecord, ExistingRecord>() {
+                    @Override
+                    public void mapAtoB(BudgetTemplateRecord budgetTemplateRecord, ExistingRecord existingRecord, MappingContext context) {
+                        super.mapAtoB(budgetTemplateRecord, existingRecord, context);
+                        existingRecord.setRecordType(BudgetTemplateRecord.class.getSimpleName());
+                    }
+                })
                 .register();
 
     }

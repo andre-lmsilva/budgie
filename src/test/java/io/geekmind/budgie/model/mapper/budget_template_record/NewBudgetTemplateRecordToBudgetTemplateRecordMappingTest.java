@@ -1,8 +1,9 @@
-package io.geekmind.budgie.model.mapper;
+package io.geekmind.budgie.model.mapper.budget_template_record;
 
 import io.geekmind.budgie.fixture.NewBudgetTemplateRecordFixture;
 import io.geekmind.budgie.model.dto.budget_template_record.NewBudgetTemplateRecord;
 import io.geekmind.budgie.model.entity.BudgetTemplateRecord;
+import io.geekmind.budgie.model.mapper.BudgetTemplateRecordMappingSettings;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.junit.Before;
