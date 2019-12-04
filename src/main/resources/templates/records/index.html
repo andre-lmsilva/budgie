@@ -106,7 +106,7 @@
                                         <h3>No upcoming records found.</h3>
                                         <p class="lead">No records upcoming for the next 7 (seven) days.</p>
                                     </div>
-                                    <div class="table-responsive" th:if="${not #lists.isEmpty(balance.records)}">
+                                    <div class="table-responsive" th:if="${not #lists.isEmpty(balance.records.?[#bools.isTrue(upcoming)])}">
                                         <div th:replace="fragments/record_grid :: RecordGrid(${balance.records.?[#bools.isTrue(upcoming)]}, ${balance}, false)"></div>
                                     </div>
                                 </div>

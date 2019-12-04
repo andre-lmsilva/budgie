@@ -17,8 +17,4 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = true)
 public class BudgetRecord extends ContainerRecord {
 
-    @NotNull
-    @ManyToOne
-    private StandardAccount account;
-
 }

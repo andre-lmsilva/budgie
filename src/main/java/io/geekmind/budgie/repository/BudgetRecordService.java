@@ -46,11 +46,8 @@ public class BudgetRecordService {
                         LocalDate.of(periodEndDate.getYear(), periodEndDate.getMonth(), record.getRecordDate().getDayOfMonth())
                     );
                 }
-                budgetRecord.setRecordContainer(new BudgetTemplateRecordContainer());
-                budgetRecord.getRecordContainer().setId(record.getContainerId());
 
                 BudgetRecord persistedRecord = this.budgetRecordRepository.save(budgetRecord);
-
                 return this.mapper.map(persistedRecord, ExistingRecord.class);
             });
     }

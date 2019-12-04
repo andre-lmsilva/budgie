@@ -28,7 +28,6 @@ public class DependantAccountRecordMappingSettings implements OrikaMapperFactory
     @Override
     public void configure(MapperFactory orikaMapperFactory) {
         orikaMapperFactory.classMap(Balance.class, DependantAccountRecord.class)
-                .byDefault()
                 .customize(new CustomMapper<Balance, DependantAccountRecord>() {
                     @Override
                     public void mapAtoB(Balance balance, DependantAccountRecord dependantAccountRecord, MappingContext context) {

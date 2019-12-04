@@ -19,4 +19,10 @@ public class ExistingRecordFixture {
         return existingRecord;
     }
 
+    public static ExistingRecord getBudgetTemplateRecord() {
+        ExistingRecord existingRecord = getWithValue(BigDecimal.valueOf(100D));
+        existingRecord.setContainerId(-9);
+        existingRecord.setRecordType("BudgetTemplateRecord");
+        return existingRecord;
+    }
 }
