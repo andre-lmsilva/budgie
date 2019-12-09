@@ -94,10 +94,13 @@
                                     <a class="nav-link active" id="upcoming-tab" data-toggle="tab" href="#upcoming" role="tab" aria-controls="upcoming" aria-selected="true">Upcoming</a>
                                 </li>
                                  <li class="nav-item">
-                                     <a class="nav-link" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">All</a>
+                                     <a class="nav-link" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="false">All</a>
                                 </li>
                                 <li class="nav-item" th:if="${not #lists.isEmpty(balance.applicableBudgetTemplateRecords)}">
-                                    <a class="nav-link" id="budget-tab" data-toggle="tab" href="#budget" role="tab" aria-controls="budget" aria-selected="true">Planned</a>
+                                    <a class="nav-link" id="budget-tab" data-toggle="tab" href="#budget" role="tab" aria-controls="budget" aria-selected="false">Planned</a>
+                                </li>
+                                <li class="nav-item" th:if="${not #lists.isEmpty(balance.projectBalanceSummaries)}">
+                                    <a class="nav-link" id="projects-tab" data-toggle="tab" href="#projects" role="tab" aria-controls="projects" aria-selected="false">Projects</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="grids">
@@ -123,6 +126,37 @@
                                    <div class="table-responsive">
                                        <div th:replace="fragments/record_grid :: BudgetTemplateRecordsGrid(${balance.applicableBudgetTemplateRecords})"></div>
                                    </div>
+                                </div>
+                                <div class="tab-pane fade show" id="projects" role="tabpanel" aria-hidden="projects-tab" th:if="${not #lists.isEmpty(balance.projectBalanceSummaries)}">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped table-hover table-sm">
+                                            <tbody>
+                                                <tr th:each="project: ${balance.projectBalanceSummaries}">
+                                                    <td>
+                                                        <div class="initial-letter d-inline float-left text-monospace">
+                                                            <h2 th:text="${#strings.substring(project.project.name, 0, 1)}"></h2>
+                                                        </div>
+                                                        <h5 class="item-title d-inline" th:text="${project.project.name}"></h5><br/>
+                                                        <small class="text-muted" th:text="${project.project.description}"></small><br/>
+                                                        <small class="text-muted"
+                                                               th:text="|${project.project.currency.currencySymbol} ${#numbers.formatDecimal(project.balance, 1, 'POINT', 2, 'COMMA')} achieved of ${project.project.currency.currencySymbol} ${#numbers.formatDecimal(project.project.targetValue, 1, 'POINT', 2, 'COMMA')} target.|"></small>
+                                                        <small class="text-muted"
+                                                               th:text="|(${#numbers.formatDecimal(project.progressPercentage, 1, 'POINT', 0, 'COMMA')}% completed)|"></small>
+                                                        <div class="progress">
+                                                            <div class="progress-bar progress-bar-striped"
+                                                                 role="progressbar"
+                                                                 th:style="|width: ${#numbers.formatDecimal(project.progressPercentage, 1, 'POINT', 0, 'COMMA')}%|"
+                                                                 th:aria-valuenow="${#numbers.formatDecimal(project.progressPercentage, 1, 'POINT', 0, 'COMMA')}"
+                                                                 th:classappend="bg-info"
+                                                                 aria-valuemin="0"
+                                                                 aria-valuemax="100">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

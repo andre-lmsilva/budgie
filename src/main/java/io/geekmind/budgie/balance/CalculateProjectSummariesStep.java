@@ -4,11 +4,11 @@ import io.geekmind.budgie.model.dto.ExistingRecord;
 import io.geekmind.budgie.model.dto.balance.BalanceCalculationRequest;
 import io.geekmind.budgie.model.dto.balance.ProjectBalanceSummary;
 import io.geekmind.budgie.model.dto.project_account.ExistingProjectAccount;
-import io.geekmind.budgie.repository.ProjectAccountService;
 import io.geekmind.budgie.repository.RecordService;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -38,22 +38,40 @@ public class CalculateProjectSummariesStep extends BaseBalanceCalculationStep {
      */
     @Override
     public void calculate(BalanceCalculationRequest balanceCalculationRequest) {
-        LocalDate referenceDate = LocalDate.now();
-        if (balanceCalculationRequest.getBalance().getBalanceDates().getPeriodEndDate().isBefore(referenceDate)) {
-            referenceDate = balanceCalculationRequest.getBalance().getBalanceDates().getPeriodEndDate();
-        }
-        final LocalDate endDate = referenceDate;
+        final LocalDate endDate = this.calculateEndDate(balanceCalculationRequest);
 
         balanceCalculationRequest.getBalance().setProjectBalanceSummaries(new ArrayList<>());
         balanceCalculationRequest.getBalance().getAccount().getActiveProjectAccounts()
             .forEach(projectAccount -> {
+                BigDecimal balance = this.calculateBalanceFor(projectAccount, START_DATE, endDate);
+                BigDecimal progress = balance
+                    .divide(projectAccount.getTargetValue(), RoundingMode.HALF_UP)
+                    .multiply(BigDecimal.valueOf(100D));
+
                 ProjectBalanceSummary summary = new ProjectBalanceSummary(
                     projectAccount,
-                    this.calculateBalanceFor(projectAccount, START_DATE, endDate)
+                    balance,
+                    progress
                 );
 
                 balanceCalculationRequest.getBalance().getProjectBalanceSummaries().add(summary);
             });
+    }
+
+    /**
+     * Calculates the end date to summarize the records for the balance being calculated. The current date is
+     * taken as base and, if the balance period end date occurs before the current date, it takes the balance
+     * period end date in consideration instead.
+     *
+     * @param balanceCalculationRequest Details about the balance being calculated.
+     * @return A date calculated as aforementioned.
+     */
+    protected LocalDate calculateEndDate(BalanceCalculationRequest balanceCalculationRequest) {
+        LocalDate endDate = LocalDate.now();
+        if (balanceCalculationRequest.getBalance().getBalanceDates().getPeriodEndDate().isBefore(endDate)) {
+            endDate = balanceCalculationRequest.getBalance().getBalanceDates().getPeriodEndDate();
+        }
+        return endDate;
     }
 
     /**
@@ -72,6 +90,13 @@ public class CalculateProjectSummariesStep extends BaseBalanceCalculationStep {
             .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    /**
+     * Checks if this step should be executed. If the account being processed has associated active project accounts, it
+     * will return true.
+     *
+     * @param balanceCalculationRequest Balance calculation request being processed.
+     * @return  <i>true</i> when the account being processed has active project accounts associated. Otherwise, <i>false</i>.
+     */
     @Override
     public Boolean shouldExecute(BalanceCalculationRequest balanceCalculationRequest) {
         return !balanceCalculationRequest.getBalance().getAccount().getActiveProjectAccounts().isEmpty();

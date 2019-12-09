@@ -16,4 +16,6 @@ public class ProjectBalanceSummary {
 
     private BigDecimal balance;
 
+    private BigDecimal progressPercentage;
+
 }

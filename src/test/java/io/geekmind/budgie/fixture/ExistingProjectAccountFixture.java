@@ -16,6 +16,7 @@ public class ExistingProjectAccountFixture {
         projectAccount.setParent(ExistingStandardAccountFixture.getSavingsAccount());
         projectAccount.setCurrency(AccountCurrencyFixture.euro());
         projectAccount.setTargetValue(BigDecimal.TEN);
+        projectAccount.setArchived(Boolean.FALSE);
         return projectAccount;
     }
 
