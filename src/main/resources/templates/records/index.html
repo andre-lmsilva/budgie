@@ -90,11 +90,17 @@
                     <div class="row">
                         <div class="col">
                             <ul class="nav nav-pills mb-3">
-                                <li class="nav-item">
+                                <li class="nav-item" th:if="${not #lists.isEmpty(balance.records.?[#bools.isTrue(upcoming)])}">
                                     <a class="nav-link active" id="upcoming-tab" data-toggle="tab" href="#upcoming" role="tab" aria-controls="upcoming" aria-selected="true">Upcoming</a>
                                 </li>
                                 <li class="nav-item">
-                                     <a class="nav-link" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="false">All</a>
+                                     <a class="nav-link" th:classappend="${#lists.isEmpty(balance.records.?[#bools.isTrue(upcoming)])} ? active : ''"
+                                        id="all-tab"
+                                        data-toggle="tab"
+                                        href="#all"
+                                        role="tab"
+                                        aria-controls="all"
+                                        aria-selected="true">All</a>
                                 </li>
                                 <li class="nav-item" th:if="${not #lists.isEmpty(balance.applicableBudgetTemplateRecords)}">
                                     <a class="nav-link" id="budget-tab" data-toggle="tab" href="#budget" role="tab" aria-controls="budget" aria-selected="false">Planned</a>
@@ -104,16 +110,16 @@
                                 </li>
                             </ul>
                             <div class="tab-content" id="grids">
-                                <div class="tab-pane fade show active" id="upcoming" role="tabpanel" aria-hidden="upcoming-tab">
-                                    <div class="jumbotron" th:if="${#lists.isEmpty(balance.records.?[#bools.isTrue(upcoming)])}">
-                                        <h3>No upcoming records found.</h3>
-                                        <p class="lead">No records upcoming for the next 7 (seven) days.</p>
-                                    </div>
+                                <div class="tab-pane fade show active" id="upcoming" role="tabpanel" aria-hidden="upcoming-tab" th:if="${not #lists.isEmpty(balance.records.?[#bools.isTrue(upcoming)])}">
                                     <div class="table-responsive" th:if="${not #lists.isEmpty(balance.records.?[#bools.isTrue(upcoming)])}">
                                         <div th:replace="fragments/record_grid :: RecordGrid(${balance.records.?[#bools.isTrue(upcoming)]}, ${balance}, false)"></div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade show" id="all" role="tabpanel" aria-hidden="all-tab">
+                                <div class="tab-pane fade show"
+                                     th:classappend="${#lists.isEmpty(balance.records.?[#bools.isTrue(upcoming)])} ? active : ''"
+                                     id="all"
+                                     role="tabpanel"
+                                     aria-hidden="all-tab">
                                     <div class="jumbotron" th:if="${#lists.isEmpty(balance.records)}">
                                         <h3>No records found.</h3>
                                         <p class="lead">No records for this period.</p>

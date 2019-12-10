@@ -96,7 +96,13 @@ public class RecordControllerImpl {
         if (!bindingResult.hasErrors()) {
             this.recordService.update(existingRecord);
             redirectAttributes.addFlashAttribute("message", "Record successfully updated.");
-            requestContext.setViewName("redirect:/records");
+            requestContext.setViewName(
+                String.format(
+                    "redirect:/records?referenceDate=%s&accountId=%s",
+                    existingRecord.getRecordDate().toString(),
+                    existingRecord.getAccount().getId()
+                )
+            );
         } else {
             requestContext.addObject("existingRecord", existingRecord);
             requestContext.addObject("availableAccounts", this.standardAccountService.loadAll());
