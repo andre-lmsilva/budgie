@@ -20,8 +20,9 @@ public class BudgetRecordMappingSettings implements OrikaMapperFactoryConfigurer
             .fieldAToB("recordDate", "recordDate")
             .fieldAToB("account", "account")
             .fieldAToB("category", "category")
-            .fieldAToB("description", "description")
-            .fieldAToB("recordValue", "recordValue")
+            .fieldBToA("category.id", "category.id")
+            .field("description", "description")
+            .field("recordValue", "recordValue")
             .customize(new CustomMapper<BudgetRecord, ExistingRecord>() {
                 @Override
                 public void mapAtoB(BudgetRecord budgetRecord, ExistingRecord existingRecord, MappingContext context) {
@@ -29,25 +30,17 @@ public class BudgetRecordMappingSettings implements OrikaMapperFactoryConfigurer
                     existingRecord.setContainerId(budgetRecord.getRecordContainer().getId());
                     existingRecord.setRecordType(BudgetRecord.class.getSimpleName());
                 }
+
+                @Override
+                public void mapBtoA(ExistingRecord existingRecord, BudgetRecord budgetRecord, MappingContext context) {
+                    super.mapBtoA(existingRecord, budgetRecord, context);
+                    budgetRecord.setAccount(new StandardAccount());
+                    budgetRecord.getAccount().setId(existingRecord.getAccount().getId());
+
+                    budgetRecord.setRecordContainer(new BudgetTemplateRecordContainer());
+                    budgetRecord.getRecordContainer().setId(existingRecord.getContainerId());
+                }
             })
             .register();
-
-        orikaMapperFactory.classMap(ExistingRecord.class, BudgetRecord.class)
-                .fieldAToB("category.id", "category.id")
-                .fieldAToB("description", "description")
-                .fieldAToB("recordValue", "recordValue")
-                .customize(new CustomMapper<ExistingRecord, BudgetRecord>() {
-                    @Override
-                    public void mapAtoB(ExistingRecord existingRecord, BudgetRecord budgetRecord, MappingContext context) {
-                        super.mapAtoB(existingRecord, budgetRecord, context);
-                        budgetRecord.setAccount(new StandardAccount());
-                        budgetRecord.getAccount().setId(existingRecord.getAccount().getId());
-
-                        budgetRecord.setRecordContainer(new BudgetTemplateRecordContainer());
-                        budgetRecord.getRecordContainer().setId(existingRecord.getContainerId());
-                    }
-                })
-                .register();
-
     }
 }
