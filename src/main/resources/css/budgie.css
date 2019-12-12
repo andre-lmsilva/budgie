@@ -112,3 +112,7 @@ em {
 .nav-pills .nav-link {
     border-radius: 15px !important;
 }
+
+tfoot > tr > td {
+    background-color: #f0f0f0;
+}
