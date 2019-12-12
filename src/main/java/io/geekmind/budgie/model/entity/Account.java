@@ -1,6 +1,8 @@
 package io.geekmind.budgie.model.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -14,6 +16,8 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "account_type")
+@EqualsAndHashCode(exclude = {"parameters"})
+@ToString(exclude = {"parameters"})
 public class Account {
 
     @Id
