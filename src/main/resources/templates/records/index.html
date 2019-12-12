@@ -67,6 +67,12 @@
                 </div>
             </div>
 
+            <div class="row mt-3 mb-3" th:if="${not #lists.isEmpty(balance.account.parameters.?[key.name() == 'LAST_LOGIN_TIMESTAMP'])}">
+                <div class="col text-right text-mutted">
+                    <small th:text="|Last login at ${balance.account.parameters.?[key.name() == 'LAST_LOGIN_TIMESTAMP'][0].value}.|"></small>
+                </div>
+            </div>
+
             <div class="row" th:if="${#lists.isEmpty(balance.records)} and ${#lists.isEmpty(balance.applicableBudgetTemplateRecords)}">
                 <div class="col">
                     <div class="jumbotron">

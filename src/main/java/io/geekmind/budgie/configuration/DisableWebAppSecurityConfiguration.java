@@ -6,7 +6,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
-@Profile("dev")
+@Profile("!dev")
 public class DisableWebAppSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override

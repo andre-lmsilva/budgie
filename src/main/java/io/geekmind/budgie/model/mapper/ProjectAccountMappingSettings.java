@@ -60,6 +60,7 @@ public class ProjectAccountMappingSettings implements OrikaMapperFactoryConfigur
             .fieldAToB("targetValue", "targetValue")
             .fieldAToB("parent", "parent")
             .fieldAToB("archived", "archived")
+            .fieldAToB("parameters", "parameters")
             .customize(new CustomMapper<ProjectAccount, ExistingProjectAccount>() {
                 @Override
                 public void mapAtoB(ProjectAccount projectAccount, ExistingProjectAccount existingProjectAccount, MappingContext context) {

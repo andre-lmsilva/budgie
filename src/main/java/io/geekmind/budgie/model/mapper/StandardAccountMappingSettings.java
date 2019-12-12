@@ -33,6 +33,7 @@ public class StandardAccountMappingSettings implements OrikaMapperFactoryConfigu
             .fieldAToB("parent", "parent")
             .fieldAToB("archived", "archived")
             .fieldAToB("dependants", "dependants")
+            .fieldAToB("parameters", "parameters")
             .customize(new CustomMapper<StandardAccount, ExistingStandardAccount>() {
                 @Override
                 public void mapAtoB(StandardAccount account, ExistingStandardAccount existingAccount, MappingContext context) {

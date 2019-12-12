@@ -34,6 +34,7 @@ public class ExistingProjectAccountToProjectAccountMappingTest {
             .hasFieldOrPropertyWithValue("monthBillingDayAt", null)
             .hasFieldOrPropertyWithValue("currencyCode", null)
             .hasFieldOrPropertyWithValue("parent", null)
-            .hasFieldOrPropertyWithValue("targetValue", null);
+            .hasFieldOrPropertyWithValue("targetValue", null)
+            .hasFieldOrPropertyWithValue("parameters", null);
     }
 }

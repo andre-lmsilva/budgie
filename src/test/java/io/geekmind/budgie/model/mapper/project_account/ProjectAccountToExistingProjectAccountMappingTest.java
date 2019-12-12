@@ -83,4 +83,12 @@ public class ProjectAccountToExistingProjectAccountMappingTest {
             .hasFieldOrPropertyWithValue("parent.id", this.sourceProjectAccount.getParent().getId());
     }
 
+    @Test
+    public void parametersAttribute_isMapped() {
+        assertThat(this.resultExistingProjectAccount.getParameters())
+            .hasSize(1)
+            .element(0)
+            .hasFieldOrPropertyWithValue("id", this.sourceProjectAccount.getParameters().get(0).getId());
+    }
+
 }
