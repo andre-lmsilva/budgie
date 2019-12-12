@@ -102,4 +102,12 @@ public class StandardAccountToExistingStandardAccountMappingTest {
             .element(0).hasFieldOrPropertyWithValue("id", this.sourceAccount.getDependants().get(0).getId());
     }
 
+    @Test
+    public void parametersAttribute_isMapped() {
+        assertThat(this.resultExistingAccount.getParameters())
+            .hasSize(1)
+            .element(0)
+            .hasFieldOrPropertyWithValue("id", this.sourceAccount.getParameters().get(0).getId());
+    }
+
 }

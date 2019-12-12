@@ -3,6 +3,8 @@ package io.geekmind.budgie.fixture;
 import io.geekmind.budgie.model.entity.ProjectAccount;
 import io.geekmind.budgie.model.entity.StandardAccount;
 
+import java.util.Collections;
+
 public class ProjectAccountFixture {
 
     public static ProjectAccount travelToBahamas() {
@@ -17,6 +19,11 @@ public class ProjectAccountFixture {
         projectAccount.setMonthBillingDayAt(parentAccount.getMonthBillingDayAt());
         projectAccount.setParent(parentAccount);
         projectAccount.setShowBalanceOnParentAccount(Boolean.TRUE);
+        projectAccount.setParameters(
+            Collections.singletonList(
+                AccountParameterFixture.currentLoginTimestamp()
+            )
+        );
         return projectAccount;
     }
 

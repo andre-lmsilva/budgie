@@ -3,6 +3,7 @@ package io.geekmind.budgie.fixture;
 import io.geekmind.budgie.model.entity.StandardAccount;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class StandardAccountFixture {
 
@@ -32,6 +33,11 @@ public class StandardAccountFixture {
         account.setDependants(new ArrayList<>());
         account.getDependants().add(
             internationalCreditCardExpenses(account)
+        );
+        account.setParameters(
+            Collections.singletonList(
+                AccountParameterFixture.currentLoginTimestamp()
+            )
         );
         return account;
     }

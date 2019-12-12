@@ -36,7 +36,8 @@ public class ExistingStandardAccountToStandardAccountMappingTest {
             .hasFieldOrPropertyWithValue("mainAccount", Boolean.FALSE)
             .hasFieldOrPropertyWithValue("currencyCode", null)
             .hasFieldOrPropertyWithValue("parent", null)
-            .hasFieldOrPropertyWithValue("dependants", null);
+            .hasFieldOrPropertyWithValue("dependants", null)
+            .hasFieldOrPropertyWithValue("parameters", null);
     }
 
 }

@@ -1,6 +1,9 @@
 package io.geekmind.budgie.model.dto.account;
 
+import io.geekmind.budgie.model.dto.account_parameter.ExistingAccountParameter;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class ExistingAccount {
@@ -21,4 +24,5 @@ public class ExistingAccount {
 
     private AccountCurrency currency;
 
+    private List<ExistingAccountParameter> parameters;
 }
