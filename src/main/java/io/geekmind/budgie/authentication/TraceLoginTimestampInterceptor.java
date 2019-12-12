@@ -8,12 +8,16 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Aspect
 @Component
@@ -37,23 +41,33 @@ public class TraceLoginTimestampInterceptor {
     public Object interceptAuthentication(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         Authentication authentication = (Authentication)proceedingJoinPoint.proceed();
         if (null != authentication) {
-            this.updateLoginTimestamps();
+            Map<String, Object> loginProperties = new HashMap<>();
+            ((UsernamePasswordAuthenticationToken) authentication).setDetails(loginProperties);
+            this.updateLoginTimestamps().ifPresent(lastLoginTimestamp ->
+                loginProperties.put(AccountParameterKey.LAST_LOGIN_TIMESTAMP.name(), lastLoginTimestamp)
+            );
         }
         return authentication;
     }
 
     @Transactional
-    private void updateLoginTimestamps() {
-       this.standardAccountService.getMainAccount()
-           .ifPresent(mainAccount -> {
-              this.accountParameterService.loadByAccountAndKey(mainAccount, AccountParameterKey.CURRENT_LOGIN_TIMESTAMP)
-                  .ifPresent(parameter -> this.accountParameterService.upsert(mainAccount, AccountParameterKey.LAST_LOGIN_TIMESTAMP, parameter.getValue()));
+    private Optional<String> updateLoginTimestamps() {
+        return this.standardAccountService.getMainAccount()
+           .map(mainAccount -> {
+               String lastLoginTimestamp = this.accountParameterService.loadByAccountAndKey(mainAccount, AccountParameterKey.CURRENT_LOGIN_TIMESTAMP)
+                  .map(parameter -> {
+                      String lastLoginTimestampValue = parameter.getValue();
+                      this.accountParameterService.upsert(mainAccount, AccountParameterKey.LAST_LOGIN_TIMESTAMP, lastLoginTimestampValue);
+                      return lastLoginTimestampValue;
+                  }).orElse(null);
 
               this.accountParameterService.upsert(
                   mainAccount,
                   AccountParameterKey.CURRENT_LOGIN_TIMESTAMP,
                   LocalDateTime.now().format(this.dateTimeFormatter)
               );
+
+              return lastLoginTimestamp;
            });
     }
 
