@@ -1,6 +1,6 @@
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="RecordGrid(records, balance, filterable)">
     <table class="table table-bordered table-hover table-stripped table-sm"
-           th:classapped="${filterable} ? filterable : ''">
+           th:classappend="${filterable} ? filterable : ''">
         <tbody>
             <tr>
                 <td th:include="fragments/filter_form_table_row :: FilterTableRow" th:if="${filterable}"></td>
