@@ -39,13 +39,15 @@ public class RecordMappingSettings implements OrikaMapperFactoryConfigurer {
                         existingRecord.setUpcoming(Boolean.TRUE);
                     }
 
-                    existingRecord.setLastCreated(
-                        record.getAccount().getParameters().stream()
-                            .filter(accountParameter ->  accountParameter.getKey().equals(AccountParameterKey.LAST_CREATED_RECORD.name()))
-                            .findFirst()
-                            .map(accountParameter -> accountParameter.getValue().equals(record.getId().toString()))
-                            .orElse(Boolean.FALSE)
-                    );
+                    if (null != record.getAccount().getParameters()) {
+                        existingRecord.setLastCreated(
+                                record.getAccount().getParameters().stream()
+                                        .filter(accountParameter -> accountParameter.getKey().equals(AccountParameterKey.LAST_CREATED_RECORD.name()))
+                                        .findFirst()
+                                        .map(accountParameter -> accountParameter.getValue().equals(record.getId().toString()))
+                                        .orElse(Boolean.FALSE)
+                        );
+                    }
 
                 }
             }).byDefault().register();
