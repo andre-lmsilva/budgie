@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: header"></head>
+    <body>
+        <div th:replace="fragments/navbar :: navbar"></div>
+        <div class="container-fluid">
+            <div class="row mb-5 page-header">
+                <div class="col-lg-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
+                        <li class="breadcrumb-item active">Import from CSV</li>
+                    </ol>
+                    <h2><i class="fa fa-file"></i>&nbsp;Import from CSV</h2>
+                </div>
+            </div>
+
+            <div class="row mb-3 mt-3" th:if="${null != error}">
+                <div class="col">
+                    <div class="alert alert-danger" th:text="${error}"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <form action="#" th:action="@{/csv_upload/upload}" method="POST" enctype="multipart/form-data">
+                        <fieldset>
+                            <legend>Upload file</legend>
+                            <div class="form-group">
+                                <label for="account">Account:</label>
+                                <select class="form-control" name="accountId" id="accountId" required>
+                                    <option th:each="account: ${availableAccounts}" th:value="${account.id}" th:text="${account.name}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="file">CSV File:</label>
+                                <input type="file" name="csvFile" id="csvFile" class="form-control"/>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <button type="submit" class="btn btn-primary">Import</button>&nbsp;
+                                    <a class="btn btn-default" th:href="@{/records}" title="Go back to balance without import the file.">Cancel</a>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
