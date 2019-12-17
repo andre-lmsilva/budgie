@@ -47,4 +47,6 @@ public class ExistingRecord implements Serializable {
 
     private Boolean upcoming = Boolean.FALSE;
 
+    private Boolean lastCreated = Boolean.FALSE;
+
 }

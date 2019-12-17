@@ -1,9 +1,7 @@
 package io.geekmind.budgie.model.mapper;
 
 import io.geekmind.budgie.model.dto.ExistingRecord;
-import io.geekmind.budgie.model.entity.ContainerRecord;
-import io.geekmind.budgie.model.entity.Record;
-import io.geekmind.budgie.model.entity.RecordContainer;
+import io.geekmind.budgie.model.entity.*;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
@@ -40,6 +38,14 @@ public class RecordMappingSettings implements OrikaMapperFactoryConfigurer {
                         record.getRecordDate().compareTo(oneWeekTime) <= 0) {
                         existingRecord.setUpcoming(Boolean.TRUE);
                     }
+
+                    existingRecord.setLastCreated(
+                        record.getAccount().getParameters().stream()
+                            .filter(accountParameter ->  accountParameter.getKey().equals(AccountParameterKey.LAST_CREATED_RECORD.name()))
+                            .findFirst()
+                            .map(accountParameter -> accountParameter.getValue().equals(record.getId().toString()))
+                            .orElse(Boolean.FALSE)
+                    );
 
                 }
             }).byDefault().register();

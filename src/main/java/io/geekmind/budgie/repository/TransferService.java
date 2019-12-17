@@ -23,7 +23,7 @@ public class TransferService {
         this.mapper = mapperFacade;
     }
 
-    public void create(NewTransfer newTransfer) {
+    public ExistingContainer create(NewTransfer newTransfer) {
         TransferContainer transfer = this.mapper.map(newTransfer, TransferContainer.class);
         TransferRecord sourceRecord = new TransferRecord();
         sourceRecord.setRecordDate(newTransfer.getTransferDate());
@@ -45,7 +45,10 @@ public class TransferService {
         destinationRecord.setRecordValue(newTransfer.getTransferValue());
         transfer.addRecord(destinationRecord);
 
-        this.transferRepository.save(transfer);
+        return this.mapper.map(
+            this.transferRepository.save(transfer),
+            ExistingContainer.class
+        );
     }
 
     public Optional<ExistingContainer> remove(Integer id) {

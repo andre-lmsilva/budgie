@@ -116,3 +116,7 @@ em {
 tfoot > tr > td {
     background-color: #f0f0f0;
 }
+
+.last-created-record {
+    border: 2px dashed silver;
+}
