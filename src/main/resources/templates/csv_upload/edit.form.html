@@ -3,7 +3,7 @@
     <head th:replace="fragments/header :: header"></head>
     <body>
         <div th:replace="fragments/navbar :: navbar"></div>
-        <div class="container-fluid">
+        <di0iv class="container-fluid">
             <div class="row mb-5 page-header">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
@@ -31,17 +31,19 @@
                                     <thead class="thead-dark">
                                         <tr>
                                             <th class="text-center">Date</th>
-                                            <th class="texe-center">Category</th>
-                                            <th>Description</th>
+                                            <th class="text-center">Category</th>
+                                            <th class="text-center">Description</th>
                                             <th class="text-center">Value</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr th:each="record,element: ${parsedRecords.csvRecords}">
-                                            <td class="text-center" th:text="${#temporals.format(record.recordDate, 'dd/MM/yyyy')}"></td>
                                             <td>
-                                                <input type="hidden" th:field="*{csvRecords[__${element.index}__].recordDate}"/>
+                                                <input type="date" class="form-control" th:field="*{csvRecords[__${element.index}__].recordDate}" required/>
+                                            </td>
+                                            <td>
+                                                <input type="hidden" th:field="*{csvRecords[__${element.index}__].bankStatementId}"/>
                                                 <input type="hidden" th:field="*{csvRecords[__${element.index}__].accountId}"/>
                                                 <select class="form-control" th:field="*{csvRecords[__${element.index}__].categoryId}" required>
                                                     <option th:each="category: ${availableCategories}" th:value="${category.id}" th:text="${category.name}"></option>
@@ -54,7 +56,7 @@
                                                 <input type="text" class="form-control" th:field="*{csvRecords[__${element.index}__].recordValue}" required/>
                                             </td>
                                             <td class="text-center">
-                                                <a href="javascript:void(0)" class="text-danger" title="Remove record.">
+                                                <a href="javascript:void(0)" onclick="removeRecord(this)" class="text-danger" title="Remove record.">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
                                             </td>
@@ -70,7 +72,16 @@
                     </form>
                 </div>
             </div>
-
         </div>
+        <div th:replace="fragments/footer :: footer"></div>
+        <script type="text/javascript">
+            //<![CDATA[
+            function removeRecord(element) {
+                if (confirm('Do you really want to remove the record?\nThis action can\'t be undone.')) {
+                    $(element).closest("tr").fadeOut(500, function() { $(this).remove(); });
+                }
+            }
+            //]]>
+        </script>
     </body>
 </html>

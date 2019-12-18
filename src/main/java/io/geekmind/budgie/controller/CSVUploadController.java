@@ -77,7 +77,9 @@ public class CSVUploadController {
     public ModelAndView importRecords(@Valid ImportCSVRecords parsedRecords,
                                       ModelAndView requestContext,
                                       RedirectAttributes redirectAttributes) {
-        parsedRecords.getCsvRecords().forEach(this.singleRecordService::create);
+        parsedRecords.getCsvRecords().stream()
+            .filter(record -> null != record.getRecordDate())
+            .forEach(this.singleRecordService::create);
         redirectAttributes.addFlashAttribute("message", "Records successfully imported.");
         requestContext.setViewName("redirect:/records");
         return requestContext;
