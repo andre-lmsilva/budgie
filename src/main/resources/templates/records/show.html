@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: header"></head>
+    <body>
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col">
+                    <span th:text="${record.account.name}"></span>&nbsp;-&nbsp;
+                    <span th:if="${record.recordType == 'TransferRecord'}">Transfer between accounts</span>
+                    <span th:if="${record.recordType == 'SingleRecord'}">Single record</span>
+                    <span th:if="${record.recordType == 'BudgetRecord'}">Planned budget record</span>
+                    <span th:if="${record.recordType == 'InstalmentRecord'}">Instalment record</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col text-right bg-dark text-white mb-2" style="border-radius: 10px;">
+                    <span class="badge badge-pill badge-light mt-4 mb-4" th:text="${record.category.name}"></span>
+                    <h4 class="text-white mt-2" th:text="${#temporals.format(record.recordDate, 'dd/MM/yyyy')}"></h4>
+                    <h1 class="mb-2"
+                        th:classappend="${record.recordValue > 0 ? 'text-success' : 'text-danger'}"
+                        th:text="|${record.account.currency.currencySymbol} ${#numbers.formatDecimal(record.recordValue, 1, 'POINT', 2, 'COMMA')}|"></h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <strong>Description:</strong><br/>
+                    <p class="lead" th:text="${record.description}"></p>
+                </div>
+            </div>
+
+            <div class="row" th:if="${record.bankStatementId != null}">
+                <div class="col">
+                    <strong>Bank statement id:</strong><br/>
+                    <p class="lead" th:text="${record.bankStatementId}"></p>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col">
+                    <a  th:if="${!#strings.equals(record.recordType, 'TransferRecord') && !#strings.equals(record.recordType, 'DependantAccountRecord') && !#strings.equals(recordType, 'BudgetTemplateRecord')}"
+                        th:href="@{/records/edit/{id}(id=${record.id})}"
+                        class="btn btn-info btn-lg btn-block"
+                        title="Edit record.">
+                        <i class="far fa-edit"></i>&nbsp;Edit Record
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="javascript:void(0)" class="btn btn-danger btn-lg btn-block">
+                        <i class="far fa-trash-alt fa-lg"></i>&nbsp;Remove Record
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <div th:replace="fragments/footer :: footer"></div>
+    </body>
+</html>

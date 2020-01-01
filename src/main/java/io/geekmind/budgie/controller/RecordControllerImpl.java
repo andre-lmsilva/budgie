@@ -112,4 +112,15 @@ public class RecordControllerImpl {
         return requestContext;
     }
 
+    @GetMapping("/{id}")
+    public ModelAndView showRecord(@PathVariable("id") Integer id,
+                                   ModelAndView requestContext) {
+        Optional<ExistingRecord> requestedRecord = this.recordService.loadById(id);
+        if (requestedRecord.isPresent()) {
+            requestContext.addObject("record", requestedRecord.get());
+            requestContext.setViewName("records/show");
+        }
+        return requestContext;
+    }
+
 }
