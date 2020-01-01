@@ -6,6 +6,7 @@ import io.geekmind.budgie.repository.RecordService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 /**
@@ -39,6 +40,7 @@ public class LoadPeriodRecordsStep extends BaseBalanceCalculationStep {
         balanceCalculationRequest.getBalance().setGroupedRecords(
             balanceCalculationRequest.getBalance().getRecords()
                 .stream()
+                .sorted(Comparator.comparing(ExistingRecord::getRecordDate))
                 .collect(
                     Collectors.groupingBy(record -> record.getRecordDate())
                 )
