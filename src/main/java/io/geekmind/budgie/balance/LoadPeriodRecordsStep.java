@@ -36,15 +36,6 @@ public class LoadPeriodRecordsStep extends BaseBalanceCalculationStep {
                 balanceCalculationRequest.getBalance().getBalanceDates().getPeriodEndDate()
             )
         );
-
-        balanceCalculationRequest.getBalance().setGroupedRecords(
-            balanceCalculationRequest.getBalance().getRecords()
-                .stream()
-                .sorted(Comparator.comparing(ExistingRecord::getRecordDate))
-                .collect(
-                    Collectors.groupingBy(record -> record.getRecordDate())
-                )
-        );
     }
 
     @Override

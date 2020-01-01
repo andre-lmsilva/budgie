@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /**
  * Carry all the details required to present the balance of an account during a certain period of time.
@@ -36,6 +39,13 @@ public class Balance {
 
     private List<ProjectBalanceSummary> projectBalanceSummaries;
 
-    private Map<LocalDate, List<ExistingRecord>> groupedRecords;
+    public Map<LocalDate, List<ExistingRecord>> getGroupedRecords() {
+        return Optional.ofNullable(this.getRecords())
+            .map(records ->
+                new TreeMap(
+                    records.stream().collect(Collectors.groupingBy(ExistingRecord::getRecordDate))
+                )
+            ).orElse(new TreeMap());
+    }
 
 }

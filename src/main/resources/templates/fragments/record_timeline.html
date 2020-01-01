@@ -27,29 +27,35 @@
                                         <div th:replace="fragments/record_delete_button :: BudgetRecord(${record.id}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
                                     </span>
 
+                                    <br/>
                                     <a  th:if="${!#strings.equals(record.recordType, 'TransferRecord') && !#strings.equals(record.recordType, 'DependantAccountRecord') && !#strings.equals(recordType, 'BudgetTemplateRecord')}"
                                         th:href="@{/records/edit/{id}(id=${record.id})}"
                                         title="Edit record.">
-                                        <span class="text-small" th:if="${record.bankStatementId != null}" th:title="${record.bankStatementId}"><i class="fas fa-info-circle"></i></span>
-                                        <span class="text-muted d-block" th:text="${record.description}"></span>
+                                        <span class="text-muted" th:text="${record.description}"></span>
                                     </a>
-
                                     <span th:if="${#strings.equals(record.recordType, 'TransferRecord')}"
-                                          class="text-small"
-                                          title="Transfer between accounts">
-                                        <i class="fas fa-exchange-alt"></i>
-                                    </span>
-                                    <span th:if="${#strings.equals(record.recordType, 'TransferRecord')}"
-                                          class="text-muted d-block"
+                                          class="text-muted d-inline"
                                           th:text="${record.description}">
                                     </span>
-
                                     <a  th:if="${#strings.equals(record.recordType, 'DependantAccountRecord')}"
                                         th:href="@{'/records'(accountId=${record.account.id},referenceDate=${record.periodStartDate})}"
                                         title="Show account balance."
                                         target="_blank">
                                         <span class="text-muted d-block" th:text="${record.description}"></span>
                                     </a>
+
+                                    <span class="text-small d-inline"
+                                          th:if="${record.bankStatementId != null}"
+                                          th:title="${record.bankStatementId}">
+                                        <i class="fas fa-info-circle"></i>
+                                    </span>
+                                    <span th:if="${#strings.equals(record.recordType, 'TransferRecord')}"
+                                          class="text-small d-inline"
+                                          title="Transfer between accounts">
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </span>
+                                    <br/>
+
                                     <span class="text-right float-right"
                                           th:text="|${record.account.currency.currencySymbol} ${#numbers.formatDecimal(record.recordValue, 1, 'POINT', 2, 'COMMA')}|"
                                           th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></span>
@@ -73,7 +79,7 @@
             <div class="timeline-item-header">
                 <div class="timeline-item-bullet-closed"></div>
                 <div class="timeline-item-date">
-                    <h4 class="d-inline">Final Balance:</h4>
+                    <h4 class="d-inline">Balance:</h4>
                     <a  th:href="@{'/single_records/new'(recordDate=${nextPeriodStartDate},recordDescription='Previous period balance.', accountId=${accountId}, recordValue=${finalBalance})}"
                         title="Copy final balance to the next period.">
                         <h4 class="d-inline" th:classappend="${finalBalance > 0 ? 'text-success' : 'text-danger'}"

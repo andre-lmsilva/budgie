@@ -61,6 +61,7 @@ public class RecordService {
             record.setRecordDate(existingRecord.getRecordDate());
             record.setDescription(existingRecord.getDescription());
             record.setRecordValue(existingRecord.getRecordValue());
+            record.setBankStatementId(existingRecord.getBankStatementId());
 
             this.standardAccountRepository.findById(existingRecord.getAccount().getId())
                 .ifPresent(record::setAccount);
