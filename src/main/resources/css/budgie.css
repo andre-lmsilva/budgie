@@ -120,3 +120,48 @@ tfoot > tr > td {
 .last-created-record {
     border: 2px dashed silver;
 }
+
+
+.timeline {
+  padding: 0px;
+  margin: 0px;
+}
+
+.timeline, .timeline-item, .timeline-item-header, .timeline-item-body {
+  width: 100%
+}
+
+.timeline-item-bullet, .timeline-item-bullet-closed {
+  width: 20px;
+  height: 20px;
+  border: 5px solid #343A40;
+  border-radius: 50px;
+  float: left;
+}
+
+.timeline-item-bullet-closed {
+    background-color: #343A40;
+}
+
+.timeline-item-date {
+  padding-left: 40px;
+}
+
+.timeline-item-date h4 {
+    margin:0px !important;
+}
+
+.timeline-item-body {
+  border-left: 5px solid #343A40;
+  margin-top: -5px;
+  margin-left: 7px;
+  padding: 20px 0px 40px 20px;
+}
+
+.accordion .card-header {
+    font-size: 1.2em;
+}
+
+.accordion .card:last-of-type {
+    border-bottom: 1px solid rgba(0,0,0,0.125) !important;
+}

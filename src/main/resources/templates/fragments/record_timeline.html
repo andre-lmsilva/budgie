@@ -1,0 +1,86 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="RecordTimeLine(groupedRecords, currencySymbol, accountId, nextPeriodStartDate, finalBalance)">
+    <div class="timeline">
+        <div class="timeline-item" th:each="group: ${groupedRecords}">
+            <div class="timeline-item-header">
+                <div class="timeline-item-bullet"></div>
+                <div class="timeline-item-date">
+                    <h4 th:text="|${#temporals.format(group.key, 'MMMM, dd')} of ${#temporals.format(group.key, 'YYYY')}|"></h4>
+                </div>
+            </div>
+            <div class="timeline-item-body">
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr th:each="record: ${group.value}">
+                                <td>
+                                    <h5 class="item-title d-inline" th:text="${record.category.name}"></h5>
+                                    <span th:if="${record.recordType == 'SingleRecord'}" class="float-right">
+                                        <div th:replace="fragments/record_delete_button :: SingleRecord(${record.id}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
+                                    </span>
+                                    <span th:if="${record.recordType == 'TransferRecord'}" class="float-right">
+                                        <div th:replace="fragments/record_delete_button :: TransferRecord(${record.containerId}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
+                                    </span>
+                                    <span th:if="${record.recordType == 'InstalmentRecord'}" class="float-right">
+                                        <div th:replace="fragments/record_delete_button :: InstalmentRecord(${record.id}, ${record.containerId}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
+                                    </span>
+                                    <span th:if="${record.recordType == 'BudgetRecord'}" class="float-right">
+                                        <div th:replace="fragments/record_delete_button :: BudgetRecord(${record.id}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
+                                    </span>
+
+                                    <a  th:if="${!#strings.equals(record.recordType, 'TransferRecord') && !#strings.equals(record.recordType, 'DependantAccountRecord') && !#strings.equals(recordType, 'BudgetTemplateRecord')}"
+                                        th:href="@{/records/edit/{id}(id=${record.id})}"
+                                        title="Edit record.">
+                                        <span class="text-small" th:if="${record.bankStatementId != null}" th:title="${record.bankStatementId}"><i class="fas fa-info-circle"></i></span>
+                                        <span class="text-muted d-block" th:text="${record.description}"></span>
+                                    </a>
+
+                                    <span th:if="${#strings.equals(record.recordType, 'TransferRecord')}"
+                                          class="text-small"
+                                          title="Transfer between accounts">
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </span>
+                                    <span th:if="${#strings.equals(record.recordType, 'TransferRecord')}"
+                                          class="text-muted d-block"
+                                          th:text="${record.description}">
+                                    </span>
+
+                                    <a  th:if="${#strings.equals(record.recordType, 'DependantAccountRecord')}"
+                                        th:href="@{'/records'(accountId=${record.account.id},referenceDate=${record.periodStartDate})}"
+                                        title="Show account balance."
+                                        target="_blank">
+                                        <span class="text-muted d-block" th:text="${record.description}"></span>
+                                    </a>
+                                    <span class="text-right float-right"
+                                          th:text="|${record.account.currency.currencySymbol} ${#numbers.formatDecimal(record.recordValue, 1, 'POINT', 2, 'COMMA')}|"
+                                          th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-right">
+                                    <strong>Sub-Total:</strong>
+                                    <span   th:text="|${currencySymbol} ${#aggregates.sum(group.value.![recordValue])}|"
+                                            th:class="${#aggregates.sum(group.value.![recordValue])} > 0 ? text-success : text-danger"></span>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item" th:if="${finalBalance != null}">
+            <div class="timeline-item-header">
+                <div class="timeline-item-bullet-closed"></div>
+                <div class="timeline-item-date">
+                    <h4 class="d-inline">Final Balance:</h4>
+                    <a  th:href="@{'/single_records/new'(recordDate=${nextPeriodStartDate},recordDescription='Previous period balance.', accountId=${accountId}, recordValue=${finalBalance})}"
+                        title="Copy final balance to the next period.">
+                        <h4 class="d-inline" th:classappend="${finalBalance > 0 ? 'text-success' : 'text-danger'}"
+                            th:text="|${currencySymbol} ${#numbers.formatDecimal(finalBalance, 1, 'POINT', 2, 'COMMA')}|"></h4>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

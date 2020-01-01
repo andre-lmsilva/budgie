@@ -1,9 +1,12 @@
 package io.geekmind.budgie.balance;
 
+import io.geekmind.budgie.model.dto.ExistingRecord;
 import io.geekmind.budgie.model.dto.balance.BalanceCalculationRequest;
 import io.geekmind.budgie.repository.RecordService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 /**
  * Retrieves all records within the calculated period, sort them by date in an ascending order and sets the list on
@@ -31,6 +34,14 @@ public class LoadPeriodRecordsStep extends BaseBalanceCalculationStep {
                 balanceCalculationRequest.getBalance().getBalanceDates().getPeriodStartDate(),
                 balanceCalculationRequest.getBalance().getBalanceDates().getPeriodEndDate()
             )
+        );
+
+        balanceCalculationRequest.getBalance().setGroupedRecords(
+            balanceCalculationRequest.getBalance().getRecords()
+                .stream()
+                .collect(
+                    Collectors.groupingBy(record -> record.getRecordDate())
+                )
         );
     }
 
