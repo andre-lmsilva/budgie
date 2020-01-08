@@ -15,29 +15,13 @@
                     </div>
                     <h5 class="item-title d-inline" th:text="${record.category.name}"></h5>
 
-                    <span th:if="${record.recordType == 'SingleRecord'}" class="float-right">
-                        <div th:replace="fragments/record_delete_button :: SingleRecord(${record.id}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
-                    </span>
-                    <span th:if="${record.recordType == 'TransferRecord'}" class="float-right">
-                        <div th:replace="fragments/record_delete_button :: TransferRecord(${record.containerId}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
-                    </span>
-                    <span th:if="${record.recordType == 'InstalmentRecord'}" class="float-right">
-                        <div th:replace="fragments/record_delete_button :: InstalmentRecord(${record.id}, ${record.containerId}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
-                    </span>
-                    <span th:if="${record.recordType == 'BudgetRecord'}" class="float-right">
-                        <div th:replace="fragments/record_delete_button :: BudgetRecord(${record.id}, ${balance.balanceDates.referenceDate}, ${balance.account.id})"></div>
-                    </span>
-
                     <br/>
-                    <a  th:if="${!#strings.equals(record.recordType, 'TransferRecord') && !#strings.equals(record.recordType, 'DependantAccountRecord') && !#strings.equals(recordType, 'BudgetTemplateRecord')}"
-                        th:href="@{/records/edit/{id}(id=${record.id})}"
-                        title="Edit record.">
+                    <a  th:if="${!#strings.equals(record.recordType, 'DependantAccountRecord') && !#strings.equals(recordType, 'BudgetTemplateRecord')}"
+                        th:onclick="|showRecord('@{/records/{id}(id=${record.id})}')|"
+                        href="javascript:void(0)"
+                        title="Show record details.">
                         <span class="text-muted d-inline" th:text="${record.description}"></span>
                     </a>
-                    <span th:if="${#strings.equals(record.recordType, 'TransferRecord')}"
-                          class="text-muted d-inline"
-                          th:text="${record.description}">
-                    </span>
                     <a  th:if="${#strings.equals(record.recordType, 'DependantAccountRecord')}"
                         th:href="@{'/records'(accountId=${record.account.id},referenceDate=${record.periodStartDate})}"
                         title="Show account balance."

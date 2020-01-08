@@ -1,59 +1,88 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="fragments/header :: header"></head>
-    <body>
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col">
-                    <span th:text="${record.account.name}"></span>&nbsp;-&nbsp;
-                    <span th:if="${record.recordType == 'TransferRecord'}">Transfer between accounts</span>
-                    <span th:if="${record.recordType == 'SingleRecord'}">Single record</span>
-                    <span th:if="${record.recordType == 'BudgetRecord'}">Planned budget record</span>
-                    <span th:if="${record.recordType == 'InstalmentRecord'}">Instalment record</span>
-                </div>
+<div class="row mb-2">
+    <div class="col">
+        <span th:if="${record.recordType == 'SingleRecord'}">Single record</span>
+        <span th:if="${record.recordType == 'TransferRecord'}">Transfer between accounts</span>
+        <span th:if="${record.recordType == 'BudgetRecord'}">Planned budget record</span>
+        <span th:if="${record.recordType == 'InstalmentRecord'}">Instalment record</span>
+    </div>
+    <div class="col text-right">
+        <a  th:href="@{/records/edit/{id}(id=${record.id})}"
+            th:if="${!#strings.equals(record.recordType, 'TransferRecord') && !#strings.equals(record.recordType, 'DependantAccountRecord') && !#strings.equals(recordType, 'BudgetTemplateRecord')}"
+            class="text-info"
+            title="Edit record.">
+            <i class="far fa-edit"></i>&nbsp;Edit Record
+        </a>
+        &nbsp;
+        <a  th:href="@{'/records/delete/{id}'(id=${record.id},referenceDate=${record.recordDate},accountId=${record.account.id})}"
+            th:if="${record.recordType == 'SingleRecord'}"
+            title="Remove the record."
+            onclick="return confirm('Do you really want to remove the record?');"
+            class="text-danger">
+            <i class="fa fa-trash-alt"></i>&nbsp;Remove Record
+        </a>
+        <a  th:href="@{'/transfers/delete/{id}'(id=${record.containerId},referenceDate=${record.recordDate},accountId=${record.account.id})}"
+            th:if="${record.recordType == 'TransferRecord'}"
+            title="Remove the transfer between accounts."
+            onclick="return confirm('Do you really want to remove the transfer between accounts?');"
+            class="text-danger">
+            <i class="fa fa-trash-alt"></i>&nbsp;Remove Record
+        </a>
+        <div class="dropdown d-inline" th:if="${record.recordType == 'InstalmentRecord'}">
+            <a href="javascript:void(0)" class="text-danger dropdown-toggle" type="button" th:id="'btnDelete'+${record.id}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-trash-alt"></i>&nbsp;Remove Record
+            </a>
+            <div class="dropdown-menu" th:aria-labelledby="'btnDelete'+${record.id}">
+                <a  th:href="@{'/records/delete/{id}'(id=${record.id},referenceDate=${record.recordDate},accountId=${record.account.id})}"
+                    title="Remove only this installment record."
+                    onclick="return confirm('Do you really want to remove only this instalment record?\nThe other instalments will remain untouched.');"
+                    class="dropdown-item">
+                    Remove just this installment record
+                </a>
+                <a  th:href="@{'/instalments/delete/{id}'(id=${record.containerId},referenceDate=${record.recordDate},accountId=${record.account.id})}"
+                    title="Remove all instalment records."
+                    onclick="return confirm('Do you really want to remove all instalment record?');"
+                    class="dropdown-item">
+                    Remove all instalment records
+                </a>
             </div>
-
-            <div class="row">
-                <div class="col text-right bg-dark text-white mb-2" style="border-radius: 10px;">
-                    <span class="badge badge-pill badge-light mt-4 mb-4" th:text="${record.category.name}"></span>
-                    <h4 class="text-white mt-2" th:text="${#temporals.format(record.recordDate, 'dd/MM/yyyy')}"></h4>
-                    <h1 class="mb-2"
-                        th:classappend="${record.recordValue > 0 ? 'text-success' : 'text-danger'}"
-                        th:text="|${record.account.currency.currencySymbol} ${#numbers.formatDecimal(record.recordValue, 1, 'POINT', 2, 'COMMA')}|"></h1>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col">
-                    <strong>Description:</strong><br/>
-                    <p class="lead" th:text="${record.description}"></p>
-                </div>
-            </div>
-
-            <div class="row" th:if="${record.bankStatementId != null}">
-                <div class="col">
-                    <strong>Bank statement id:</strong><br/>
-                    <p class="lead" th:text="${record.bankStatementId}"></p>
-                </div>
-            </div>
-
-            <div class="row mt-4">
-                <div class="col">
-                    <a  th:if="${!#strings.equals(record.recordType, 'TransferRecord') && !#strings.equals(record.recordType, 'DependantAccountRecord') && !#strings.equals(recordType, 'BudgetTemplateRecord')}"
-                        th:href="@{/records/edit/{id}(id=${record.id})}"
-                        class="btn btn-info btn-lg btn-block"
-                        title="Edit record.">
-                        <i class="far fa-edit"></i>&nbsp;Edit Record
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="javascript:void(0)" class="btn btn-danger btn-lg btn-block">
-                        <i class="far fa-trash-alt fa-lg"></i>&nbsp;Remove Record
-                    </a>
-                </div>
-            </div>
-
         </div>
-        <div th:replace="fragments/footer :: footer"></div>
-    </body>
-</html>
+        <a  th:href="@{'/budgetRecords/delete/{id}'(id=${record.id},referenceDate=${record.recordDate},accountId=${record.account.id})}"
+            th:if="${record.recordType == 'BudgetRecord'}"
+            title="Remove the record."
+            onclick="return confirm('Do you really want to remove the record?');"
+            class="text-danger">
+            <i class="fa fa-trash-alt"></i>&nbsp;Remove Record
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col text-right bg-dark text-white mb-2" style="border-radius: 10px;">
+        <span class="badge badge-pill badge-light mt-4 mb-4" th:text="${record.category.name}"></span>
+        <h4 class="text-white mt-2" th:text="${#temporals.format(record.recordDate, 'dd/MM/yyyy')}"></h4>
+        <h1 class="mb-2"
+            th:classappend="${record.recordValue > 0 ? 'text-success' : 'text-danger'}"
+            th:text="|${record.account.currency.currencySymbol} ${#numbers.formatDecimal(record.recordValue, 1, 'POINT', 2, 'COMMA')}|"></h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <strong>From account:</strong><br/>
+        <p class="lead" th:text="${record.account.name}"></p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <strong>Description:</strong><br/>
+        <p class="lead" th:text="${record.description}"></p>
+    </div>
+</div>
+
+<div class="row" th:if="${record.bankStatementId != null and record.bankStatementId != ''}">
+    <div class="col">
+        <strong>Bank statement id:</strong><br/>
+        <p class="lead" th:text="${record.bankStatementId}"></p>
+    </div>
+</div>
