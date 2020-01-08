@@ -1,6 +1,5 @@
 package io.geekmind.budgie.authentication;
 
-import io.geekmind.budgie.model.dto.account_parameter.ExistingAccountParameter;
 import io.geekmind.budgie.model.entity.AccountParameterKey;
 import io.geekmind.budgie.repository.AccountParameterService;
 import io.geekmind.budgie.repository.StandardAccountService;

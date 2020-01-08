@@ -60,6 +60,7 @@ public class SingleRecordControllerImpl {
             null,
             recordDescription,
             recordValue,
+            null,
             null
         );
         requestContext.addObject("newSingleRecord", newSingleRecord);

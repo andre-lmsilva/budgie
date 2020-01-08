@@ -3,7 +3,7 @@
     <head th:replace="fragments/header :: header"></head>
     <body>
         <div th:replace="fragments/navbar :: navbar"></div>
-        <di0iv class="container-fluid">
+        <div class="container-fluid">
             <div class="row mb-5 page-header">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
@@ -45,6 +45,7 @@
                                             <td>
                                                 <input type="hidden" th:field="*{csvRecords[__${element.index}__].bankStatementId}"/>
                                                 <input type="hidden" th:field="*{csvRecords[__${element.index}__].accountId}"/>
+                                                <input type="hidden" th:field="*{csvRecords[__${element.index}__].sourceRecordHash}"/>
                                                 <select class="form-control" th:field="*{csvRecords[__${element.index}__].categoryId}" required>
                                                     <option th:each="category: ${availableCategories}" th:value="${category.id}" th:text="${category.name}"></option>
                                                 </select>

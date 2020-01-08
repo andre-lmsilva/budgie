@@ -35,4 +35,6 @@ public class NewSingleRecord {
     @Size(max = 140)
     private String bankStatementId;
 
+    private String sourceRecordHash;
+
 }
