@@ -46,8 +46,8 @@ public class CSVParserService {
 
         String mostRecentlyImportedCSVRecordHash = this.accountParameterService
             .loadByAccountAndKey(existingStandardAccount, AccountParameterKey.MOST_RECENTLY_CSV_RECORD_IMPORTED)
-            .orElse(new ExistingAccountParameter())
-            .getValue();
+            .map(ExistingAccountParameter::getValue)
+            .orElse("");
 
         List<NewSingleRecord> importedRecords =  parser.getRecords()
             .stream()
