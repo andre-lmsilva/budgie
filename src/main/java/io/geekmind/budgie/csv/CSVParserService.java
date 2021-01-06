@@ -70,7 +70,7 @@ public class CSVParserService {
 
                 if (record.get("transaction_type").toUpperCase().equals("DEBIT")) {
                     singleRecord.setRecordValue(
-                        new BigDecimal(record.get("debit"))
+                        new BigDecimal(record.get("debit")).negate()
                     );
                 } else if (record.get("transaction_type").toUpperCase().equals("CREDIT")) {
                     singleRecord.setRecordValue(
