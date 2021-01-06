@@ -3,12 +3,10 @@ package io.geekmind.budgie.csv;
 import io.geekmind.budgie.model.dto.NewSingleRecord;
 import io.geekmind.budgie.model.dto.account_parameter.ExistingAccountParameter;
 import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
-import io.geekmind.budgie.model.entity.AccountParameter;
 import io.geekmind.budgie.model.entity.AccountParameterKey;
 import io.geekmind.budgie.repository.AccountParameterService;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +15,7 @@ import java.io.StringReader;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,14 +23,25 @@ import java.util.stream.Collectors;
 @Service
 public class CSVParserService {
 
-    public static final String[] FILE_HEADERS = { "record_date", "description", "bank_statement_id", "record_value" };
+    public static final String[] FILE_HEADERS = {
+        "posted_account",
+        "record_date",
+        "description",
+        "debit",
+        "credit",
+        "balance",
+        "transaction_type"
+    };
+
     private final HashService hashService;
     private final AccountParameterService accountParameterService;
+    private DateTimeFormatter dateTimeFormatter;
 
     public CSVParserService(HashService hashService,
                             AccountParameterService accountParameterService) {
         this.hashService = hashService;
         this.accountParameterService = accountParameterService;
+        dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yy");
     }
 
     public List<NewSingleRecord> parseCSVFile(MultipartFile csvFile, ExistingStandardAccount existingStandardAccount) throws IOException {
@@ -40,8 +50,8 @@ public class CSVParserService {
         );
 
         CSVParser parser = CSVFormat.DEFAULT
+            .withSkipHeaderRecord()
             .withHeader(FILE_HEADERS)
-            .withFirstRecordAsHeader()
             .parse(csvContentReader);
 
         String mostRecentlyImportedCSVRecordHash = this.accountParameterService
@@ -54,10 +64,22 @@ public class CSVParserService {
             .map(record -> {
                 NewSingleRecord singleRecord = new NewSingleRecord();
                 singleRecord.setAccountId(existingStandardAccount.getId());
-                singleRecord.setRecordDate(LocalDate.parse(record.get("record_date")));
+                singleRecord.setRecordDate(LocalDate.parse(record.get("record_date"), this.dateTimeFormatter));
                 singleRecord.setDescription(record.get("description"));
-                singleRecord.setBankStatementId(record.get("bank_statement_id"));
-                singleRecord.setRecordValue(new BigDecimal(record.get("record_value")));
+                singleRecord.setBankStatementId(record.get("description"));
+
+                if (record.get("transaction_type").toUpperCase().equals("DEBIT")) {
+                    singleRecord.setRecordValue(
+                        new BigDecimal(record.get("debit"))
+                    );
+                } else if (record.get("transaction_type").toUpperCase().equals("CREDIT")) {
+                    singleRecord.setRecordValue(
+                        new BigDecimal(record.get("credit"))
+                    );
+                } else {
+                    singleRecord.setRecordValue(BigDecimal.ZERO);
+                }
+
                 singleRecord.setSourceRecordHash(
                     this.hashService.calculateMD5(record.toMap().toString())
                 );

@@ -56,5 +56,13 @@ The *dev* profile sets everything necessary to execute the application locally. 
 * The passphrase to encode database text fields is **textFieldSecretPhrase**.
 * The passphrase to encode database numeric fields is **decimalFieldSecretPhrase**.
 
-
 Those values are defined on ```/src/main/resources/application-dev.yml``` file and can be overwritten used environment variables or jvm parameters.
+
+# To Do:
+
+* Refactor standard balance service to implement a chain of steps.
+* Implement file attachment to records.
+* Implement refund records.
+* Implement tags.
+* Consider to retire the project accounts concept.
+* Refine CSV importing logic.

@@ -3,14 +3,17 @@
     <head th:replace="fragments/header :: header"></head>
     <body>
         <div class="container" style="min-height:100vh">
-            <div class="row justify-content-md-center align-items-center" style="min-height: 100vh">
+            <div class="row justify-content-md-center align-items-center" style="min-height: 100vh;margin-top: -80px;">
                 <div class="col-md-4 col-sm-6">
                     <div th:if="${param.logout}">
                         <div class="alert alert-info">You have been logged out.</div>
                     </div>
 
-                    <img th:src="@{/images/wallet.png}" class="mx-auto d-block" height="128" width="128"/>
-                    <h1 class="text-center">budgie.</h1>
+                    <div class="mb-3">
+                        <img th:src="@{/images/wallet.png}" class="mx-auto d-block" height="64" width="64"/>
+                        <h1 class="text-center">budgie.</h1>
+                    </div>
+
                     <form th:action="@{/login}" method="post">
                         <fieldset>
                             <div th:if="${param.error}">
