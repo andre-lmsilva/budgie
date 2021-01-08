@@ -29,11 +29,17 @@
                                         <span class="text-muted d-block" th:text="${record.description}"></span>
                                     </a>
 
-                                    <span class="text-small d-inline"
-                                          th:if="${record.bankStatementId != null}"
-                                          th:title="${record.bankStatementId}">
+                                    <span   class="text-small d-inline"
+                                            th:if="${record.bankStatementId != null}"
+                                            th:title="${record.bankStatementId}">
                                         <i class="fas fa-info-circle"></i>
                                     </span>
+                                    <span   class="text-small d-inline"
+                                            th:if="${not #lists.isEmpty(record.attachments)}"
+                                            title="This record contains files attached.">
+                                        <i class="fa fa-paperclip"></i>
+                                    </span>
+
                                     <span th:if="${#strings.equals(record.recordType, 'TransferRecord')}"
                                           class="text-small d-inline"
                                           title="Transfer between accounts">

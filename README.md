@@ -60,7 +60,6 @@ Those values are defined on ```/src/main/resources/application-dev.yml``` file a
 
 # To Do:
 
-* Refactor standard balance service to implement a chain of steps.
 * Implement file attachment to records.
 * Implement refund records.
 * Implement tags.

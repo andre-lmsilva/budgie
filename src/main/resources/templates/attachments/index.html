@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: header"></head>
+    <body>
+        <div th:replace="fragments/navbar :: navbar"></div>
+        <div class="container-fluid">
+            <div class="row page-header mb-5">
+                <div class="col-lg-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
+                        <li class="breadcrumb-item active">Attachments</li>
+                    </ol>
+                    <h2 class="d-md-block d-sm-none d-none"><i class="fa fa-paperclip"></i>&nbsp;Attachments</h2>
+                    <h4 class="d-md-none d-block"><i class="fa fa-paperclip"></i>&nbsp;Attachments</h4>
+                </div>
+            </div>
+
+            <div class="row mt-3 mb-3" th:if="${null != message}">
+                <div class="col">
+                    <div class="alert alert-success" th:text="${message}"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <fieldset>
+                        <legend><i class="fa fa-dollar-sign"></i>&nbsp;Record Details</legend>
+                    </fieldset>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Date:</strong></td>
+                                    <td th:text="${#temporals.format(existingRecord.recordDate, 'dd/MM/yyyy')}"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Account:</strong></td>
+                                    <td th:text="${existingRecord.account.name}"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Category:</strong></td>
+                                    <td th:text="${existingRecord.category.name}"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Description:</strong></td>
+                                    <td th:text="${existingRecord.description}"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Value:</strong></td>
+                                    <td class="text-left"
+                                        th:classappend="${existingRecord.recordValue} > 0 ? text-info : text-danger"
+                                        th:text="|${existingRecord.account.currency.currencySymbol} ${#numbers.formatDecimal(existingRecord.recordValue, 1, 'POINT', 2, 'COMMA')}|"></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <form class="mb-5" action="#" th:action="@{/attachments/upload}" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="recordId" id="recordId" th:value="${existingRecord.id}"/>
+                        <fieldset>
+                            <legend><i class="fa fa-paperclip"></i>&nbsp;Attach New File</legend>
+                            <div class="form-group">
+                                <label for="attachmentFile">File:</label>
+                                <input type="file" name="attachmentFile" id="attachmentFile" class="form-control"/>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <button type="submit" class="btn btn-primary">Attach</button>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </form>
+                    <fieldset>
+                        <legend><i class="fa fa-folder-open"></i>&nbsp;Attached Files</legend>
+                    </fieldset>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Name</th>
+                                    <th class="text-center">Type</th>
+                                    <th class="text-center">Size</th>
+                                    <th class="text-center" style="width:100px">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:if="${#lists.isEmpty(existingRecord.attachments)}">
+                                    <td colspan="3" class="text-center">
+                                        No file attached to this record yet.
+                                    </td>
+                                </tr>
+                                <tr th:each="attachment: ${existingRecord.attachments}">
+                                    <td>
+                                        <a  th:href="@{/attachments/download/{id}(id=${attachment.id})}"
+                                            th:text="${attachment.attachmentName}"
+                                            title="Download attachment"
+                                            target="_blank"></a>
+                                    </td>
+                                    <td class="text-center" th:text="${attachment.mimeType}"></td>
+                                    <td class="text-center" th:text="|${#numbers.formatDecimal(attachment.sizeKb, 1, 'POINT', 2, 'COMMA')} Kb|"></td>
+                                    <td class="text-center">
+                                        <a th:href="@{/attachments/delete/{id}(id=${attachment.id})}"
+                                           title="Remove attachment."
+                                           onclick="return confirm('Do you really want to remove the attachment?\nThis operation cannot be undone.');"
+                                           class="text-danger">
+                                            <i class="fa fa-trash-alt fa-lg"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer :: footer"></div>
+    </body>
+</html>

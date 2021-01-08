@@ -51,6 +51,5 @@ public class RecordMappingSettings implements OrikaMapperFactoryConfigurer {
 
                 }
             }).byDefault().register();
-
     }
 }

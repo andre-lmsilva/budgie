@@ -7,10 +7,14 @@ import io.geekmind.budgie.repository.BudgetTemplateRecordService;
 import io.geekmind.budgie.repository.CategoryService;
 import io.geekmind.budgie.repository.StandardAccountService;
 import io.geekmind.budgie.repository.StandardBalanceService;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -20,7 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  *
  * @author Andre Silva
  */
-@Service
+@Controller
 @RequestMapping("/budget")
 public class BudgetController {
 

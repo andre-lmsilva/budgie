@@ -47,7 +47,7 @@ public class StandardBalanceService {
      */
     public Balance generateBalance(Integer accountId, LocalDate referenceDate, BalanceType balanceType) {
         return this.retrieveAccount(accountId)
-            .map(account -> {
+            .map((ExistingStandardAccount account) -> {
                 LocalDate refDate = Optional.ofNullable(referenceDate).orElse(LocalDate.now());
                 BalanceCalculationRequest.BalanceCalculationRequestBuilder requestBuilder =
                         new BalanceCalculationRequest.BalanceCalculationRequestBuilder();

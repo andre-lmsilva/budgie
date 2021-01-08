@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
@@ -42,5 +43,8 @@ public abstract class Record {
     @Size(max = 140)
     @Type(type = "encryptedTextField")
     private String bankStatementId;
+
+    @OneToMany(mappedBy = "record", orphanRemoval = true, cascade = {CascadeType.ALL})
+    private List<Attachment> attachments;
 
 }

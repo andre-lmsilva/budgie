@@ -1,5 +1,6 @@
 package io.geekmind.budgie.model.dto;
 
+import io.geekmind.budgie.model.dto.attachments.ExistingAttachment;
 import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import io.geekmind.budgie.model.dto.category.ExistingCategory;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -26,6 +28,8 @@ public class ExistingRecord implements Serializable {
 
     @NotNull
     private ExistingStandardAccount account;
+
+    private List<ExistingAttachment> attachments;
 
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

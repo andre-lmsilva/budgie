@@ -1,11 +1,17 @@
 <div class="row mb-2">
-    <div class="col">
+    <div class="col-3">
         <span th:if="${record.recordType == 'SingleRecord'}">Single record</span>
         <span th:if="${record.recordType == 'TransferRecord'}">Transfer between accounts</span>
         <span th:if="${record.recordType == 'BudgetRecord'}">Planned budget record</span>
         <span th:if="${record.recordType == 'InstalmentRecord'}">Instalment record</span>
     </div>
-    <div class="col text-right">
+    <div class="col-9 text-right">
+        <a  th:href="@{/attachments?recordId={id}(id=${record.id})}"
+            class="text-success"
+            title="Manager record attachmentds.">
+            <i class="fa fa-paperclip"></i>&nbsp;Attachments
+        </a>
+        &nbsp;
         <a  th:href="@{/records/edit/{id}(id=${record.id})}"
             th:if="${!#strings.equals(record.recordType, 'TransferRecord') && !#strings.equals(record.recordType, 'DependantAccountRecord') && !#strings.equals(recordType, 'BudgetTemplateRecord')}"
             class="text-info"

@@ -14,6 +14,7 @@ budgie:
   encrypt:
     textFieldSecretPhrase: textFieldSecretPhrase
     decimalFieldSecretPhrase: decimalFieldSecretPhrase
+    byteFieldSecretPhrase: byteFieldSecretPhrase
   auth:
     username: JDJhJDEwJGNSQlBDL0szalRKeXdDdW40Wldxcy5CSExUN0xoaTl2Li5LREtuWWdpZmVpenRxS2p4ZHpx # user
     password: JDJhJDEwJDNpWGJicUVMaWIwSWZlaWF3ajFwN3VjWVh5VUJUM2VsalFPRm9Zem5RVmpXdU9ZUy9GLjMu # password
