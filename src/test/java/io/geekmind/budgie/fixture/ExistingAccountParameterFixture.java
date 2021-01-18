@@ -16,4 +16,13 @@ public class ExistingAccountParameterFixture {
         return existingAccountParameter;
     }
 
+    public static ExistingAccountParameter mostRecentlyCSVRecordImported() {
+        ExistingAccountParameter existingAccountParameter = new ExistingAccountParameter();
+        existingAccountParameter.setId(-1);
+        existingAccountParameter.setAccount(ExistingStandardAccountFixture.getSavingsAccount());
+        existingAccountParameter.setKey(AccountParameterKey.MOST_RECENTLY_CSV_RECORD_IMPORTED);
+        existingAccountParameter.setValue("Fake Hash");
+        return existingAccountParameter;
+    }
+
 }

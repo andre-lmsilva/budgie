@@ -1,20 +1,25 @@
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="RecordGrid(records, balance, filterable)">
-    <table class="table table-bordered table-hover table-stripped table-sm"
-           th:classappend="${filterable} ? filterable : ''">
+    <table class="table table-striped table-sm" th:classappend="${filterable} ? filterable : ''">
+        <thead class="thead-dark">
+            <tr>
+                <th class="text-center" style="width:100px">Date</th>
+                <th>Description</th>
+                <th class="text-center" style="width:150px">Value</th>
+            </tr>
+        </thead>
         <tbody>
             <tr>
                 <td th:include="fragments/filter_form_table_row :: FilterTableRow" th:if="${filterable}"></td>
             </tr>
             <tr th:each="record: ${records}"
                 th:class="|${record.recordType == 'BudgetRecord' ? 'table-info' : ''} ${record.lastCreated ? 'last-created-record' : ''}|">
-                <td>
+                <td class="text-center">
                     <input type="hidden" class="record-value" th:value="${record.recordValue}" th:if="${filterable}"/>
-                    <div class="day-of-month d-inline float-left text-monospace">
-                        <h4 th:text="${#temporals.format(record.recordDate,'dd')}"></h4>
-                        <span th:text="${#temporals.format(record.recordDate, 'MMM')}"></span>
-                    </div>
+                    <span th:text="${#temporals.format(record.recordDate, 'dd-MMM')}"></span>
+                </td>
+                <td>
                     <h5 class="item-title d-inline" th:text="${record.category.name}"></h5>
-
+                    <span class="text-small d-inline" th:if="${record.bankStatementId != null}" th:title="${record.bankStatementId}"><i class="fas fa-info-circle"></i></span>
                     <br/>
                     <a  th:if="${!#strings.equals(record.recordType, 'DependantAccountRecord') && !#strings.equals(recordType, 'BudgetTemplateRecord')}"
                         th:onclick="|showRecord('@{/records/{id}(id=${record.id})}')|"
@@ -34,33 +39,35 @@
                           title="Transfer between accounts">
                         <i class="fas fa-exchange-alt"></i>
                     </span>
-                    <span class="text-small d-inline" th:if="${record.bankStatementId != null}" th:title="${record.bankStatementId}"><i class="fas fa-info-circle"></i></span>
-                    <br/>
-
-                    <span class="text-right float-right"
-                        th:text="|${record.account.currency.currencySymbol} ${#numbers.formatDecimal(record.recordValue, 1, 'POINT', 2, 'COMMA')}|"
-                        th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></span>
+                </td>
+                <td class="text-right"
+                    th:text="|${record.account.currency.currencySymbol} ${#numbers.formatDecimal(record.recordValue, 1, 'POINT', 2, 'COMMA')}|"
+                    th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></span>
                 </td>
             </tr>
         </tbody>
         <tfoot th:if="${filterable}">
             <tr>
+                <td class="text-right" colspan="2">
+                    <strong>Total:</strong>
+                </td>
                 <td class="text-right">
-                    <strong>Balance:</strong>
                     <a  th:href="@{'/single_records/new'(recordDate=${balance.balanceDates.nextPeriodStartDate},recordDescription='Previous period balance.', accountId=${balance.account.id}, recordValue=${balance.summary.finalBalance})}"
                         title="Copy final balance to the next period."
-                        th:class="${balance.summary.finalBalance} > 0 ? text-success : text-danger">
-                        <span th:text="|${balance.account.currency.currencySymbol} ${#numbers.formatDecimal(balance.summary.finalBalance, 1, 'POINT', 2, 'COMMA')}|" id="lblBalance"></span>
+                        th:class="${balance.summary.finalBalance} > 0 ? text-success : text-danger"
+                        th:text="|${balance.account.currency.currencySymbol} ${#numbers.formatDecimal(balance.summary.finalBalance, 1, 'POINT', 2, 'COMMA')}|" id="lblBalance">
                     </a>
                 </td>
             </tr>
         </tfoot>
         <tfoot th:if="${not filterable}">
             <tr>
-                <td class="text-right">
-                    <strong>Balance:</strong>
-                    <span   th:text="|${records[0].account.currency.currencySymbol} ${#aggregates.sum(records.![recordValue])}|"
-                            th:class="${#aggregates.sum(records.![recordValue])} > 0 ? text-success : text-danger"></span>
+                <td class="text-right" colspan="2">
+                    <strong>Total:</strong>
+                </td>
+                <td class="text-right"
+                    th:text="|${records[0].account.currency.currencySymbol} ${#aggregates.sum(records.![recordValue])}|"
+                    th:classappend="${#aggregates.sum(records.![recordValue])} > 0 ? text-success : text-danger">
                 </td>
             </tr>
         </tfoot>

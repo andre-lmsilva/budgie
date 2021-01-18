@@ -1,22 +1,22 @@
 <div class="row mb-2">
-    <div class="col-3">
+    <div class="col-4">
         <span th:if="${record.recordType == 'SingleRecord'}">Single record</span>
         <span th:if="${record.recordType == 'TransferRecord'}">Transfer between accounts</span>
         <span th:if="${record.recordType == 'BudgetRecord'}">Planned budget record</span>
         <span th:if="${record.recordType == 'InstalmentRecord'}">Instalment record</span>
     </div>
-    <div class="col-9 text-right">
+    <div class="col-8 text-right">
         <a  th:href="@{/attachments?recordId={id}(id=${record.id})}"
             class="text-success"
             title="Manager record attachmentds.">
-            <i class="fa fa-paperclip"></i>&nbsp;Attachments
+            <i class="fa fa-paperclip"></i><span class="d-none d-sm-inline">&nbsp;Attachments</span>
         </a>
         &nbsp;
         <a  th:href="@{/records/edit/{id}(id=${record.id})}"
             th:if="${!#strings.equals(record.recordType, 'TransferRecord') && !#strings.equals(record.recordType, 'DependantAccountRecord') && !#strings.equals(recordType, 'BudgetTemplateRecord')}"
             class="text-info"
             title="Edit record.">
-            <i class="far fa-edit"></i>&nbsp;Edit Record
+            <i class="far fa-edit"></i><span class="d-none d-sm-inline">&nbsp;Edit Record</span>
         </a>
         &nbsp;
         <a  th:href="@{'/records/delete/{id}'(id=${record.id},referenceDate=${record.recordDate},accountId=${record.account.id})}"
@@ -24,18 +24,18 @@
             title="Remove the record."
             onclick="return confirm('Do you really want to remove the record?');"
             class="text-danger">
-            <i class="fa fa-trash-alt"></i>&nbsp;Remove Record
+            <i class="fa fa-trash-alt"></i><span class="d-none d-sm-inline">&nbsp;Remove Record</span>
         </a>
         <a  th:href="@{'/transfers/delete/{id}'(id=${record.containerId},referenceDate=${record.recordDate},accountId=${record.account.id})}"
             th:if="${record.recordType == 'TransferRecord'}"
             title="Remove the transfer between accounts."
             onclick="return confirm('Do you really want to remove the transfer between accounts?');"
             class="text-danger">
-            <i class="fa fa-trash-alt"></i>&nbsp;Remove Record
+            <i class="fa fa-trash-alt"></i><span class="d-none d-sm-inline">&nbsp;Remove Record</span>
         </a>
         <div class="dropdown d-inline" th:if="${record.recordType == 'InstalmentRecord'}">
             <a href="javascript:void(0)" class="text-danger dropdown-toggle" type="button" th:id="'btnDelete'+${record.id}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-trash-alt"></i>&nbsp;Remove Record
+                <i class="fa fa-trash-alt"></i><span class="d-none d-sm-inline">&nbsp;Remove Record</span>
             </a>
             <div class="dropdown-menu" th:aria-labelledby="'btnDelete'+${record.id}">
                 <a  th:href="@{'/records/delete/{id}'(id=${record.id},referenceDate=${record.recordDate},accountId=${record.account.id})}"

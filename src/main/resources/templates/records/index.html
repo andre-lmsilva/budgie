@@ -152,30 +152,37 @@
                                                        aria-expanded="false"
                                                        th:data-target="|#category${categorySummary.category.id}|"
                                                        th:aria-controls="|category${categorySummary.category.id}|">
-                                                        <i class='fa fa-tag'></i>&nbsp;<span th:text="${categorySummary.category.name}|"></span>
+                                                        <span th:text="${categorySummary.category.name}|"></span>
                                                     </a>
                                                 </div>
                                                 <div class="text-right"
-                                                     th:classappend="${categorySummary.balance > 0} ? text-success : text-danger"
+                                                     th:classappend="${categorySummary.balance > 0} ? text-info : text-danger"
                                                      th:text="|${balance.account.currency.currencySymbol} ${#numbers.formatDecimal(categorySummary.balance, 1, 'POINT', 2, 'COMMA')}|">
                                                 </div>
                                             </div>
                                             <div th:id="|category${categorySummary.category.id}|" class="collapse" th:aria-labelledby="|category-header-${categorySummary.category.id}|">
                                                 <div class="card-body">
                                                     <div class="table-responsive">
-                                                        <table class="table table-bordered table-hover table-sm table-stripped">
+                                                        <table class="table table-sm table-striped">
+                                                            <thead class="thead-dark">
+                                                                <tr>
+                                                                    <th class="text-center" style="width:100px;">Date</th>
+                                                                    <th>Description</th>
+                                                                    <th class="text-center" style="width:150px;">Value</th>
+                                                                </tr>
+                                                            </thead>
                                                             <tbody>
                                                                 <tr th:each="record: ${categorySummary.records}" th:if="${record.account.name == balance.account.name}">
+                                                                    <td class="text-center"
+                                                                        th:text="${#temporals.format(record.recordDate, 'dd-MMM')}">
+                                                                    </td>
                                                                     <td>
-                                                                        <div class="day-of-month d-inline float-left text-monospace">
-                                                                            <h4 th:Text="${#temporals.format(record.recordDate, 'dd')}"></h4>
-                                                                            <span th:text="${#temporals.format(record.recordDate, 'MMM')}"></span>
-                                                                        </div>
                                                                         <h5 class="item-title d-inline" th:text="${record.category.name}"></h5>
+                                                                        <span class="text-small d-inline" th:if="${record.bankStatementId != null}" th:title="${record.bankStatementId}"><i class="fas fa-info-circle"></i></span>
                                                                         <a  th:if="${!#strings.equals(record.recordType, 'TransferRecord') && !#strings.equals(record.recordType, 'DependantAccountRecord') && !#strings.equals(recordType, 'BudgetTemplateRecord')}"
-                                                                            th:href="@{/records/edit/{id}(id=${record.id})}"
-                                                                            title="Edit record.">
-                                                                            <span class="text-small" th:if="${record.bankStatementId != null}" th:title="${record.bankStatementId}"><i class="fas fa-info-circle"></i></span>
+                                                                            th:onclick="|showRecord('@{/records/{id}(id=${record.id})}')|"
+                                                                            href="javascript:void(0)"
+                                                                            title="Show record details.">
                                                                             <span class="text-muted d-block" th:text="${record.description}"></span>
                                                                         </a>
 
@@ -188,28 +195,29 @@
                                                                               class="text-muted d-block"
                                                                               th:text="${record.description}">
                                                                         </span>
-
-                                                                        <span class="text-right float-right"
-                                                                              th:text="|${record.account.currency.currencySymbol} ${#numbers.formatDecimal(record.recordValue, 1, 'POINT', 2, 'COMMA')}|"
-                                                                              th:classappend="${record.recordValue} > 0 ? text-info : text-danger"></span>
+                                                                    </td>
+                                                                    <td class="text-right"
+                                                                        th:text="|${record.account.currency.currencySymbol} ${#numbers.formatDecimal(record.recordValue, 1, 'POINT', 2, 'COMMA')}|"
+                                                                        th:classappend="${record.recordValue} > 0 ? text-info : text-danger">
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
                                                             <tfoot>
                                                                 <tr th:each="breakDown: ${categorySummary.balanceBreakDown}">
-                                                                    <td class="text-right">
-                                                                        <span th:text="|Total of ${breakDown.key}:|"></span>&nbsp;
-                                                                        <span class="text-right float-right"
-                                                                              th:text="|${balance.account.currency.currencySymbol} ${#numbers.formatDecimal(breakDown.value, 1, 'POINT', 2, 'COMMA')}|"
-                                                                              th:classappend="${breakDown.value} > 0 ? text-info : text-danger"></span>
+                                                                    <td class="text-right"
+                                                                        colspan="2"
+                                                                        th:text="|Total of ${breakDown.key}:|">
+                                                                    </td>
+                                                                    <td class="text-right"
+                                                                        th:text="|${balance.account.currency.currencySymbol} ${#numbers.formatDecimal(breakDown.value, 1, 'POINT', 2, 'COMMA')}|"
+                                                                        th:classappend="${breakDown.value} > 0 ? text-info : text-danger">
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="text-right">
-                                                                        Total:&nbsp;
-                                                                        <span class="text-right float-right"
-                                                                              th:text="|${balance.account.currency.currencySymbol} ${#numbers.formatDecimal(categorySummary.balance, 1, 'POINT', 2, 'COMMA')}|"
-                                                                              th:classappend="${categorySummary.balance} > 0 ? text-info : text-danger"></span>
+                                                                    <td class="text-right" colspan="2">Total:</td>
+                                                                    <td class="text-right"
+                                                                        th:text="|${balance.account.currency.currencySymbol} ${#numbers.formatDecimal(categorySummary.balance, 1, 'POINT', 2, 'COMMA')}|"
+                                                                        th:classappend="${categorySummary.balance} > 0 ? text-info : text-danger"></span>
                                                                     </td>
                                                                 </tr>
                                                             </tfoot>

@@ -1,5 +1,6 @@
 body {
     padding-top: 80px;
+    padding-bottom: 80px;
 }
 
 .thead-dark th {
@@ -114,7 +115,7 @@ em {
 }
 
 tfoot > tr > td {
-    background-color: #f0f0f0;
+    background-color: #e0e0e0;
 }
 
 .last-created-record {
