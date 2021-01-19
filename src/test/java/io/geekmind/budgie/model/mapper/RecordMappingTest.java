@@ -10,12 +10,11 @@ import io.geekmind.budgie.model.entity.TransferRecord;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class RecordMappingTest {
 
@@ -41,7 +40,9 @@ public class RecordMappingTest {
             .hasFieldOrPropertyWithValue("recordValue", fakeSingleRecord.getRecordValue())
             .hasFieldOrPropertyWithValue("recordType", "SingleRecord")
             .hasFieldOrPropertyWithValue("containerId", null)
-            .hasFieldOrPropertyWithValue("upcoming", Boolean.TRUE);
+            .hasFieldOrPropertyWithValue("upcoming", Boolean.TRUE)
+            .hasFieldOrPropertyWithValue("isTaxRefundable", Boolean.TRUE);
+
     }
 
     @Test
@@ -57,6 +58,7 @@ public class RecordMappingTest {
     public void merging_FromExistingRecordToAlreadyFilledSingleRecord_DoesNotMapNull() {
         ExistingRecord fakeExistingRecord = ExistingRecordFixture.getWithValue(BigDecimal.valueOf(-500D));
         fakeExistingRecord.setDescription(null);
+        fakeExistingRecord.setIsTaxRefundable(false);
         SingleRecord fakeSingleRecord = SingleRecordFixture.getIncomeRecord();
         this.mapper.map(fakeExistingRecord, fakeSingleRecord);
 
@@ -65,7 +67,8 @@ public class RecordMappingTest {
             .hasFieldOrPropertyWithValue("recordDate", fakeExistingRecord.getRecordDate())
             .hasFieldOrPropertyWithValue("category.id", fakeExistingRecord.getCategory().getId())
             .hasFieldOrPropertyWithValue("account.id", fakeExistingRecord.getAccount().getId())
-            .hasFieldOrPropertyWithValue("recordValue", fakeExistingRecord.getRecordValue());
+            .hasFieldOrPropertyWithValue("recordValue", fakeExistingRecord.getRecordValue())
+            .hasFieldOrPropertyWithValue("isTaxRefundable", fakeExistingRecord.getIsTaxRefundable());
 
         assertThat(fakeSingleRecord.getDescription()).isNotNull();
     }

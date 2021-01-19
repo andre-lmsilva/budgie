@@ -14,6 +14,7 @@ public class SingleRecordFixture {
         record.setCategory(CategoryFixture.get());
         record.setDescription("Fake income record.");
         record.setRecordValue(BigDecimal.valueOf(3.1415D));
+        record.setIsTaxRefundable(true);
         return record;
     }
 

@@ -47,4 +47,7 @@ public abstract class Record {
     @OneToMany(mappedBy = "record", orphanRemoval = true, cascade = {CascadeType.ALL})
     private List<Attachment> attachments;
 
+    @Column(nullable = false)
+    private Boolean isTaxRefundable = Boolean.FALSE;
+
 }

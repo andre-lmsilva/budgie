@@ -61,7 +61,8 @@ public class SingleRecordControllerImpl {
             recordDescription,
             recordValue,
             null,
-            null
+            null,
+            false
         );
         requestContext.addObject("newSingleRecord", newSingleRecord);
         requestContext.addObject("balance", this.balanceService.generateBalance(accountId, recordDate, BalanceType.REGULAR_PERIOD_BALANCE));

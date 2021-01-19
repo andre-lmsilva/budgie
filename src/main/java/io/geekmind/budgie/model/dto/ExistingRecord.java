@@ -53,4 +53,6 @@ public class ExistingRecord implements Serializable {
 
     private Boolean lastCreated = Boolean.FALSE;
 
+    private Boolean isTaxRefundable = Boolean.FALSE;
+
 }

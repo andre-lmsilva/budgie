@@ -15,7 +15,8 @@ public class NewSingleRecordFixture {
             "Fake Single Record",
             BigDecimal.valueOf(3.1415D),
             "fakeBankStatementId",
-            null
+            null,
+            false
         );
     }
 
@@ -27,19 +28,21 @@ public class NewSingleRecordFixture {
             "MONTHLY SALARY",
             BigDecimal.valueOf(1000L),
             "MONTHLY SALARY",
-            "fakeCreditHash"
+            "fakeCreditHash",
+            false
         );
     }
 
     public static NewSingleRecord debit() {
         return new NewSingleRecord(
-          LocalDate.now(),
+            LocalDate.now(),
             -1,
             -99,
             "CAR LOAN",
             BigDecimal.valueOf(-299.9D),
             "CAR LOAN",
-            "fakeDebitHash"
+            "fakeDebitHash",
+            false
         );
     }
 

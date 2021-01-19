@@ -16,6 +16,7 @@ public class ExistingRecordFixture {
         existingRecord.setId(-1);
         existingRecord.setRecordValue(value);
         existingRecord.setBankStatementId("fakeBankStatementId");
+        existingRecord.setIsTaxRefundable(true);
         return existingRecord;
     }
 

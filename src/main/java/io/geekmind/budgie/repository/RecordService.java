@@ -58,10 +58,12 @@ public class RecordService {
         Optional<Record> recordToUpdate = this.recordRepository.findById(existingRecord.getId());
         if (recordToUpdate.isPresent()) {
             Record record = recordToUpdate.get();
+
             record.setRecordDate(existingRecord.getRecordDate());
             record.setDescription(existingRecord.getDescription());
             record.setRecordValue(existingRecord.getRecordValue());
             record.setBankStatementId(existingRecord.getBankStatementId());
+            record.setIsTaxRefundable(existingRecord.getIsTaxRefundable());
 
             this.standardAccountRepository.findById(existingRecord.getAccount().getId())
                 .ifPresent(record::setAccount);

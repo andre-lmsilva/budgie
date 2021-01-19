@@ -92,3 +92,9 @@
         <p class="lead" th:text="${record.bankStatementId}"></p>
     </div>
 </div>
+
+<div class="row" th:if="${record.isTaxRefundable}">
+    <div class="col">
+        <strong class="text-warning">This is a tax refundable transaction.</strong>
+    </div>
+</div>

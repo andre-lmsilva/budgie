@@ -37,4 +37,6 @@ public class NewSingleRecord {
 
     private String sourceRecordHash;
 
+    private Boolean isTaxRefundable;
+
 }
