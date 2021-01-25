@@ -194,6 +194,7 @@ public class CSVParserService {
                 csvRecord.toMap().toString()
             )
         );
+        newSingleRecord.setIsTaxRefundable(false);
         LOGGER.debug("Parser CSV record: {}", newSingleRecord.toString());
         return newSingleRecord;
     }
