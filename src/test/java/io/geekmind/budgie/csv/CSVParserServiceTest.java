@@ -179,7 +179,7 @@ public class CSVParserServiceTest {
         CSVRecordWrapper debitRecord = CSVRecordWrapperFixture.debit();
         doReturn("fakeDebitHash").when(this.hashService).calculateMD5(anyString());
         doReturn(new HashMap<>()).when(debitRecord).toMap();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yy");
 
         NewSingleRecord result = this.service.mapFrom(debitRecord, -1);
 
@@ -187,7 +187,7 @@ public class CSVParserServiceTest {
             .hasFieldOrPropertyWithValue("accountId", -1)
             .hasFieldOrPropertyWithValue("description", "CAR LOAN")
             .hasFieldOrPropertyWithValue("bankStatementId", "CAR LOAN")
-            .hasFieldOrPropertyWithValue("recordDate", LocalDate.parse("21/01/2021", dateTimeFormatter))
+            .hasFieldOrPropertyWithValue("recordDate", LocalDate.parse("21/01/21", dateTimeFormatter))
             .hasFieldOrPropertyWithValue("sourceRecordHash", "fakeDebitHash")
             .hasFieldOrPropertyWithValue("recordValue", BigDecimal.valueOf(200.0D).negate());
     }

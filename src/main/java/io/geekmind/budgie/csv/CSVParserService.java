@@ -61,7 +61,7 @@ public class CSVParserService {
 
     @PostConstruct
     public void initialize() {
-        this.dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        this.dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yy");
     }
 
     /**
@@ -180,9 +180,7 @@ public class CSVParserService {
         newSingleRecord.setDescription(csvRecord.get("description").trim());
         newSingleRecord.setBankStatementId(csvRecord.get("description").trim());
         newSingleRecord.setRecordDate(
-            LocalDate.parse(
-                csvRecord.get("record_date"), this.dateTimeFormatter
-            )
+            LocalDate.parse(csvRecord.get("record_date"), this.dateTimeFormatter)
         );
 
         String transactionType = csvRecord.get("transaction_type").toLowerCase().trim();

@@ -9,7 +9,7 @@ public class CSVRecordWrapperFixture {
     public static CSVRecordWrapper zero() {
         CSVRecordWrapper csvRecordWrapper = mock(CSVRecordWrapper.class);
         doReturn("BALANCE").when(csvRecordWrapper).get("description");
-        doReturn("13/01/2021").when(csvRecordWrapper).get("record_date");
+        doReturn("13/01/21").when(csvRecordWrapper).get("record_date");
         doReturn("CREDIT").when(csvRecordWrapper).get("transaction_type");
         doReturn("0.0").when(csvRecordWrapper).get("credit");
         return csvRecordWrapper;
@@ -18,7 +18,7 @@ public class CSVRecordWrapperFixture {
     public static CSVRecordWrapper credit() {
         CSVRecordWrapper csvRecordWrapper = mock(CSVRecordWrapper.class);
         doReturn("MONTHLY SALARY").when(csvRecordWrapper).get("description");
-        doReturn("13/01/2021").when(csvRecordWrapper).get("record_date");
+        doReturn("13/01/21").when(csvRecordWrapper).get("record_date");
         doReturn("CREDIT").when(csvRecordWrapper).get("transaction_type");
         doReturn("1000.0").when(csvRecordWrapper).get("credit");
         return csvRecordWrapper;
@@ -27,7 +27,7 @@ public class CSVRecordWrapperFixture {
     public static CSVRecordWrapper debit() {
         CSVRecordWrapper csvRecordWrapper = mock(CSVRecordWrapper.class);
         doReturn("CAR LOAN").when(csvRecordWrapper).get("description");
-        doReturn("21/01/2021").when(csvRecordWrapper).get("record_date");
+        doReturn("21/01/21").when(csvRecordWrapper).get("record_date");
         doReturn("DEBIT").when(csvRecordWrapper).get("transaction_type");
         doReturn("200.0").when(csvRecordWrapper).get("debit");
         return csvRecordWrapper;
