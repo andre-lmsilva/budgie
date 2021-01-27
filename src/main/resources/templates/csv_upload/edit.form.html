@@ -46,6 +46,7 @@
                                                 <input type="hidden" th:field="*{csvRecords[__${element.index}__].bankStatementId}"/>
                                                 <input type="hidden" th:field="*{csvRecords[__${element.index}__].accountId}"/>
                                                 <input type="hidden" th:field="*{csvRecords[__${element.index}__].sourceRecordHash}"/>
+                                                <input type="hidden" th:field="*{csvRecords[__${element.index}__].isTaxRefundable}"/>
                                                 <select class="form-control" th:field="*{csvRecords[__${element.index}__].categoryId}" required>
                                                     <option th:each="category: ${availableCategories}" th:value="${category.id}" th:text="${category.name}"></option>
                                                 </select>
