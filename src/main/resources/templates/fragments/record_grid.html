@@ -9,7 +9,7 @@
         </thead>
         <tbody>
             <tr>
-                <td th:include="fragments/filter_form_table_row :: FilterTableRow" th:if="${filterable}"></td>
+                <td th:include="fragments/filter_form_table_row :: FilterTableRow" th:if="${filterable}" colspan="3"></td>
             </tr>
             <tr th:each="record: ${records}"
                 th:class="|${record.recordType == 'BudgetRecord' ? 'table-info' : ''} ${record.lastCreated ? 'last-created-record' : ''}|">

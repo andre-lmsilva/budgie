@@ -23,6 +23,7 @@ public class BudgetRecordMappingSettings implements OrikaMapperFactoryConfigurer
             .fieldBToA("category.id", "category.id")
             .field("description", "description")
             .field("recordValue", "recordValue")
+            .field("isTaxRefundable", "isTaxRefundable")
             .customize(new CustomMapper<BudgetRecord, ExistingRecord>() {
                 @Override
                 public void mapAtoB(BudgetRecord budgetRecord, ExistingRecord existingRecord, MappingContext context) {

@@ -34,4 +34,7 @@ public class NewBudgetTemplateRecord {
     @NotNull
     private BigDecimal recordValue;
 
+    @NotNull
+    private Boolean isTaxRefundable = false;
+
 }

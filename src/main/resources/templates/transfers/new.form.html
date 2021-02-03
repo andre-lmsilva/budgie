@@ -39,15 +39,13 @@
                             <div class="form-group">
                                 <label for="sourceAccountId">Source Account:</label>
                                 <select th:field="*{sourceAccountId}" class="form-control" required>
-                                    <option th:each="account: ${availableAccounts['Accounts']}" th:value="${account.id}" th:text="${account.name}"></option>
+                                    <option th:each="account: ${availableAccounts}" th:value="${account.id}" th:text="${account.name}"></option>
                                 </select>
                             </div>
                              <div class="form-group">
-                                <label for="destinationAccountId">Destination Account/Project:</label>
+                                <label for="destinationAccountId">Destination Account:</label>
                                 <select th:field="*{destinationAccountId}" class="form-control" required>
-                                    <optgroup th:each="accountType: ${availableAccounts}" th:label="${accountType.key}">
-                                        <option th:each="account: ${accountType.value}" th:value="${account.id}" th:text="${account.name}"></option>
-                                    </optgroup>
+                                    <option th:each="account: ${availableAccounts}" th:value="${account.id}" th:text="${account.name}"></option>
                                 </select>
                             </div>
                             <div class="form-group">

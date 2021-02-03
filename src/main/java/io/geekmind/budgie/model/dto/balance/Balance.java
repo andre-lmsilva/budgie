@@ -37,8 +37,6 @@ public class Balance {
 
     private BalanceType balanceType = BalanceType.REGULAR_PERIOD_BALANCE;
 
-    private List<ProjectBalanceSummary> projectBalanceSummaries;
-
     public Map<LocalDate, List<ExistingRecord>> getGroupedRecords() {
         return Optional.ofNullable(this.getRecords())
             .map(records ->

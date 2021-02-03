@@ -2,11 +2,8 @@ package io.geekmind.budgie.repository;
 
 import io.geekmind.budgie.model.dto.account.ExistingAccount;
 import io.geekmind.budgie.model.dto.account_parameter.ExistingAccountParameter;
-import io.geekmind.budgie.model.dto.project_account.ExistingProjectAccount;
-import io.geekmind.budgie.model.dto.standard_account.ExistingStandardAccount;
 import io.geekmind.budgie.model.entity.AccountParameter;
 import io.geekmind.budgie.model.entity.AccountParameterKey;
-import io.geekmind.budgie.model.entity.ProjectAccount;
 import io.geekmind.budgie.model.entity.StandardAccount;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
@@ -42,12 +39,7 @@ public class AccountParameterService {
 
     public Optional<ExistingAccountParameter> createParameter(ExistingAccount existingAccount, AccountParameterKey key, String value) {
         AccountParameter accountParameter = new AccountParameter();
-
-        if (existingAccount instanceof ExistingStandardAccount) {
-            accountParameter.setAccount(new StandardAccount());
-        } else if (existingAccount instanceof ExistingProjectAccount) {
-            accountParameter.setAccount(new ProjectAccount());
-        }
+        accountParameter.setAccount(new StandardAccount());
         accountParameter.getAccount().setId(existingAccount.getId());
         accountParameter.setKey(key.name());
         accountParameter.setValue(value);

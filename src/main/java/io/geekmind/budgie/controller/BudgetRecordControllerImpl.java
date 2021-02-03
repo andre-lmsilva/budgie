@@ -1,6 +1,5 @@
 package io.geekmind.budgie.controller;
 
-import io.geekmind.budgie.model.dto.ExistingRecord;
 import io.geekmind.budgie.repository.BudgetRecordService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -12,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/budgetRecords")

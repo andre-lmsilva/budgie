@@ -55,13 +55,7 @@ The *dev* profile sets everything necessary to execute the application locally. 
 * Both user name and password are defined in the settings files using the Base64 encoded representation of the bencrypted values.
 * The passphrase to encode database text fields is **textFieldSecretPhrase**.
 * The passphrase to encode database numeric fields is **decimalFieldSecretPhrase**.
+* The passphrase to encode database binary fields is **byteFieldSecretPhrase**.
 
 Those values are defined on ```/src/main/resources/application-dev.yml``` file and can be overwritten used environment variables or jvm parameters.
 
-# To Do:
-
-* Implement file attachment to records.
-* Implement refund records.
-* Implement tags.
-* Consider to retire the project accounts concept.
-* Refine CSV importing logic.

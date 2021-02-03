@@ -21,9 +21,8 @@ public class LoadBudgetRecordsStep extends BaseBalanceCalculationStep {
 
     private final BudgetTemplateRecordService budgetTemplateRecordService;
 
-    public LoadBudgetRecordsStep(BudgetTemplateRecordService budgetTemplateRecordService,
-                                 @Qualifier("calculateProjectSummariesStep") BaseBalanceCalculationStep nextChainedStep) {
-        super(nextChainedStep);
+    public LoadBudgetRecordsStep(BudgetTemplateRecordService budgetTemplateRecordService) {
+        super(null);
         this.budgetTemplateRecordService = budgetTemplateRecordService;
     }
 

@@ -1,7 +1,6 @@
 package io.geekmind.budgie.model.dto.standard_account;
 
 import io.geekmind.budgie.model.dto.account.ExistingAccount;
-import io.geekmind.budgie.model.dto.project_account.ExistingProjectAccount;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -33,18 +32,6 @@ public class ExistingStandardAccount extends ExistingAccount {
             .filter(dependant -> !dependant.getArchived())
             .filter(dependant -> dependant instanceof ExistingStandardAccount)
             .map(dependant -> (ExistingStandardAccount)dependant)
-            .collect(Collectors.toList());
-    }
-
-    public List<ExistingProjectAccount> getActiveProjectAccounts() {
-        if (null == dependants) {
-            return Collections.emptyList();
-        }
-        return this.dependants
-            .stream()
-            .filter(dependant -> !dependant.getArchived())
-            .filter(dependant -> dependant instanceof ExistingProjectAccount)
-            .map(dependant -> (ExistingProjectAccount) dependant)
             .collect(Collectors.toList());
     }
 

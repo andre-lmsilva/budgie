@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: header"></head>
+    <body>
+        <div th:replace="fragments/navbar :: navbar"></div>
+        <div class="container-fluid">
+            <div class="row page-header mb-5">
+                <div class="col-lg-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{'/records'}"><span class="fa fa-home"></span></a></li>
+                        <li class="breadcrumb-item active">Tax Refundable Report</li>
+                    </ol>
+                    <h2 class="d-md-block d-sm-none d-none"><i class="fa fa-tags"></i>&nbsp;Tax Refundable Report</h2>
+                    <h4 class="d-md-none d-block"><i class="fa fa-tags"></i>&nbsp;Tax Refundable Report</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <form action="#" method="post" th:object="${request}">
+                        <fieldset>
+                            <legend>Filter</legend>
+                            <div class="form-row">
+                                <div class="form-group col-7">
+                                    <label for="existingAccountId">Account:</label>
+                                    <select th:field="*{existingAccountId}" class="form-control" required>
+                                        <option th:each="account: ${availableAccounts}" th:value="${account.id}" th:text="${account.name}"/>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-2">
+                                    <label for="startDate">Start Date:</label>
+                                    <input type="date" th:field="*{startDate}" class="form-control" required/>
+                                </div>
+
+                                <div class="form-group col-2">
+                                    <label for="endDate">End Date:</label>
+                                    <input type="date" th:field="*{endDate}" class="form-control" required/>
+                                </div>
+
+                                <div class="form-group col-1 text-right" style="padding-top:30px;">
+                                    <input type="submit" class="btn btn-primary" value="Apply"></input>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </form>
+                    <hr/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div th:if="${#lists.isEmpty(summaries)}">
+                        <div class="jumbotron">
+                            <h3>No records found.</h3>
+                            <p class="lead">There is no tax refundable record for this account in this period yet.</p>
+                        </div>
+                    </div>
+                    <div class="accordion" id="categorySummaries" th:if="${not #lists.isEmpty(summaries)}">
+                        <div class="card" th:each="summary: ${summaries}">
+                            <div class="card-header d-flex w-100 justify-content-between" th:id="|category-header-${summary.category.id}|">
+                                <div class="text-left">
+                                    <a href="javascript:void(0)"
+                                       class="collapsed"
+                                       data-toggle="collapse"
+                                       aria-expanded="false"
+                                       th:data-target="|#category-${summary.category.id}|"
+                                       th:aria-controls="|category-${summary.category.id}|">
+                                        <span th:text="${summary.category.name}"></span>
+                                    </a>
+                                </div>
+                                <div class="text-right"
+                                     th:classappend="${summary.balance > 0} ? text-info : text-danger"
+                                     th:text="|${summary.account.currency.currencySymbol} ${#numbers.formatDecimal(summary.balance, 1, 'POINT', 2, 'COMMA')}|">
+                                </div>
+                            </div>
+                            <div th:id="|category-${summary.category.id}|"
+                                 class="collapse"
+                                 th:aria-labelledby="|category-header-${summary.category.id}|">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-striped">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th class="text-center" style="width:100px;">Date</th>
+                                                    <th>Description</th>
+                                                    <th class="text-center" style="width:150px;">Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr th:each="record: ${summary.records}">
+                                                    <td class="text-center"
+                                                        th:text="${#temporals.format(record.recordDate, 'dd-MMM')}">
+                                                    </td>
+                                                    <td>
+                                                        <h5 class="item-title d-inline" th:text="${record.category.name}"></h5>
+                                                        <span class="text-small d-inline" th:if="${record.bankStatementId != null}" th:title="${record.bankStatementId}"><i class="fas fa-info-circle"></i></span>
+                                                        <a  th:if="${!#strings.equals(record.recordType, 'TransferRecord') && !#strings.equals(record.recordType, 'DependantAccountRecord') && !#strings.equals(recordType, 'BudgetTemplateRecord')}"
+                                                            th:onclick="|showRecord('@{/records/{id}(id=${record.id})}')|"
+                                                            href="javascript:void(0)"
+                                                            title="Show record details.">
+                                                            <span class="text-muted d-block" th:text="${record.description}"></span>
+                                                        </a>
+
+                                                        <span th:if="${#strings.equals(record.recordType, 'TransferRecord')}"
+                                                              class="text-small"
+                                                              title="Transfer between accounts">
+                                                                                <i class="fas fa-exchange-alt"></i>
+                                                                            </span>
+                                                        <span th:if="${#strings.equals(record.recordType, 'TransferRecord')}"
+                                                              class="text-muted d-block"
+                                                              th:text="${record.description}">
+                                                                            </span>
+                                                    </td>
+                                                    <td class="text-right"
+                                                        th:text="|${record.account.currency.currencySymbol} ${#numbers.formatDecimal(record.recordValue, 1, 'POINT', 2, 'COMMA')}|"
+                                                        th:classappend="${record.recordValue} > 0 ? text-info : text-danger">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div th:replace="fragments/footer :: footer"></div>
+    </body>
+</html>

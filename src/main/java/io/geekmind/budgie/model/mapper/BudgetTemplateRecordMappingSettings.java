@@ -23,6 +23,7 @@ public class BudgetTemplateRecordMappingSettings implements OrikaMapperFactoryCo
                 .fieldAToB("categoryId", "category.id")
                 .fieldAToB("description", "description")
                 .fieldAToB("recordValue", "recordValue")
+                .fieldAToB("isTaxRefundable", "isTaxRefundable")
                 .customize(new CustomMapper<NewBudgetTemplateRecord, BudgetTemplateRecord>() {
                     @Override
                     public void mapAtoB(NewBudgetTemplateRecord newBudgetTemplateRecord, BudgetTemplateRecord budgetTemplateRecord, MappingContext context) {
@@ -42,6 +43,7 @@ public class BudgetTemplateRecordMappingSettings implements OrikaMapperFactoryCo
                 .fieldAToB("description", "description")
                 .fieldAToB("recordValue", "recordValue")
                 .fieldAToB("recordContainer.id", "containerId")
+                .fieldAToB("isTaxRefundable", "isTaxRefundable")
                 .customize(new CustomMapper<BudgetTemplateRecord, ExistingRecord>() {
                     @Override
                     public void mapAtoB(BudgetTemplateRecord budgetTemplateRecord, ExistingRecord existingRecord, MappingContext context) {
