@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="fragments/header :: header"></head>
     <body>
-        <div class="container" style="min-height:100vh">
+        <div class="container" style="min-height:100vh;">
             <div class="row justify-content-md-center align-items-center" style="min-height: 100vh;margin-top: -80px;">
-                <div class="col-md-4 col-sm-6">
+                <div class="col-md-4 col-sm-6 signin">
                     <div th:if="${param.logout}">
                         <div class="alert alert-info">You have been logged out.</div>
                     </div>
