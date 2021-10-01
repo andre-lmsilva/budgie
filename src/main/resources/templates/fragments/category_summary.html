@@ -1,8 +1,7 @@
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="CategorySummaryCard(categorySummary, currencySymbol)">
     <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1" th:text="${categorySummary.category.name}"></h5>
-        <small  th:class="${categorySummary.balance} > 0 ? text-success : text-danger"
-                th:text="|${currencySymbol} ${#numbers.formatDecimal(categorySummary.balance, 1, 'POINT', 2, 'COMMA')}|"></small>
+
     </div>
     <p class="mb-1">
         <div class="progress" th:if="${categorySummary.maxExpensesConsumption != 0}">
@@ -15,14 +14,36 @@
                  aria-valuemax="100">
             </div>
         </div>
-        <small>
-            <span   th:if="${categorySummary.maxExpensesConsumption != 0}"
-                    class="d-block"
-                    th:text="|${#numbers.formatDecimal(categorySummary.maxExpensesConsumption, 1, 'POINT', 2, 'COMMA')}% of ${currencySymbol} ${#numbers.formatDecimal(categorySummary.maxExpenses, 1, 'POINT', 2, 'COMMA')} monthly limit.|">
-            </span>
-            <span   th:if="${categorySummary.maxExpensesConsumption == 0}" class="d-block">No monthly limit defined.</span>
-            <span   th:text="|${#numbers.formatDecimal(categorySummary.expensesConsumptionPercentage, 1, 'POINT', 2, 'COMMA')}% of the total expenses.|"></span>
-        </small>
+        <table class="category-summary-table">
+            <tbody>
+                <tr>
+                    <td>Balance</td>
+                    <td class="text-right"
+                        th:classappend="${categorySummary.balance} > 0 ? text-success : text-danger"
+                        th:text="${currencySymbol} ${#numbers.formatDecimal(categorySummary.balance, 1, 'POINT', 2, 'COMMA')}"></td>
+                </tr>
+                <tr>
+                    <td>Limit</td>
+                    <td class="text-right text-info"
+                        th:if="${categorySummary.maxExpensesConsumption == 0}">None</td>
+                    <td class="text-right text-info"
+                        th:if="${categorySummary.maxExpensesConsumption != 0}"
+                        th:text="${#numbers.formatDecimal(categorySummary.maxExpenses, 1, 'POINT', 2, 'COMMA')}"></td>
+                </tr>
+                <tr>
+                    <td>Consumption</td>
+                    <td class="text-right"
+                        th:classappend="${categorySummary.maxExpensedConsumption > 75 ? 'text-danger' : ( categorySummary.maxExpensesConsumption > 50 ? 'text-warning' : 'text-success )}"
+                        th:text="${#numbers.formatDecimal(categorySummary.maxExpensesConsumption, 1, 'POINT', 0, 'COMMA')}%"></td>
+
+                </tr>
+                <tr>
+                    <td colspan="2"
+                        th:text="|${#numbers.formatDecimal(categorySummary.expensesConsumptionPercentage, 1, 'POINT', 2, 'COMMA')}% of the total expenses.|">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </p>
 </div>
 

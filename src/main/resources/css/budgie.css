@@ -166,3 +166,14 @@ tfoot > tr > td {
 .accordion .card:last-of-type {
     border-bottom: 1px solid rgba(0,0,0,0.125) !important;
 }
+
+.category-summary-table {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.category-summary-table > tbody > tr > td {
+    padding: 5px 0px 5px 0px;
+    font-size: 0.8em;
+}
