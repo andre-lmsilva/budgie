@@ -38,7 +38,7 @@
                 </tr>
                 <tr>
                     <td colspan="2"
-                        th:text="|${#numbers.formatDecimal(categorySummary.expensesConsumptionPercentage, 1, 'POINT', 2, 'COMMA')}% of the total expenses.|">
+                        th:text="|${#numbers.formatDecimal(categorySummary.expensesConsumptionPercentage, 1, 'POINT', 1, 'COMMA')}% of the total expenses.|">
                     </td>
                 </tr>
             </tbody>
@@ -48,6 +48,6 @@
 
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="CategorySummariesDeck(categorySummaries, currencySymbol)">
     <div class="list-group">
-        <span class="bg-dark text-white list-group-item flex-column align-items-start" th:each="categorySummary: ${categorySummaries}" th:include="fragments/category_summary :: CategorySummaryCard(${categorySummary}, ${currencySymbol})"></span>
+        <span class="d-block mb-3 bg-dark text-white list-group-item flex-column align-items-start" th:each="categorySummary: ${categorySummaries}" th:include="fragments/category_summary :: CategorySummaryCard(${categorySummary}, ${currencySymbol})"></span>
     </div>
 </div>
