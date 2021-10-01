@@ -6,8 +6,8 @@
         <div class="progress" th:if="${categorySummary.maxExpensesConsumption != 0}">
             <div class="progress-bar progress-bar-striped"
                  role="progressbar"
-                 th:style="|width: ${#numbers.formatDecimal(categorySummary.maxExpensesConsumption, 1, 'POINT', 0, 'COMMA')}%|"
-                 th:aria-valuenow="${#numbers.formatDecimal(categorySummary.maxExpensesConsumption, 1, 'POINT', 0, 'COMMA')}"
+                 th:style="|width: ${categorySummary.maxExpensesConsumption > 100 ? 100 : #numbers.formatDecimal(categorySummary.maxExpensesConsumption, 1, 'POINT', 0, 'COMMA')}%|"
+                 th:aria-valuenow="${categorySummary.maxExpensesConsumption > 100 ? 100 : #numbers.formatDecimal(categorySummary.maxExpensesConsumption, 1, 'POINT', 0, 'COMMA')}"
                  th:classappend="${categorySummary.maxExpensesConsumption >= 75} ? bg-danger : (${categorySummary.maxExpensesConsumption >= 50} ? bg-warning : 'bg-success')"
                  aria-valuemin="0"
                  aria-valuemax="100">

@@ -56,7 +56,7 @@ public class SummarizeExpensesPerCategoryStep extends BaseBalanceCalculationStep
     }
 
     /**
-     * Groups the records by its category, invokes the {@link #createSummary(ExistingCategory, BigDecimal, BigDecimal)}
+     * Groups the records by its category, invokes the {@link #createSummary(ExistingCategory, List, BigDecimal)}
      * to map the result into a {@link CategoryBalanceSummary} instance, filters to remove zero valued balances and sort
      * it descending by value.
      * @param records           Records within the period being calculated.
@@ -107,12 +107,15 @@ public class SummarizeExpensesPerCategoryStep extends BaseBalanceCalculationStep
 
         if (null != category.getMaxExpenses() && category.getMaxExpenses().compareTo(BigDecimal.ZERO) != 0) {
             maxExpenses = category.getMaxExpenses();
-            maxExpensesConsumption = balance.divide(maxExpenses, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100D));
+            maxExpensesConsumption = balance.negate()
+                .divide(maxExpenses.negate(), RoundingMode.HALF_UP)
+                .multiply(BigDecimal.valueOf(100D));
         }
 
         BigDecimal expensesConsumptionPercentage = BigDecimal.ZERO;
         if (totalExpensesInBalance.compareTo(BigDecimal.ZERO) != 0) {
-            expensesConsumptionPercentage = balance.divide(totalExpensesInBalance, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100D));
+            expensesConsumptionPercentage = balance.divide(totalExpensesInBalance, RoundingMode.HALF_UP)
+                .multiply(BigDecimal.valueOf(100D));
         }
 
         return new CategoryBalanceSummary(
