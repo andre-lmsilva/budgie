@@ -1,7 +1,6 @@
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="CategorySummaryCard(categorySummary, currencySymbol)">
     <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1" th:text="${categorySummary.category.name}"></h5>
-
     </div>
     <p class="mb-1">
         <div class="progress" th:if="${categorySummary.maxExpensesConsumption != 0}">

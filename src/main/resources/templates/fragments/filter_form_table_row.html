@@ -1,14 +1,14 @@
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="FilterTableRow">
     <form class="form-inline float-right" action="javascript:void(0)">
-        <input type="text" class="form-control filter-value" placeholder="Search for...">
+        <input type="text" class="form-control form-control-sm filter-value" placeholder="Search for...">
         <button type="button"
-                class="btn btn-primary"
+                class="btn btn-primary btn-sm"
                 title="Filters the table to show only rows that matches the typed text."
                 onclick="filterTable();">
             <i class="fa fa-search"></i>
         </button>
         <button type="button"
-                class="btn btn-warning"
+                class="btn btn-warning btn-sm"
                 title="Resets the table to display all available rows."
                 onclick="resetFilteredTable();">
             <i class="fa fa-minus-circle"></i>

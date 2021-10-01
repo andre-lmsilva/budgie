@@ -66,7 +66,7 @@
                     <strong>Total:</strong>
                 </td>
                 <td class="text-right"
-                    th:text="|${records[0].account.currency.currencySymbol} ${#aggregates.sum(records.![recordValue])}|"
+                    th:text="|${records[0].account.currency.currencySymbol} ${#numbers.formatDecimal( #aggregates.sum(records.![recordValue]), 1, 'POINT', 2, 'COMMA' )}|"
                     th:classappend="${#aggregates.sum(records.![recordValue])} > 0 ? text-success : text-danger">
                 </td>
             </tr>
@@ -75,32 +75,38 @@
 </div>
 
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="BudgetTemplateRecordsGrid(records)">
-    <table class="table table-bordered table-hover table-stripped table-sm">
-        <tbody>
+    <table class="table table-stripped table-sm">
+        <thead class="thead-dark">
             <tr>
-                <td class="text-right">
+                <th>Description</th>
+                <th class="text-center" style="width:150px">
                     <a  th:href="@{'/budgetRecords/applyAll/{accountId}'(accountId=${balance.account.id},periodStartDate=${balance.balanceDates.periodStartDate},periodEndDate=${balance.balanceDates.periodEndDate})}"
                         class="btn btn-info btn-sm"
                         title="Apply all available budget records for this period.">
-                        <i class="fa fa-check"></i>
+                        <i class="fa fa-check"></i> Apply All
                     </a>
-                </td>
+                </th>
             </tr>
+        </thead>
+        <tbody>
+
             <tr th:each="budgetTemplateRecord: ${records}">
                 <td>
                      <div class="day-of-month d-inline float-left text-monospace">
                         <h4 th:text="${#temporals.format(budgetTemplateRecord.recordDate,'dd')}"></h4>
                     </div>
                     <h5 class="item-title d-inline" th:text="${budgetTemplateRecord.category.name}"></h5>
-                    <a  th:href="@{'/budgetRecords/apply/{id}'(id=${budgetTemplateRecord.id},periodStartDate=${balance.balanceDates.periodStartDate},periodEndDate=${balance.balanceDates.periodEndDate})}"
-                        title="Create a new balance record in this account and period based on this budget template record."
-                        class="text-info float-right">
-                        <span class="fa fa-check fa-lg"></span>
-                    </a>
-                    <span   class="text-muted d-block" th:text="${budgetTemplateRecord.description}"></span>
-                    <span   class="float-right"
+                    <span   class="float-right d-inline"
                             th:text="|${balance.account.currency.currencySymbol} ${#numbers.formatDecimal(budgetTemplateRecord.recordValue, 1, 'POINT', 2, 'COMMA')}|"
                             th:classappend="${budgetTemplateRecord.recordValue} > 0 ? text-info : text-danger"></span>
+                    <span   class="text-muted d-block" th:text="${budgetTemplateRecord.description}"></span>
+                </td>
+                <td class="text-center">
+                    <a  th:href="@{'/budgetRecords/apply/{id}'(id=${budgetTemplateRecord.id},periodStartDate=${balance.balanceDates.periodStartDate},periodEndDate=${balance.balanceDates.periodEndDate})}"
+                        title="Create a new balance record in this account and period based on this budget template record."
+                        class="btn btn-outline-info btn-sm">
+                        <span class="fa fa-check fa-lg"></span> Apply
+                    </a>
                 </td>
             </tr>
         </tbody>
@@ -108,7 +114,9 @@
             <tr>
                 <td class="text-right">
                     <strong>Balance:</strong>
-                    <span   th:text="|${records[0].account.currency.currencySymbol} ${#aggregates.sum(records.![recordValue])}|"
+                </td>
+                <td class="text-right">
+                    <span   th:text="|${records[0].account.currency.currencySymbol} ${#numbers.formatDecimal( #aggregates.sum(records.![recordValue]), 1, 'POINT', 2, 'COMMA' )}|"
                             th:class="${#aggregates.sum(records.![recordValue])} > 0 ? text-success : text-danger"></span>
                 </td>
             </tr>

@@ -57,7 +57,7 @@
                             <tr>
                                 <td class="text-right">
                                     <strong>Sub-Total:</strong>
-                                    <span   th:text="|${currencySymbol} ${#aggregates.sum(group.value.![recordValue])}|"
+                                    <span   th:text="|${currencySymbol} ${#numbers.formatDecimal( #aggregates.sum(group.value.![recordValue]), 1, 'POINT', 2, 'COMMA' )}|"
                                             th:class="${#aggregates.sum(group.value.![recordValue])} > 0 ? text-success : text-danger"></span>
                                 </td>
                             </tr>

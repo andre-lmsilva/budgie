@@ -19,7 +19,6 @@
                      <h5>Balance Summary</h5>
                      <div th:replace="fragments/balance_summary.html :: BudgetVerticalLayout(${balance.summary}, ${balance.account.currency.currencySymbol})"></div>
                  </div>
-
             </div>
 
             <div class="row mt-4 mb-3">
@@ -45,33 +44,32 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-sm-12" th:if="${not #lists.isEmpty(balance.records)}">
-            <div class="row">
-                <div class="col-sm-12 col-md-3">
-                    <h4 class="mb-4">Categories Summary</h4>
-                    <div class="jumbotron" th:if="${#lists.isEmpty(balance.categoryBalanceSummaries)}">
-                        <h3>No records found.</h3>
-                        <p class="lead">No category summary for this account yet.</p>
+            <div class="col-sm-12" th:if="${not #lists.isEmpty(balance.records)}">
+                <div class="row">
+                    <div class="col-sm-12 col-md-3">
+                        <div class="jumbotron" th:if="${#lists.isEmpty(balance.categoryBalanceSummaries)}">
+                            <h3>No records found.</h3>
+                            <p class="lead">No category summary for this account yet.</p>
+                        </div>
+                        <div th:replace="fragments/category_summary :: CategorySummariesDeck(${balance.categoryBalanceSummaries}, ${balance.account.currency.currencySymbol})"/>
                     </div>
-                    <div th:replace="fragments/category_summary :: CategorySummariesDeck(${balance.categoryBalanceSummaries}, ${balance.account.currency.currencySymbol})"/>
-                </div>
 
-                <div class="col-sm-12 col-md-9">
-                    <div class="table-responsive">
-                        <div th:replace="fragments/record_grid :: RecordGrid(${balance.records}, ${balance}, true)"></div>
+                    <div class="col-sm-12 col-md-9">
+                        <div class="table-responsive">
+                            <div th:replace="fragments/record_grid :: RecordGrid(${balance.records}, ${balance}, true)"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="fab-btn">
-            <a th:href="@{/budget/new}"
-               title="Show form to create a new budget template record."
-               class="btn btn-primary btn-lg">
-                <i class="fas fa-plus fa-lg"></i>
-            </a>
+            <div class="fab-btn">
+                <a  th:href="@{/budget/new}"
+                    title="Show form to create a new budget template record."
+                    class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus fa-lg"></i>
+                </a>
+            </div>
         </div>
 
         <div th:replace="fragments/footer :: footer"></div>
